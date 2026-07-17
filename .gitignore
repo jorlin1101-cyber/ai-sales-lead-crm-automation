@@ -1,0 +1,52 @@
+# Python bytecode and cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment directories
+venv/
+.venv/
+env/
+
+# Test, coverage, lint and type-check caches
+.pytest_cache/
+.pytest_tmp/
+.coverage
+.mypy_cache/
+.ruff_cache/
+.coverage.*
+htmlcov/
+
+# Python packaging and build artifacts
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.json
+
+# Logs and temporary files
+*.log
+*.tmp
+tmp/
+temp/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE-local files
+.idea/
+
+# Local private knowledge data
+data/private/
+
+# Real Notion page ID mapping
+data/knowledge_snapshot/notion_page_tree_ids.json

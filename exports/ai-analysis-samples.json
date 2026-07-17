@@ -1,0 +1,108 @@
+{
+  "samples": [
+    {
+      "sample_name": "b2b_high_value_overseas_travel_agency",
+      "input_lead": {
+        "lead_id": "sample_b2b_mark_chen",
+        "name": "Mark Chen",
+        "email": "mark.chen@example.com",
+        "company_name": "Global Asia Travel",
+        "message": "We are a small outbound travel agency based in Singapore. We are looking for a local Chengdu partner who can support private English-guided trips for our clients, especially Western Sichuan and family-friendly Chengdu tours.",
+        "source": "Email",
+        "received_at": "2026-05-20T13:20:00+08:00",
+        "is_valid": true,
+        "error_reason": "",
+        "ai_analysis_status": "Not Started",
+        "review_status": "Pending Review",
+        "crm_status": "Not Started",
+        "notification_status": "Not Required"
+      },
+      "expected_ai_output": {
+        "lead_type": "B2B",
+        "b2b_category": "Overseas Travel Agency",
+        "intent_level": "High",
+        "lead_score": 88,
+        "lead_summary": "Global Asia Travel is a Singapore-based outbound travel agency looking for a local Chengdu partner to support private English-guided trips, especially Western Sichuan and family-friendly Chengdu tours. This is a high-value B2B lead with strong long-term cooperation potential.",
+        "recommended_action": "Prioritize manual follow-up. Ask about their expected client volume, target travel season, preferred itinerary types, service standards, and whether they need sample Chengdu and Western Sichuan private tour proposals.",
+        "follow_up_email": "Hi Mark,\n\nThank you for reaching out. We would be happy to explore a local partnership in Chengdu and Western Sichuan.\n\nWe can support private English-guided trips, family-friendly Chengdu tours, and customized Western Sichuan itineraries for overseas clients. To better understand your needs, could you share more about your typical client profile, expected travel dates or seasons, group sizes, and the types of services you would like a local partner to handle?\n\nWe can then prepare a few sample itinerary ideas and service options for your review.\n\nBest regards,\nEastogo Team"
+      },
+      "reasoning_note": "这是高价值 B2B 样例。对方明确是新加坡 outbound travel agency，并且正在寻找成都本地合作方。需求和当前业务高度匹配，包括英文导游、川西线路、家庭友好型成都行程，因此应判定为 B2B、Overseas Travel Agency、High intent，并触发后续高分 B2B 内部通知。"
+    },
+    {
+      "sample_name": "b2c_clear_private_day_tour",
+      "input_lead": {
+        "lead_id": "sample_b2c_daniel_harper",
+        "name": "Daniel Harper",
+        "email": "daniel.harper@example.com",
+        "company_name": "",
+        "message": "We are 4 Australians visiting Chengdu in late March. We want a one-day private tour with an English guide, including the Panda Base and one more cultural site. We would prefer a car and hotel pickup.",
+        "source": "Website",
+        "received_at": "2026-05-20T10:30:00+08:00",
+        "is_valid": true,
+        "error_reason": "",
+        "ai_analysis_status": "Not Started",
+        "review_status": "Pending Review",
+        "crm_status": "Not Started",
+        "notification_status": "Not Required"
+      },
+      "expected_ai_output": {
+        "lead_type": "B2C",
+        "b2b_category": "None",
+        "intent_level": "Medium",
+        "lead_score": 76,
+        "lead_summary": "Daniel Harper is part of a 4-person Australian private group visiting Chengdu in late March. They are looking for a one-day private tour with an English-speaking guide, Panda Base visit, another cultural site, car service, and hotel pickup.",
+        "recommended_action": "Follow up with availability, suggested one-day itinerary options, price range, and ask for their exact travel date, hotel location, and preferred cultural site.",
+        "follow_up_email": "Hi Daniel,\n\nThank you for your message. We can arrange a one-day private Chengdu tour for your group of four with an English-speaking guide, hotel pickup, car service, the Panda Base, and an additional cultural site in the afternoon.\n\nCould you please share your exact preferred date in late March and your hotel location in Chengdu? We can then check availability and send you a suggested itinerary with pricing.\n\nBest regards,\nEastogo Team"
+      },
+      "reasoning_note": "这是清晰的 B2C 私人小团样例。人数、时间、目的地、服务内容和接送需求都明确，成交可能性较强。但它不是 B2B 合作线索，因此不应归类为 B2B，也不应触发高分 B2B 通知。"
+    },
+    {
+      "sample_name": "spam_low_value_seo_outreach",
+      "input_lead": {
+        "lead_id": "sample_spam_cheap_seo_team",
+        "name": "Cheap SEO Team",
+        "email": "seo.spam@example.com",
+        "company_name": "Fast Rank Marketing",
+        "message": "Hello friend!!! We can help you rank number one on Google with 5000 backlinks and guaranteed traffic. Reply now for a special discount.",
+        "source": "Unknown",
+        "received_at": "2026-05-21T11:30:00+08:00",
+        "is_valid": true,
+        "error_reason": "",
+        "ai_analysis_status": "Not Started",
+        "review_status": "Pending Review",
+        "crm_status": "Not Started",
+        "notification_status": "Not Required"
+      },
+      "expected_ai_output": {
+        "lead_type": "Spam / Low-value",
+        "b2b_category": "None",
+        "intent_level": "Low",
+        "lead_score": 5,
+        "lead_summary": "This message is an unrelated SEO promotion offering backlinks and guaranteed traffic. It shows no realistic travel service demand or partnership value.",
+        "recommended_action": "No follow-up is recommended. Mark as low-value or spam and do not spend manual sales time on this lead.",
+        "follow_up_email": ""
+      },
+      "reasoning_note": "这是内容型 spam 样例。字段完整，所以 Python 基础校验不应拦截；但 message 明显是 SEO 推广，没有旅游服务需求，应由 AI 判定为 Spam / Low-value。follow_up_email 必须为空。"
+    },
+    {
+      "sample_name": "invalid_missing_name_skipped",
+      "input_lead": {
+        "lead_id": "sample_invalid_missing_name",
+        "name": "",
+        "email": "missing.name@example.com",
+        "company_name": "",
+        "message": "Hello, I need an English guide for Chengdu next week. We are 2 people and want to visit the Panda Base.",
+        "source": "Website",
+        "received_at": "2026-05-21T10:40:00+08:00",
+        "is_valid": false,
+        "error_reason": "Name is required",
+        "ai_analysis_status": "Skipped",
+        "review_status": "Rejected",
+        "crm_status": "Not Started",
+        "notification_status": "Not Required"
+      },
+      "expected_ai_output": null,
+      "reasoning_note": "这条 lead 的 message 看起来像真实需求，但 name 是必填字段且为空，因此应在 Python 预处理层被判定为 invalid。它不应进入 AI Lead Analysis，只应写入 Processing Log 用于审计和排错。"
+    }
+  ]
+}

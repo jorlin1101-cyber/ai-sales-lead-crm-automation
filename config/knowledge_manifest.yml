@@ -1,0 +1,96 @@
+pages:
+  "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour":
+    doc_type: product
+    region: western_sichuan
+    product_name: Western Sichuan Private Tour
+    priority: P0
+    status: Active
+    tags:
+      - western_sichuan
+      - private_tour
+      - agency
+      - custom_group
+
+  "AI Sales Knowledge Base/Products/Tibet/Tibet Cultural Tour":
+    doc_type: product
+    region: tibet
+    product_name: Tibet Cultural Tour
+    priority: P0
+    status: Active
+    tags:
+      - tibet
+      - cultural_tour
+      - monastery
+      - private_tour
+
+  "AI Sales Knowledge Base/Products/Yunnan/Yunnan Family Tour":
+    doc_type: product
+    region: yunnan
+    product_name: Yunnan Family Tour
+    priority: P0
+    status: Active
+    tags:
+      - yunnan
+      - family_tour
+      - culture
+      - private_tour
+
+  "AI Sales Knowledge Base/Destinations/Western Sichuan Destination Overview":
+    doc_type: destination
+    region: western_sichuan
+    product_name: null
+    priority: P0
+    status: Active
+    tags:
+      - western_sichuan
+      - plateau
+      - tibetan_culture
+      - road_trip
+
+  "AI Sales Knowledge Base/Destinations/Tibet Destination Overview":
+    doc_type: destination
+    region: tibet
+    product_name: null
+    priority: P0
+    status: Active
+    tags:
+      - tibet
+      - plateau
+      - permit
+      - culture
+
+  "AI Sales Knowledge Base/Destinations/Yunnan Destination Overview":
+    doc_type: destination
+    region: yunnan
+    product_name: null
+    priority: P0
+    status: Active
+    tags:
+      - yunnan
+      - family_trip
+      - culture
+      - soft_adventure
+
+  "AI Sales Knowledge Base/Pricing/Private Tour Pricing Rules":
+    doc_type: pricing
+    region: general
+    product_name: null
+    priority: P0
+    status: Active
+    tags:
+      - pricing
+      - quotation
+      - group_size
+      - private_tour
+
+  "AI Sales Knowledge Base/FAQ/Travel Permit and Payment FAQ":
+    doc_type: faq
+    region: general
+    product_name: null
+    priority: P1
+    status: Active
+    tags:
+      - permit
+      - payment
+      - booking
+      - travel_preparation

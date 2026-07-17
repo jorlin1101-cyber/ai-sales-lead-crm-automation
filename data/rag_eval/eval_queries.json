@@ -1,0 +1,146 @@
+[
+  {
+    "query_id": "pricing_private_001",
+    "query": "How much does a private customized tour usually cost?",
+    "expected_region": "general",
+    "expected_doc_type": "pricing",
+    "expected_source_titles": ["Private Tour Pricing Rules"],
+    "expected_sections": ["Pricing Variables", "Quotation Notes"]
+  },
+  {
+    "query_id": "pricing_group_001",
+    "query": "How much would a private tour cost for 20 people?",
+    "expected_region": "general",
+    "expected_doc_type": "pricing",
+    "expected_source_titles": ["Private Tour Pricing Rules"],
+    "expected_sections": ["Group Size", "Pricing Variables", "Quotation Notes"]
+  },
+  {
+    "query_id": "payment_policy_001",
+    "query": "When do clients need to pay the deposit and final balance?",
+    "expected_region": "general",
+    "expected_doc_type": "faq",
+    "expected_source_titles": ["Travel Permit and Payment FAQ"],
+    "expected_sections": ["Payment FAQ", "Common Questions", "Short Answers"]
+  },
+  {
+    "query_id": "tibet_permit_001",
+    "query": "Do foreign travelers need a permit to visit Tibet?",
+    "expected_region": "general",
+    "expected_doc_type": "faq",
+    "expected_source_titles": ["Travel Permit and Payment FAQ"],
+    "expected_sections": ["Permit and Payment FAQ", "Common Questions", "Short Answers"]
+  },
+  {
+    "query_id": "yunnan_family_001",
+    "query": "Is Yunnan good for families with children?",
+    "expected_region": "yunnan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Yunnan Family Tour"],
+    "expected_sections": ["Suitable For", "Key Experiences"]
+  },
+  {
+    "query_id": "western_sichuan_private_001",
+    "query": "What kind of private travel experience can we arrange in Western Sichuan?",
+    "expected_region": "western_sichuan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Western Sichuan Private Tour"],
+    "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+  },
+  {
+    "query_id": "tibet_culture_001",
+    "query": "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+    "expected_region": "tibet",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Tibet Cultural Tour"],
+    "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+  },
+  {
+    "query_id": "trip_duration_001",
+    "query": "How many days do travelers usually need for a Yunnan family trip?",
+    "expected_region": "yunnan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Yunnan Family Tour"],
+    "expected_sections": ["Typical Duration"]
+  },
+  {
+    "query_id": "fuzzy_family_pace_001",
+    "query": "We want a trip that is not too rushed and works well for children.",
+    "expected_region": "yunnan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Yunnan Family Tour"],
+    "expected_sections": ["Suitable For", "Key Experiences"]
+  },
+  {
+  "query_id": "fuzzy_culture_depth_001",
+  "query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+  "expected_region": "tibet",
+  "expected_doc_type": "product",
+  "expected_source_titles": ["Tibet Cultural Tour"],
+  "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+  },
+  {
+    "query_id": "multi_family_price_001",
+    "query": "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+    "expected_region": "yunnan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Yunnan Family Tour"],
+    "expected_sections": ["Pricing Notes", "Suitable For"]
+  },
+  {
+  "query_id": "multi_private_group_price_001",
+  "query": "We have around 20 people and want a private customized trip. What factors affect the price?",
+  "expected_region": "general",
+  "expected_doc_type": "pricing",
+  "expected_source_titles": ["Private Tour Pricing Rules"],
+  "expected_sections": ["Group Size", "Pricing Variables", "Quotation Notes", "Seasonal Factors"]
+  },
+  {
+    "query_id": "payment_before_arrival_001",
+    "query": "Do clients need to pay everything before they arrive in China?",
+    "expected_region": "general",
+    "expected_doc_type": "faq",
+    "expected_source_titles": ["Travel Permit and Payment FAQ"],
+    "expected_sections": ["Payment FAQ", "Common Questions", "Short Answers"]
+  },
+  {
+    "query_id": "payment_deposit_balance_002",
+    "query": "Can the client pay a deposit first and settle the remaining balance later?",
+    "expected_region": "general",
+    "expected_doc_type": "faq",
+    "expected_source_titles": ["Travel Permit and Payment FAQ"],
+    "expected_sections": ["Payment FAQ", "Common Questions", "Short Answers"]
+  },
+  {
+  "query_id": "region_tibetan_culture_not_lhasa_001",
+  "query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+  "expected_region": "tibet",
+  "expected_doc_type": "product",
+  "expected_source_titles": ["Tibet Cultural Tour"],
+  "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+  },
+  {
+    "query_id": "region_western_sichuan_private_002",
+    "query": "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?",
+    "expected_region": "western_sichuan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Western Sichuan Private Tour"],
+    "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+  },
+  {
+    "query_id": "zh_yunnan_family_001",
+    "query": "云南适合带小朋友去吗？我们不想行程太赶。",
+    "expected_region": "yunnan",
+    "expected_doc_type": "product",
+    "expected_source_titles": ["Yunnan Family Tour"],
+    "expected_sections": ["Suitable For", "Key Experiences"]
+  },
+  {
+    "query_id": "zh_private_price_001",
+    "query": "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？",
+    "expected_region": "general",
+    "expected_doc_type": "pricing",
+    "expected_source_titles": ["Private Tour Pricing Rules"],
+    "expected_sections": ["Group Size", "Pricing Variables", "Quotation Notes"]
+  }
+]
