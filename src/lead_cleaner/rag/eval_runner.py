@@ -13,12 +13,7 @@ class EvalMatchDetail:
 
     @property
     def overall_match(self) -> bool:
-        return (
-            self.doc_type_hit
-            and self.region_hit
-            and self.source_title_hit
-            and self.section_hit
-        )
+        return self.doc_type_hit and self.region_hit and self.source_title_hit and self.section_hit
 
 
 def evaluate_match_detail(
@@ -48,7 +43,4 @@ def has_expected_match(
     if top_k <= 0:
         raise ValueError("top_k must be greater than 0.")
 
-    return any(
-        is_expected_match(result=result, eval_case=eval_case)
-        for result in results[:top_k]
-    )
+    return any(is_expected_match(result=result, eval_case=eval_case) for result in results[:top_k])

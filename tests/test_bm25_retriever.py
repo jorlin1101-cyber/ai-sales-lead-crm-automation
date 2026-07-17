@@ -5,7 +5,7 @@ from lead_cleaner.rag.bm25_retriever import (
     retrieve_bm25,
     tokenize,
     tokenize_chunk_for_bm25,
-    expand_query_tokens
+    expand_query_tokens,
 )
 from lead_cleaner.rag.schemas import KnowledgeChunk
 

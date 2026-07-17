@@ -68,6 +68,7 @@ PAGE_TREE: dict[str, Any] = {
 # Content builders – return list of Notion API block objects
 # ---------------------------------------------------------------------------
 
+
 def _text(text: str) -> dict[str, Any]:
     """Shortcut for a single rich_text item."""
     return {"type": "text", "text": {"content": text}}
@@ -399,62 +400,148 @@ PAGE_CONTENT: dict[str, list[dict[str, Any]]] = {
     ),
     "Private Tour Pricing Rules": [
         _heading_2("Pricing Variables"),
-        _bullet("Private tour pricing is calculated based on: group size, hotel level, vehicle type, guide service, and season."),
-        _bullet("Each quotation is built from a base per-person cost adjusted by service tier and seasonal multiplier."),
-        _bullet("Domestic flights (if needed, e.g. Chengdu–Daocheng, Kunming–Shangri-La) are quoted separately and subject to airline availability."),
-        _bullet("All quotations should be provided in USD or EUR for agency clients; RMB pricing for direct B2C Chinese clients."),
+        _bullet(
+            "Private tour pricing is calculated based on: group size, hotel level, vehicle type, guide service, and season."
+        ),
+        _bullet(
+            "Each quotation is built from a base per-person cost adjusted by service tier and seasonal multiplier."
+        ),
+        _bullet(
+            "Domestic flights (if needed, e.g. Chengdu–Daocheng, Kunming–Shangri-La) are quoted separately and subject to airline availability."
+        ),
+        _bullet(
+            "All quotations should be provided in USD or EUR for agency clients; RMB pricing for direct B2C Chinese clients."
+        ),
         _heading_2("Group Size"),
         _bullet("1–2 pax: highest per-person cost. Uses private car (5-seat sedan or SUV)."),
-        _bullet("3–6 pax: sweet spot for cost efficiency. Uses 7-seat MPV or minibus. Per-person cost drops significantly."),
-        _bullet("7–12 pax: uses 17–22 seat minibus. Per-person cost continues to decrease; benefits from shared guide and driver costs."),
-        _bullet("13–25+ pax: uses full-size coach. Requires 2 guides for groups above 20. Hotel block booking discounts available."),
+        _bullet(
+            "3–6 pax: sweet spot for cost efficiency. Uses 7-seat MPV or minibus. Per-person cost drops significantly."
+        ),
+        _bullet(
+            "7–12 pax: uses 17–22 seat minibus. Per-person cost continues to decrease; benefits from shared guide and driver costs."
+        ),
+        _bullet(
+            "13–25+ pax: uses full-size coach. Requires 2 guides for groups above 20. Hotel block booking discounts available."
+        ),
         _heading_2("Hotel Level"),
-        _bullet("Standard (3-star / Comfort): basic clean accommodation with private bathroom. Suitable for budget-conscious groups."),
-        _bullet("Premium (4-star / Superior): better location, breakfast buffet included, English-speaking staff at reception."),
-        _bullet("Luxury (5-star / Deluxe): highest tier available in each city. Not available in remote areas (Tagong, Daocheng basic)."),
-        _bullet("Hotel level consistency matters: if one night is luxury and the next is basic, clients may complain about inconsistency."),
+        _bullet(
+            "Standard (3-star / Comfort): basic clean accommodation with private bathroom. Suitable for budget-conscious groups."
+        ),
+        _bullet(
+            "Premium (4-star / Superior): better location, breakfast buffet included, English-speaking staff at reception."
+        ),
+        _bullet(
+            "Luxury (5-star / Deluxe): highest tier available in each city. Not available in remote areas (Tagong, Daocheng basic)."
+        ),
+        _bullet(
+            "Hotel level consistency matters: if one night is luxury and the next is basic, clients may complain about inconsistency."
+        ),
         _heading_2("Vehicle Type"),
-        _bullet("Sedan / SUV (1–3 pax): flexible, easy parking, comfortable for long-distance driving. Best for small groups."),
-        _bullet("MPV / Minibus (4–7 pax): recommended for family groups. Extra legroom for long days on the road."),
-        _bullet("Midibus (8–14 pax): cost-effective for medium groups. Luggage space limited — advise soft luggage only."),
-        _bullet("Coach (15+ pax): requires advance booking. Not suitable for mountain passes above 4000 m on western Sichuan routes."),
+        _bullet(
+            "Sedan / SUV (1–3 pax): flexible, easy parking, comfortable for long-distance driving. Best for small groups."
+        ),
+        _bullet(
+            "MPV / Minibus (4–7 pax): recommended for family groups. Extra legroom for long days on the road."
+        ),
+        _bullet(
+            "Midibus (8–14 pax): cost-effective for medium groups. Luggage space limited — advise soft luggage only."
+        ),
+        _bullet(
+            "Coach (15+ pax): requires advance booking. Not suitable for mountain passes above 4000 m on western Sichuan routes."
+        ),
         _heading_2("Guide Requirement"),
-        _bullet("English-speaking guide included in all private tour packages. Chinese-speaking guide available at lower cost."),
-        _bullet("Bilingual guide (English + Chinese) adds 20–30% to guide fee. Useful for agency groups with mixed-language participants."),
-        _bullet("Specialist guides (photography, birding, monastery history): available on request at premium rates. Book 2 weeks in advance."),
-        _bullet("Tibet tours require a licensed Tibet guide registered with the Tibet Tourism Bureau. This cost is non-negotiable."),
+        _bullet(
+            "English-speaking guide included in all private tour packages. Chinese-speaking guide available at lower cost."
+        ),
+        _bullet(
+            "Bilingual guide (English + Chinese) adds 20–30% to guide fee. Useful for agency groups with mixed-language participants."
+        ),
+        _bullet(
+            "Specialist guides (photography, birding, monastery history): available on request at premium rates. Book 2 weeks in advance."
+        ),
+        _bullet(
+            "Tibet tours require a licensed Tibet guide registered with the Tibet Tourism Bureau. This cost is non-negotiable."
+        ),
         _heading_2("Seasonal Factors"),
-        _bullet("Peak season (July–October): hotel rates 30–50% higher. Vehicle and guide availability limited — book 4+ weeks ahead."),
-        _bullet("Shoulder season (April–June, November): moderate pricing with good availability. Recommended for price-sensitive groups."),
-        _bullet("Low season (December–March): lowest rates, but many mountain routes and attractions may be closed due to snow."),
-        _bullet("Chinese National Holidays (Golden Week: October 1–7, Spring Festival, May 1–3): avoid scheduling during these periods — prices double and crowds are extreme."),
+        _bullet(
+            "Peak season (July–October): hotel rates 30–50% higher. Vehicle and guide availability limited — book 4+ weeks ahead."
+        ),
+        _bullet(
+            "Shoulder season (April–June, November): moderate pricing with good availability. Recommended for price-sensitive groups."
+        ),
+        _bullet(
+            "Low season (December–March): lowest rates, but many mountain routes and attractions may be closed due to snow."
+        ),
+        _bullet(
+            "Chinese National Holidays (Golden Week: October 1–7, Spring Festival, May 1–3): avoid scheduling during these periods — prices double and crowds are extreme."
+        ),
         _heading_2("Quotation Notes"),
-        _bullet("All quotations should clearly state: included items (transport, guide, accommodation, listed meals, listed entrance fees) and excluded items (flights, visa fees, tips, personal expenses, travel insurance)."),
-        _bullet("Agency commission: standard B2B commission is 10–15% of the land package. Negotiable for high-volume partners."),
-        _bullet("Deposit: 30% deposit required to confirm booking. Balance due 14 days before arrival."),
-        _bullet("Cancellation policy: free cancellation 30+ days before departure; 50% charge 15–30 days; no refund within 14 days."),
+        _bullet(
+            "All quotations should clearly state: included items (transport, guide, accommodation, listed meals, listed entrance fees) and excluded items (flights, visa fees, tips, personal expenses, travel insurance)."
+        ),
+        _bullet(
+            "Agency commission: standard B2B commission is 10–15% of the land package. Negotiable for high-volume partners."
+        ),
+        _bullet(
+            "Deposit: 30% deposit required to confirm booking. Balance due 14 days before arrival."
+        ),
+        _bullet(
+            "Cancellation policy: free cancellation 30+ days before departure; 50% charge 15–30 days; no refund within 14 days."
+        ),
     ],
     "Travel Permit and Payment FAQ": [
         _heading_2("Common Questions"),
-        _bullet("Q: Do I need a permit to travel to Tibet? A: Yes, all foreign travellers need a Tibet Travel Permit (TTP) processed through a licensed travel agency."),
-        _bullet("Q: How long does the Tibet permit take? A: The permit processing takes 10–14 working days. We need a clear passport scan at least 3 weeks before the planned entry date."),
-        _bullet("Q: What payment methods do you accept? A: We accept bank wire transfer, PayPal (4% surcharge), and Alipay. Credit card payments processed through Stripe for most currencies."),
-        _bullet("Q: What is the deposit and cancellation policy? A: 30% deposit confirms the booking. Balance due 14 days before arrival. Free cancellation 30+ days before departure."),
+        _bullet(
+            "Q: Do I need a permit to travel to Tibet? A: Yes, all foreign travellers need a Tibet Travel Permit (TTP) processed through a licensed travel agency."
+        ),
+        _bullet(
+            "Q: How long does the Tibet permit take? A: The permit processing takes 10–14 working days. We need a clear passport scan at least 3 weeks before the planned entry date."
+        ),
+        _bullet(
+            "Q: What payment methods do you accept? A: We accept bank wire transfer, PayPal (4% surcharge), and Alipay. Credit card payments processed through Stripe for most currencies."
+        ),
+        _bullet(
+            "Q: What is the deposit and cancellation policy? A: 30% deposit confirms the booking. Balance due 14 days before arrival. Free cancellation 30+ days before departure."
+        ),
         _heading_2("Short Answers"),
-        _bullet("Tibet Travel Permit (TTP): required for all foreign nationals. Your guide will carry the permit and present it at checkpoints."),
-        _bullet("Alien Travel Permit (ATP): required if the itinerary goes beyond Lhasa (Shigatse, EBC, Mt Kailash). We process this together with TTP."),
-        _bullet("Visa: foreign travellers need a Chinese L-visa (tourist visa). Tibet permits do not replace a Chinese visa — both are required."),
-        _bullet("Payment schedule: deposit → confirms booking. Balance → charged 14 days before departure. Last-minute bookings (<14 days): full payment required upfront."),
+        _bullet(
+            "Tibet Travel Permit (TTP): required for all foreign nationals. Your guide will carry the permit and present it at checkpoints."
+        ),
+        _bullet(
+            "Alien Travel Permit (ATP): required if the itinerary goes beyond Lhasa (Shigatse, EBC, Mt Kailash). We process this together with TTP."
+        ),
+        _bullet(
+            "Visa: foreign travellers need a Chinese L-visa (tourist visa). Tibet permits do not replace a Chinese visa — both are required."
+        ),
+        _bullet(
+            "Payment schedule: deposit → confirms booking. Balance → charged 14 days before departure. Last-minute bookings (<14 days): full payment required upfront."
+        ),
         _heading_2("Sales Notes"),
-        _bullet("Always remind clients about the permit timeline at the first email. Many Tibet trip cancellations happen because clients didn't know about the 3-week lead time."),
-        _bullet("For western Sichuan, Yunnan, and other non-Tibet destinations: no special permits needed — standard tourist visa is sufficient."),
-        _bullet("Group booking payments: for agency groups, we can issue a single invoice for the entire group. We do not split invoices per traveller."),
-        _bullet("If a client asks about last-minute Tibet travel (<14 days), be honest about feasibility — express permit processing is sometimes possible but not guaranteed and costs extra."),
+        _bullet(
+            "Always remind clients about the permit timeline at the first email. Many Tibet trip cancellations happen because clients didn't know about the 3-week lead time."
+        ),
+        _bullet(
+            "For western Sichuan, Yunnan, and other non-Tibet destinations: no special permits needed — standard tourist visa is sufficient."
+        ),
+        _bullet(
+            "Group booking payments: for agency groups, we can issue a single invoice for the entire group. We do not split invoices per traveller."
+        ),
+        _bullet(
+            "If a client asks about last-minute Tibet travel (<14 days), be honest about feasibility — express permit processing is sometimes possible but not guaranteed and costs extra."
+        ),
         _heading_2("Risk Notes"),
-        _bullet("Tibet permit rejection: rare but possible if the client has a restricted nationality or incomplete documentation. Refund policy for permit rejection: full refund of land package."),
-        _bullet("Payment fraud: for first-time agency clients, verify the company registration and consider requiring full payment before the tour starts."),
-        _bullet("Currency fluctuation: for quotations held longer than 30 days, we reserve the right to adjust pricing if exchange rates move more than 5%."),
-        _bullet("Force majeure: if the Chinese government suspends Tibet tourism (as happened during COVID), we offer full credit for future travel but no cash refund for permits and non-recoverable costs."),
+        _bullet(
+            "Tibet permit rejection: rare but possible if the client has a restricted nationality or incomplete documentation. Refund policy for permit rejection: full refund of land package."
+        ),
+        _bullet(
+            "Payment fraud: for first-time agency clients, verify the company registration and consider requiring full payment before the tour starts."
+        ),
+        _bullet(
+            "Currency fluctuation: for quotations held longer than 30 days, we reserve the right to adjust pricing if exchange rates move more than 5%."
+        ),
+        _bullet(
+            "Force majeure: if the Chinese government suspends Tibet tourism (as happened during COVID), we offer full credit for future travel but no cash refund for permits and non-recoverable costs."
+        ),
     ],
 }
 
@@ -462,6 +549,7 @@ PAGE_CONTENT: dict[str, list[dict[str, Any]]] = {
 # ---------------------------------------------------------------------------
 # Notion API helpers
 # ---------------------------------------------------------------------------
+
 
 def _notion_headers(api_key: str) -> dict[str, str]:
     return {
@@ -471,7 +559,9 @@ def _notion_headers(api_key: str) -> dict[str, str]:
     }
 
 
-def _list_child_blocks(client: httpx.Client, headers: dict[str, str], block_id: str) -> list[dict[str, Any]]:
+def _list_child_blocks(
+    client: httpx.Client, headers: dict[str, str], block_id: str
+) -> list[dict[str, Any]]:
     """Return child blocks of *block_id*. Handles pagination up to 200 items."""
     results: list[dict[str, Any]] = []
     cursor: str | None = None
@@ -486,8 +576,7 @@ def _list_child_blocks(client: httpx.Client, headers: dict[str, str], block_id: 
         )
         if response.status_code != 200:
             raise RuntimeError(
-                f"Failed to list children of {block_id}: "
-                f"{response.status_code} {response.text}"
+                f"Failed to list children of {block_id}: {response.status_code} {response.text}"
             )
         data = response.json()
         results.extend(data.get("results", []))
@@ -540,8 +629,7 @@ def _create_page(
     )
     if response.status_code not in (200, 201):
         raise RuntimeError(
-            f"Failed to create page '{title}': "
-            f"{response.status_code} {response.text}"
+            f"Failed to create page '{title}': {response.status_code} {response.text}"
         )
     return response.json()["id"]
 
@@ -554,6 +642,7 @@ def _build_source_path(segments: list[str]) -> str:
 # ---------------------------------------------------------------------------
 # Tree walker
 # ---------------------------------------------------------------------------
+
 
 def _ensure_page(
     client: httpx.Client,
@@ -635,6 +724,7 @@ def _walk_tree(
 # Setup
 # ---------------------------------------------------------------------------
 
+
 def _validate_env() -> tuple[str, str | None, str | None]:
     """Read and validate environment variables. Returns (api_key, root_id, parent_id)."""
     api_key = os.getenv("NOTION_API_KEY")
@@ -659,6 +749,7 @@ def _validate_env() -> tuple[str, str | None, str | None]:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     """Create or reuse the Notion knowledge base page tree."""
@@ -719,7 +810,9 @@ def main() -> None:
                 id_map[root_name] = root_page_id
                 print()
                 tree_value = PAGE_TREE[root_name]
-                _walk_tree(client, headers, root_page_id, tree_value, [root_name], id_map, dry_run=False)
+                _walk_tree(
+                    client, headers, root_page_id, tree_value, [root_name], id_map, dry_run=False
+                )
 
     # Print summary
     print()

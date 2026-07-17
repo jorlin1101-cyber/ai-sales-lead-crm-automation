@@ -94,8 +94,6 @@ class BgeM3EmbeddingProvider:
         ]
 
         if missing_indexes:
-            raise RuntimeError(
-                f"Embedding response missing indexes: {missing_indexes}"
-            )
+            raise RuntimeError(f"Embedding response missing indexes: {missing_indexes}")
 
         return [vectors_by_index[index] for index in range(expected_count)]

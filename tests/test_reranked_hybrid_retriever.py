@@ -126,10 +126,7 @@ def test_retrieve_reranked_hybrid_passes_fusion_candidates_to_reranker() -> None
     assert reranker.received_query == "deeper Tibetan cultural journey"
     assert reranker.received_top_k == 2
     assert len(reranker.received_candidates) == 3
-    assert all(
-        candidate.retrieval_source == "fusion"
-        for candidate in reranker.received_candidates
-    )
+    assert all(candidate.retrieval_source == "fusion" for candidate in reranker.received_candidates)
 
     assert len(results) == 2
     assert all(result.retrieval_source == "rerank" for result in results)

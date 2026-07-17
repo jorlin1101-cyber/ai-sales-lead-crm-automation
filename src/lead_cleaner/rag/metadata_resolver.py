@@ -1,15 +1,16 @@
 import yaml
 
 from typing import Any
-from  pathlib import Path
+from pathlib import Path
 
 from lead_cleaner.rag.schemas import RawNotionPage, KnowledgeDocument
+
 
 def load_manifest(manifest_path: Path) -> dict[str, Any]:
     if not manifest_path.exists():
         raise FileNotFoundError(f"Manifest file not found: {manifest_path}")
 
-    with manifest_path.open("r", encoding="utf-8")as file:
+    with manifest_path.open("r", encoding="utf-8") as file:
         manifest = yaml.safe_load(file)
 
     if not isinstance(manifest, dict):
@@ -50,6 +51,3 @@ def resolve_metadata(raw_page: RawNotionPage, manifest: dict[str, Any]) -> Knowl
         priority=entry["priority"],
         tags=entry["tags"],
     )
-
-
-

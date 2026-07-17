@@ -8,12 +8,8 @@ from lead_cleaner.rag.schemas import KnowledgeChunk, KnowledgeDocument
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_INPUT_PATH = (
-    PROJECT_ROOT / "data" / "knowledge_snapshot" / "notion_pages.json"
-)
-DEFAULT_OUTPUT_PATH = (
-    PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
-)
+DEFAULT_INPUT_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "notion_pages.json"
+DEFAULT_OUTPUT_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
 
 
 def load_knowledge_documents(input_path: Path) -> list[KnowledgeDocument]:
@@ -33,17 +29,13 @@ def knowledge_chunk_to_dict(chunk: KnowledgeChunk) -> dict[str, Any]:
     return chunk.model_dump(mode="json")
 
 
-
 def save_knowledge_chunks(
     chunks: list[KnowledgeChunk],
     output_path: Path,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    serialized_chunks = [
-        knowledge_chunk_to_dict(chunk)
-        for chunk in chunks
-    ]
+    serialized_chunks = [knowledge_chunk_to_dict(chunk) for chunk in chunks]
 
     output_path.write_text(
         json.dumps(

@@ -4,16 +4,21 @@ from pydantic import ValidationError
 
 import pytest
 
-from lead_cleaner.rag.notion_page_loader import load_page_id_map, _extract_plain_text, _block_to_text, _blocks_to_text,  build_raw_notion_page, fetch_notion_blocks_recursive,fetch_notion_page_last_edited_time
+from lead_cleaner.rag.notion_page_loader import (
+    load_page_id_map,
+    _extract_plain_text,
+    _block_to_text,
+    _blocks_to_text,
+    build_raw_notion_page,
+    fetch_notion_blocks_recursive,
+    fetch_notion_page_last_edited_time,
+)
 from lead_cleaner.rag.schemas import RawNotionPage
 
 
 def test_load_page_id_map_reads_valid_mapping(tmp_path: Path):
     page_id_map_path = tmp_path / "notion_page_tree_ids.json"
-    source_path = (
-        "AI Sales Knowledge Base/Products/Western Sichuan/"
-        "Western Sichuan Private Tour"
-    )
+    source_path = "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
     page_id_map = {
         source_path: "page_western_sichuan_private_tour",
     }
@@ -67,10 +72,7 @@ def test_load_page_id_map_raises_when_source_path_key_is_not_str(
 
 def test_load_page_id_map_raises_when_page_id_value_is_not_str(tmp_path: Path):
     page_id_map_path = tmp_path / "notion_page_tree_ids.json"
-    source_path = (
-        "AI Sales Knowledge Base/Products/Tibet/"
-        "Tibet Cultural Tour"
-    )
+    source_path = "AI Sales Knowledge Base/Products/Tibet/Tibet Cultural Tour"
     page_id_map_path.write_text(
         json.dumps({source_path: 12345}),
         encoding="utf-8",
@@ -201,9 +203,7 @@ def test_blocks_to_text_joins_supported_blocks_with_newlines():
     result = _blocks_to_text(blocks)
 
     assert result == (
-        "# Western Sichuan Private Tour\n"
-        "Suitable for travel agencies.\n"
-        "- Private custom groups"
+        "# Western Sichuan Private Tour\nSuitable for travel agencies.\n- Private custom groups"
     )
 
 
@@ -235,10 +235,7 @@ def test_blocks_to_text_skips_empty_block_outputs():
 
 
 def test_build_raw_notion_page_builds_page_from_blocks():
-    source_path = (
-        "AI Sales Knowledge Base/Products/Western Sichuan/"
-        "Western Sichuan Private Tour"
-    )
+    source_path = "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
     blocks = [
         {
             "type": "heading_1",
@@ -280,9 +277,7 @@ def test_build_raw_notion_page_builds_page_from_blocks():
     assert raw_page.raw_blocks == blocks
     assert raw_page.last_edited_time == "2026-06-16T10:00:00Z"
     assert raw_page.raw_text == (
-        "# Western Sichuan Private Tour\n"
-        "Suitable for travel agencies.\n"
-        "- Private custom groups"
+        "# Western Sichuan Private Tour\nSuitable for travel agencies.\n- Private custom groups"
     )
 
 
@@ -306,10 +301,7 @@ def test_build_raw_notion_page_raises_when_source_path_is_empty():
 
 
 def test_build_raw_notion_page_raises_when_blocks_produce_empty_text():
-    source_path = (
-        "AI Sales Knowledge Base/Products/Western Sichuan/"
-        "Western Sichuan Private Tour"
-    )
+    source_path = "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
 
     with pytest.raises(ValidationError):
         build_raw_notion_page(

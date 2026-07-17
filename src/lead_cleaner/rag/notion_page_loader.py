@@ -10,12 +10,13 @@ from lead_cleaner.rag.schemas import RawNotionPage
 NOTION_API_BASE = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"
 
+
 def load_page_id_map(page_id_map_path: Path) -> dict[str, str]:
 
     if not page_id_map_path.exists():
         raise FileNotFoundError(f"Page ID map file not found: {page_id_map_path}")
 
-    with page_id_map_path.open("r", encoding="utf-8")as file:
+    with page_id_map_path.open("r", encoding="utf-8") as file:
         page_id_map = json.load(file)
 
     if not isinstance(page_id_map, dict):
@@ -26,11 +27,10 @@ def load_page_id_map(page_id_map_path: Path) -> dict[str, str]:
             raise ValueError("Page ID map keys must be source_path strings.")
 
         if not isinstance(page_id, str):
-            raise ValueError(
-                f"Page ID map value must be a string for source_path: {source_path}"
-            )
+            raise ValueError(f"Page ID map value must be a string for source_path: {source_path}")
 
     return page_id_map
+
 
 def _extract_plain_text(rich_text_items: list[dict]) -> str:
     texts = []
@@ -148,7 +148,7 @@ def _build_notion_headers(notion_api_key: str) -> dict[str, Any]:
     if not notion_api_key:
         raise ValueError("notion_api_key must not be empty.")
 
-    return{
+    return {
         "Authorization": f"Bearer {notion_api_key}",
         "Notion-Version": NOTION_VERSION,
         "Content-type": "application/json",
@@ -166,7 +166,8 @@ def _request_notion_json(url: str, notion_api_key: str) -> dict[str, Any]:
         data = response.json()
     except httpx.HTTPStatusError as error:
         raise RuntimeError(
-            f"Notion API request failed with HTTP " f"{error.response.status_code}: {error.response.text}"
+            f"Notion API request failed with HTTP "
+            f"{error.response.status_code}: {error.response.text}"
         ) from error
     except httpx.RequestError as error:
         raise RuntimeError(f"Notion API request failed: {error}") from error
@@ -183,7 +184,7 @@ def fetch_notion_blocks(page_id: str, notion_api_key: str) -> list[dict[str, Any
     if not page_id:
         raise ValueError("page_id must not be empty")
 
-    blocks: list[str[str, Any]] = []
+    blocks: list[dict[str, Any]] = []
     start_cursor: str | None = None
 
     while True:
@@ -194,7 +195,7 @@ def fetch_notion_blocks(page_id: str, notion_api_key: str) -> list[dict[str, Any
             f"{NOTION_API_BASE}/blocks/{page_id}/children",
             params=query_params,
         )
-        response_data =_request_notion_json(str(url),notion_api_key)
+        response_data = _request_notion_json(str(url), notion_api_key)
 
         results = response_data.get("results")
         if not isinstance(results, list):
@@ -209,9 +210,7 @@ def fetch_notion_blocks(page_id: str, notion_api_key: str) -> list[dict[str, Any
 
         next_cursor = response_data.get("next_cursor")
         if not isinstance(next_cursor, str) or not next_cursor:
-            raise RuntimeError(
-                "Notion API response has_more=True but next_cursor is missing."
-            )
+            raise RuntimeError("Notion API response has_more=True but next_cursor is missing.")
         start_cursor = next_cursor
 
     return blocks
@@ -281,10 +280,6 @@ def fetch_notion_page_last_edited_time(
 
     last_edited_time = response_data.get("last_edited_time")
     if not isinstance(last_edited_time, str) or not last_edited_time:
-        raise RuntimeError(
-            "Notion page response is missing a valid last_edited_time."
-        )
+        raise RuntimeError("Notion page response is missing a valid last_edited_time.")
 
     return last_edited_time
-
-

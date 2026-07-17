@@ -7,10 +7,7 @@ def test_process_lead_valid_lead_returns_score_result():
         name="John Doe",
         email="john@example.com",
         company_name="Spain Travel Agency",
-        message=(
-            "We want a quotation for a 20 people private tour "
-            "to China in September."
-        ),
+        message=("We want a quotation for a 20 people private tour to China in September."),
         source="Website",
     )
 

@@ -1,6 +1,10 @@
 import pytest
 
-from lead_cleaner.rag.eval_runner import has_expected_match, is_expected_match, evaluate_match_detail
+from lead_cleaner.rag.eval_runner import (
+    has_expected_match,
+    is_expected_match,
+    evaluate_match_detail,
+)
 from lead_cleaner.rag.eval_schemas import RagEvalCase
 from lead_cleaner.rag.schemas import RetrievedChunk
 

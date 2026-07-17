@@ -22,7 +22,6 @@ class RawNotionPage(BaseModel):
     last_edited_time: str = Field(min_length=1)
 
 
-
 class KnowledgeDocument(BaseModel):
     source_type: Literal["notion_page"]
     notion_page_id: str = Field(min_length=1)

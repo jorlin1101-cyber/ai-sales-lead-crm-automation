@@ -1,7 +1,13 @@
-from lead_cleaner.schemas.lead import CleanedLead, LeadScoreResult
+from lead_cleaner.schemas.lead import (
+    CleanedLead,
+    IntentLevel,
+    LeadScoreResult,
+    LeadSubtype,
+    LeadType,
+)
 
 
-def detect_lead_type_and_subtype(text: str) -> tuple[str, str]:
+def detect_lead_type_and_subtype(text: str) -> tuple[LeadType, LeadSubtype]:
     normalized_text = text.lower()
 
     agency_keywords = ["travel agency", "agency"]
@@ -282,7 +288,7 @@ def calculate_information_completeness_score(company_name: str, message: str) ->
     return min(score, 15)
 
 
-def map_score_to_intent_level(lead_score: int) -> str:
+def map_score_to_intent_level(lead_score: int) -> IntentLevel:
     """
     Map final lead score to intent level.
 
@@ -316,10 +322,7 @@ def score_lead(cleaned_lead: CleanedLead) -> LeadScoreResult:
     )
 
     lead_score = (
-        customer_type_score
-        + intent_score
-        + order_value_score
-        + information_completeness_score
+        customer_type_score + intent_score + order_value_score + information_completeness_score
     )
     lead_score = min(lead_score, 100)
 

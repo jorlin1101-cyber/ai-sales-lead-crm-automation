@@ -14,37 +14,40 @@ def test_detect_lead_type_and_subtype_b2b_agency():
     lead_data = {
         "name": "John Doe",
         "email": "john.doe@example.com",
-        "message": "I am a travel agency looking for a corporate retreat."
+        "message": "I am a travel agency looking for a corporate retreat.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2B"
     assert lead_subtype == "Agency"
 
+
 def test_detect_lead_type_and_subtype_b2b_operator():
     lead_data = {
         "name": "Jane Smith",
         "email": "jane.smith@example.com",
-        "message": "I am a tour operator looking for a business meeting."
+        "message": "I am a tour operator looking for a business meeting.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2B"
     assert lead_subtype == "Operator"
 
+
 def test_detect_lead_type_and_subtype_b2b_school():
     lead_data = {
         "name": "Alice Johnson",
         "email": "alice.johnson@example.com",
-        "message": "I am a teacher looking for a school trip."
+        "message": "I am a teacher looking for a school trip.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2B"
     assert lead_subtype == "School"
 
+
 def test_detect_lead_type_and_subtype_b2b_corporate():
     lead_data = {
         "name": "Bob Brown",
         "email": "bob.brown@example.com",
-        "message": "I am a corporate executive looking for a business retreat."
+        "message": "I am a corporate executive looking for a business retreat.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2B"
@@ -55,7 +58,7 @@ def test_detect_lead_type_and_subtype_b2b_influencer():
     lead_data = {
         "name": "Charlie Davis",
         "email": "charlie.davis@example.com",
-        "message": "I am a social media influencer looking for a brand partnership."
+        "message": "I am a social media influencer looking for a brand partnership.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2B"
@@ -66,7 +69,7 @@ def test_detect_lead_type_and_subtype_b2c_large_group():
     lead_data = {
         "name": "Diana Evans",
         "email": "diana.evans@example.com",
-        "message": "We are a family group of 20 people planning a private tour in China."
+        "message": "We are a family group of 20 people planning a private tour in China.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2C"
@@ -77,7 +80,7 @@ def test_detect_lead_type_and_subtype_b2c_private_custom():
     lead_data = {
         "name": "Ethan Foster",
         "email": "ethan.foster@example.com",
-        "message": "I am looking for a personalized service."
+        "message": "I am looking for a personalized service.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2C"
@@ -88,7 +91,7 @@ def test_detect_lead_type_and_subtype_b2c_luxury():
     lead_data = {
         "name": "Fiona Green",
         "email": "fiona.green@example.com",
-        "message": "I am a luxury brand looking for a high-end partnership."
+        "message": "I am a luxury brand looking for a high-end partnership.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2C"
@@ -99,17 +102,18 @@ def test_detect_lead_type_and_subtype_b2c_FIT():
     lead_data = {
         "name": "George Harris",
         "email": "george.harris@example.com",
-        "message": "I am a travel with my family."
+        "message": "I am a travel with my family.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "B2C"
     assert lead_subtype == "FIT"
 
+
 def test_detect_lead_type_and_subtype_unknown():
     lead_data = {
         "name": "Hannah Lee",
         "email": "hannah.lee@example.com",
-        "message": "random weak text with no clear type."
+        "message": "random weak text with no clear type.",
     }
     lead_type, lead_subtype = detect_lead_type_and_subtype(lead_data["message"])
     assert lead_type == "Unknown"
@@ -174,12 +178,7 @@ def test_calculate_order_value_score_low_value():
 
 
 def test_calculate_order_value_score_high_priority_over_medium():
-    assert (
-        calculate_order_value_score(
-            "We are a family looking for a luxury private tour."
-        )
-        == 25
-    )
+    assert calculate_order_value_score("We are a family looking for a luxury private tour.") == 25
 
 
 def test_calculate_information_completeness_score_full_information():
@@ -197,10 +196,7 @@ def test_calculate_information_completeness_score_full_information():
 def test_calculate_information_completeness_score_without_company_name():
     score = calculate_information_completeness_score(
         company_name="",
-        message=(
-            "We are a group of 20 people planning a private tour "
-            "to China in September."
-        ),
+        message=("We are a group of 20 people planning a private tour to China in September."),
     )
 
     assert score == 12
@@ -245,10 +241,7 @@ def test_score_lead_high_value_b2b_agency():
         name="John Doe",
         email="john@example.com",
         company_name="Spain Travel Agency",
-        message=(
-            "We want a quotation for a 20 people private tour "
-            "to China in September."
-        ),
+        message=("We want a quotation for a 20 people private tour to China in September."),
         source="Website",
     )
 
@@ -267,8 +260,7 @@ def test_score_lead_high_value_b2c_large_group():
         email="diana@example.com",
         company_name="",
         message=(
-            "We are a family group of 20 people planning a private tour "
-            "in China next October."
+            "We are a family group of 20 people planning a private tour in China next October."
         ),
         source="Website",
     )

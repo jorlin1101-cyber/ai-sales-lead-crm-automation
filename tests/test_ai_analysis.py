@@ -5,6 +5,7 @@ from lead_cleaner.schemas.ai_output import LeadAnalysisResult
 from lead_cleaner.services import ai_analysis
 from lead_cleaner.services.llm_client import LLMClientError
 
+
 def make_cleaned_lead() -> CleanedLead:
     return CleanedLead(
         lead_id="lead-123",
@@ -30,15 +31,17 @@ def make_valid_analysis_result() -> LeadAnalysisResult:
     )
 
 
-
-
 def test_analyze_lead_with_llm_returns_analysis_result(monkeypatch):
     cleaned_lead = make_cleaned_lead()
     expected_prompt = "test prompt"
     expected_result = make_valid_analysis_result()
 
-    monkeypatch.setattr(ai_analysis, "build_lead_analysis_prompt", lambda cleaned_lead: expected_prompt)
-    monkeypatch.setattr(ai_analysis, "call_openai_structured_analysis", lambda prompt:expected_result)
+    monkeypatch.setattr(
+        ai_analysis, "build_lead_analysis_prompt", lambda cleaned_lead: expected_prompt
+    )
+    monkeypatch.setattr(
+        ai_analysis, "call_openai_structured_analysis", lambda prompt: expected_result
+    )
 
     result = ai_analysis.analyze_lead_with_llm(cleaned_lead)
 
@@ -58,13 +61,14 @@ def test_analyze_lead_with_llm_passes_cleaned_lead_and_prompt(monkeypatch):
         captured["cleaned_lead"] = cleaned_lead_arg
         return expected_prompt
 
-
     def fake_call_openai_structured_analysis(prompt_arg):
         captured["prompt"] = prompt_arg
         return expected_result
 
     monkeypatch.setattr(ai_analysis, "build_lead_analysis_prompt", fake_build_lead_analysis_prompt)
-    monkeypatch.setattr(ai_analysis, "call_openai_structured_analysis", fake_call_openai_structured_analysis)
+    monkeypatch.setattr(
+        ai_analysis, "call_openai_structured_analysis", fake_call_openai_structured_analysis
+    )
 
     result = ai_analysis.analyze_lead_with_llm(cleaned_lead)
 
@@ -86,15 +90,9 @@ def test_analyze_lead_with_llm_propagates_llm_client_error(monkeypatch):
         captured["prompt"] = prompt_arg
         raise LLMClientError("fake LLM failure")
 
+    monkeypatch.setattr(ai_analysis, "build_lead_analysis_prompt", fake_build_lead_analysis_prompt)
     monkeypatch.setattr(
-        ai_analysis,
-        "build_lead_analysis_prompt",
-        fake_build_lead_analysis_prompt
-    )
-    monkeypatch.setattr(
-        ai_analysis,
-        "call_openai_structured_analysis",
-        fake_call_openai_structured_analysis
+        ai_analysis, "call_openai_structured_analysis", fake_call_openai_structured_analysis
     )
 
     with pytest.raises(LLMClientError) as error_info:
@@ -103,4 +101,3 @@ def test_analyze_lead_with_llm_propagates_llm_client_error(monkeypatch):
     assert "fake LLM failure" in str(error_info.value)
     assert captured["cleaned_lead"] == cleaned_lead
     assert captured["prompt"] == expected_prompt
-

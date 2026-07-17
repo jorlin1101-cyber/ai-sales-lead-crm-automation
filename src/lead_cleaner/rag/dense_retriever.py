@@ -11,11 +11,9 @@ class EmbeddingProvider(Protocol):
 
     model_name: str
 
-    def embed_text(self, text: str) -> list[float]:
-        ...
+    def embed_text(self, text: str) -> list[float]: ...
 
-    def embed_texts(self, texts: list[str]) -> list[list[float]]:
-        ...
+    def embed_texts(self, texts: list[str]) -> list[list[float]]: ...
 
 
 @dataclass

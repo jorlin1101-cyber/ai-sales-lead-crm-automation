@@ -2,8 +2,9 @@ from pydantic import BaseModel, Field
 
 from typing import Literal
 
+
 class LeadAnalysisResult(BaseModel):
-    lead_type : Literal["B2B","B2C","Unknown"]
+    lead_type: Literal["B2B", "B2C", "Unknown"]
     lead_subtype: Literal[
         "Agency",
         "Operator",

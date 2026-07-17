@@ -2,8 +2,14 @@ import math
 import re
 from collections import Counter
 from dataclasses import dataclass, field
+from typing import TypedDict
 
 from lead_cleaner.rag.schemas import KnowledgeChunk, RetrievedChunk
+
+
+class _ScoredChunk(TypedDict):
+    chunk: KnowledgeChunk
+    score: float
 
 
 LATIN_NUMBER_PATTERN = re.compile(r"[a-zA-Z0-9]+")
@@ -46,22 +52,20 @@ QUERY_TOKEN_EXPANSIONS = {
     "custom": ["private", "custom", "pricing", "quotation"],
     "customized": ["private", "custom", "pricing", "quotation"],
     "customised": ["private", "custom", "pricing", "quotation"],
-
     "deposit": ["payment"],
     "balance": ["payment"],
     "permit": ["permit", "faq", "payment"],
     "foreign": ["permit", "faq"],
-
     "families": ["family", "children", "suitable", "experiences", "overview"],
     "children": ["family", "children", "suitable", "experiences", "overview"],
     "child": ["family", "children", "suitable", "experiences", "overview"],
     "kids": ["family", "children", "suitable", "experiences", "overview"],
-
     "experience": ["experiences", "suitable", "product"],
     "experiences": ["experiences", "suitable", "product"],
     "arrange": ["private", "custom", "product"],
     "arranged": ["private", "custom", "product"],
 }
+
 
 def _cjk_ngrams(text: str, min_n: int = 1, max_n: int = 2) -> list[str]:
     chars = [char for char in text if "\u4e00" <= char <= "\u9fff"]
@@ -83,10 +87,7 @@ def tokenize(text: str) -> list[str]:
 
     tokens: list[str] = []
 
-    tokens.extend(
-        token.lower()
-        for token in LATIN_NUMBER_PATTERN.findall(text)
-    )
+    tokens.extend(token.lower() for token in LATIN_NUMBER_PATTERN.findall(text))
 
     for cjk_segment in CJK_PATTERN.findall(text):
         tokens.extend(_cjk_ngrams(cjk_segment))
@@ -166,25 +167,14 @@ class BM25Index:
 
 
 def build_bm25_index(chunks: list[KnowledgeChunk]) -> BM25Index:
-    tokenized_chunks = [
-        tokenize_chunk_for_bm25(chunk)
-        for chunk in chunks
-    ]
+    tokenized_chunks = [tokenize_chunk_for_bm25(chunk) for chunk in chunks]
 
-    term_frequencies = [
-        Counter(tokens)
-        for tokens in tokenized_chunks
-    ]
+    term_frequencies = [Counter(tokens) for tokens in tokenized_chunks]
 
-    document_lengths = [
-        len(tokens)
-        for tokens in tokenized_chunks
-    ]
+    document_lengths = [len(tokens) for tokens in tokenized_chunks]
 
     average_document_length = (
-        sum(document_lengths) / len(document_lengths)
-        if document_lengths
-        else 0.0
+        sum(document_lengths) / len(document_lengths) if document_lengths else 0.0
     )
 
     document_frequencies: dict[str, int] = {}
@@ -206,11 +196,7 @@ def build_bm25_index(chunks: list[KnowledgeChunk]) -> BM25Index:
 
     for token, document_frequency in document_frequencies.items():
         idf[token] = math.log(
-            1
-            + (
-                (total_documents - document_frequency + 0.5)
-                / (document_frequency + 0.5)
-            )
+            1 + ((total_documents - document_frequency + 0.5) / (document_frequency + 0.5))
         )
 
     return BM25Index(
@@ -249,9 +235,7 @@ def score_chunk(
 
         numerator = token_frequency * (index.k1 + 1)
         denominator = token_frequency + index.k1 * (
-            1
-            - index.b
-            + index.b * document_length / index.average_document_length
+            1 - index.b + index.b * document_length / index.average_document_length
         )
 
         score += token_idf * numerator / denominator
@@ -311,7 +295,7 @@ def retrieve_bm25(
         index=index,
     )
 
-    scored_chunks = []
+    scored_chunks: list[_ScoredChunk] = []
 
     for chunk_position in candidate_positions:
         chunk = index.chunks[chunk_position]

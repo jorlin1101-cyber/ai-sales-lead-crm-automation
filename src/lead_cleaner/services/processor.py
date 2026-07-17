@@ -1,8 +1,8 @@
 from lead_cleaner.schemas.lead import LeadProcessingResult, RawLeadInput
 from lead_cleaner.services.cleaning import clean_lead
-from lead_cleaner.services.scoring import score_lead
 from lead_cleaner.services.validation import validate_lead
 from lead_cleaner.services.lead_analyzer import analyze_lead
+
 
 def process_lead(raw_lead: RawLeadInput) -> LeadProcessingResult:
 

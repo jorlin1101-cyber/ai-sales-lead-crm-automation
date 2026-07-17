@@ -6,6 +6,7 @@ import pytest
 from lead_cleaner.rag.metadata_resolver import get_manifest_entry, load_manifest, resolve_metadata
 from lead_cleaner.rag.schemas import RawNotionPage, KnowledgeDocument
 
+
 def test_load_manifest_valid_data(tmp_path: Path):
     manifest_path = tmp_path / "knowledge_manifest.yml"
     manifest_path.write_text(
@@ -28,8 +29,8 @@ def test_load_manifest_valid_data(tmp_path: Path):
 
     assert "pages" in manifest
     assert isinstance(manifest["pages"], dict)
-    assert(
-         "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
+    assert (
+        "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
         in manifest["pages"]
     )
 
@@ -44,7 +45,7 @@ def test_load_manifest_raises_when_file_missing(tmp_path: Path):
 def test_load_manifest_when_top_level_is_not_dict(tmp_path: Path):
     manifest_path = tmp_path / "knowledge_manifest.yml"
     manifest_path.write_text(
-    """
+        """
 - product
 - destination
 - pricing
@@ -59,13 +60,13 @@ def test_load_manifest_when_top_level_is_not_dict(tmp_path: Path):
 def test_load_manifest_raises_when_pages_key_missing(tmp_path: Path):
     manifest_path = tmp_path / "knowledge_manifest.yml"
     manifest_path.write_text(
-    """
+        """
 documents:
   "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour":
     doc_type: product
     region: western_sichuan
 """,
-    encoding="utf-8",
+        encoding="utf-8",
     )
 
     with pytest.raises(ValueError):
@@ -80,7 +81,7 @@ pages:
   - Western Sichuan Private Tour
   - Tibet Cultural Tour
 """,
-    encoding="utf-8",
+        encoding="utf-8",
     )
 
     with pytest.raises(ValueError):
@@ -111,7 +112,9 @@ def test_get_manifest_entry_returns_entry_when_source_path_exists():
 
 def test_get_manifest_entry_raises_when_source_path_missing():
     existing_source_path = "AI Sales Knowledge Base/Products/Tibet/Tibet Cultural Tour"
-    missing_source_path = "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
+    missing_source_path = (
+        "AI Sales Knowledge Base/Products/Western Sichuan/Western Sichuan Private Tour"
+    )
     manifest = {
         "pages": {
             existing_source_path: {
@@ -215,4 +218,3 @@ def test_resolve_metadata_raises_when_doc_type_is_invalid():
     }
     with pytest.raises(ValidationError):
         resolve_metadata(raw_page, manifest)
-

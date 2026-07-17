@@ -2,6 +2,7 @@ import pytest
 from pydantic import ValidationError
 from lead_cleaner.schemas.ai_output import LeadAnalysisResult
 
+
 def test_ai_output_valid_llm_output():
     result = LeadAnalysisResult(
         lead_type="B2B",
@@ -14,15 +15,19 @@ def test_ai_output_valid_llm_output():
         analysis_method="llm",
         confidence=0.9,
     )
-    lead_type="B2B",
-    lead_subtype="Agency",
-    intent_level="High",
-    lead_score=90,
-    lead_summary="A travel agency is asking for a China tour quotation.",
-    recommended_action="Review the lead immediately and prepare a tailored follow-up.",
-    followup_email_draft="Hi John, thank you for your inquiry. We would be happy to help.",
-    analysis_method="llm",
-    confidence=0.9,
+    assert result.lead_type == "B2B"
+    assert result.lead_subtype == "Agency"
+    assert result.intent_level == "High"
+    assert result.lead_score == 90
+    assert result.lead_summary == ("A travel agency is asking for a China tour quotation.")
+    assert result.recommended_action == (
+        "Review the lead immediately and prepare a tailored follow-up."
+    )
+    assert result.followup_email_draft == (
+        "Hi John, thank you for your inquiry. We would be happy to help."
+    )
+    assert result.analysis_method == "llm"
+    assert result.confidence == 0.9
 
 
 def test_lead_analysis_result_valid_rule_fallback_output():

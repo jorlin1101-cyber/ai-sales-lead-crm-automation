@@ -35,7 +35,7 @@ class KeywordEmbeddingProvider:
                     "报价",
                     "付款",
                     "价格",
-                 ],
+                ],
             ),
             self._contains_any(
                 normalized_text,

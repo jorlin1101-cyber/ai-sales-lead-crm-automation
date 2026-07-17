@@ -3,6 +3,7 @@ from lead_cleaner.schemas.lead import CleanedLead, LeadScoreResult
 from lead_cleaner.schemas.ai_output import LeadAnalysisResult
 from lead_cleaner.services.llm_client import LLMClientError
 
+
 def make_cleaned_lead() -> CleanedLead:
     return CleanedLead(
         lead_id="lead-123",
@@ -24,17 +25,17 @@ def make_score_result() -> LeadScoreResult:
 
 
 def make_valid_llm_analysis_result() -> LeadAnalysisResult:
-        return LeadAnalysisResult(
-            lead_type="B2B",
-            lead_subtype="Agency",
-            intent_level="High",
-            lead_score=92,
-            lead_summary="LLM analysis result for a high-value agency lead.",
-            recommended_action="Prepare a tailored follow-up for human review.",
-            followup_email_draft="Thank you for your inquiry. We would be happy to discuss your China itinerary.",
-            analysis_method="llm",
-            confidence=0.9,
-        )
+    return LeadAnalysisResult(
+        lead_type="B2B",
+        lead_subtype="Agency",
+        intent_level="High",
+        lead_score=92,
+        lead_summary="LLM analysis result for a high-value agency lead.",
+        recommended_action="Prepare a tailored follow-up for human review.",
+        followup_email_draft="Thank you for your inquiry. We would be happy to discuss your China itinerary.",
+        analysis_method="llm",
+        confidence=0.9,
+    )
 
 
 def make_valid_rule_fallback_analysis_result() -> LeadAnalysisResult:
@@ -87,7 +88,7 @@ def test_build_rule_fallback_analysis_returns_valid_lead_analysis_result(monkeyp
 def test_analyze_lead_returns_llm_lead_analysis_result(monkeypatch):
     cleaned_lead = make_cleaned_lead()
     expected_llm_result = make_valid_llm_analysis_result()
-    captured={}
+    captured = {}
 
     def fake_analyze_lead_with_llm(cleaned_lead_arg):
         captured["cleaned_lead"] = cleaned_lead_arg
@@ -97,7 +98,7 @@ def test_analyze_lead_returns_llm_lead_analysis_result(monkeypatch):
         raise AssertionError("Fallback should not be called when LLM succeeds.")
 
     monkeypatch.setattr(lead_analyzer, "analyze_lead_with_llm", fake_analyze_lead_with_llm)
-    monkeypatch.setattr(lead_analyzer,"build_rule_fallback_analysis", fake_rule_fallback_analysis)
+    monkeypatch.setattr(lead_analyzer, "build_rule_fallback_analysis", fake_rule_fallback_analysis)
 
     result = lead_analyzer.analyze_lead(cleaned_lead)
 
@@ -120,7 +121,9 @@ def test_analyze_lead_returns_rule_fallback_analysis_result(monkeypatch):
         return expected_fallback_result
 
     monkeypatch.setattr(lead_analyzer, "analyze_lead_with_llm", fake_analyze_lead_with_llm)
-    monkeypatch.setattr(lead_analyzer, "build_rule_fallback_analysis", fake_build_rule_fallback_analysis)
+    monkeypatch.setattr(
+        lead_analyzer, "build_rule_fallback_analysis", fake_build_rule_fallback_analysis
+    )
 
     result = lead_analyzer.analyze_lead(cleaned_lead)
 
@@ -128,7 +131,3 @@ def test_analyze_lead_returns_rule_fallback_analysis_result(monkeypatch):
     assert result.analysis_method == "rule_fallback"
     assert captured["llm_cleaned_lead"] == cleaned_lead
     assert captured["fallback_cleaned_lead"] == cleaned_lead
-
-
-
-

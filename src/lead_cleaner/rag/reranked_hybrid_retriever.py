@@ -15,8 +15,7 @@ class Reranker(Protocol):
         query: str,
         candidates: list[RetrievedChunk],
         top_k: int = 5,
-    ) -> list[RetrievedChunk]:
-        ...
+    ) -> list[RetrievedChunk]: ...
 
 
 def retrieve_reranked_hybrid(
@@ -34,14 +33,11 @@ def retrieve_reranked_hybrid(
         raise ValueError("top_k must be greater than 0.")
 
     if rerank_candidate_top_k < top_k:
-        raise ValueError(
-            "rerank_candidate_top_k must be greater than or equal to top_k."
-        )
+        raise ValueError("rerank_candidate_top_k must be greater than or equal to top_k.")
 
     if rrf_candidate_top_k < rerank_candidate_top_k:
         raise ValueError(
-            "rrf_candidate_top_k must be greater than or equal to "
-            "rerank_candidate_top_k."
+            "rrf_candidate_top_k must be greater than or equal to rerank_candidate_top_k."
         )
 
     if not query.strip():

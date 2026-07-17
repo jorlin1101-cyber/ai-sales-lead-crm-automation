@@ -10,6 +10,7 @@ from lead_cleaner.schemas.ai_output import LeadAnalysisResult
 class LLMClientError(Exception):
     """Raised when the LLM client fails to return a valid result."""
 
+
 def get_openai_client() -> OpenAI:
     api_key = os.getenv("OPENAI_API_KEY") or os.getenv("DEEPSEEK_API_KEY")
     base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("DEEPSEEK_BASE_URL")
@@ -49,7 +50,9 @@ def parse_json_analysis_result(raw_content: str) -> LeadAnalysisResult:
         raise LLMClientError(f"LLM JSON failed schema validation: {error}") from error
 
 
-def call_deepseek_structured_analysis(client: OpenAI, model: str, prompt: str) -> LeadAnalysisResult:
+def call_deepseek_structured_analysis(
+    client: OpenAI, model: str, prompt: str
+) -> LeadAnalysisResult:
     schema = json.dumps(LeadAnalysisResult.model_json_schema(), ensure_ascii=False)
     example = json.dumps(
         {
@@ -142,6 +145,3 @@ def call_openai_structured_analysis(prompt: str) -> LeadAnalysisResult:
         raise LLMClientError("OpenAI returned empty structured output.")
 
     return parsed_result
-
-
-

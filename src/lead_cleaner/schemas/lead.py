@@ -2,6 +2,26 @@ from typing import Literal
 from pydantic import BaseModel, Field
 from lead_cleaner.schemas.ai_output import LeadAnalysisResult
 
+
+LeadType = Literal["B2B", "B2C", "Unknown"]
+
+LeadSubtype = Literal[
+    "Agency",
+    "Operator",
+    "School",
+    "Corporate",
+    "Influencer",
+    "LargeGroup",
+    "PrivateCustom",
+    "LuxuryHighBudget",
+    "FIT",
+    "Other",
+    "Unknown",
+]
+
+IntentLevel = Literal["High", "Medium", "Low", "Unknown"]
+
+
 class RawLeadInput(BaseModel):
     name: str | None = None
     email: str
@@ -30,21 +50,9 @@ class LeadValidationResult(BaseModel):
 
 
 class LeadScoreResult(BaseModel):
-    lead_type: Literal["B2B", "B2C", "Unknown"]
-    lead_subtype: Literal[
-        "Agency",
-        "Operator",
-        "School",
-        "Corporate",
-        "Influencer",
-        "LargeGroup",
-        "PrivateCustom",
-        "LuxuryHighBudget",
-        "FIT",
-        "Other",
-        "Unknown",
-     ]
-    intent_level: Literal["High", "Medium", "Low", "Unknown"]
+    lead_type: LeadType
+    lead_subtype: LeadSubtype
+    intent_level: IntentLevel
     lead_score: int = Field(ge=0, le=100)
 
 

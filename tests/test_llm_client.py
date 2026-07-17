@@ -6,7 +6,7 @@ from lead_cleaner.services.llm_client import LLMClientError
 
 
 class FakeResponse:
-    def __init__(self,output_parsed):
+    def __init__(self, output_parsed):
         self.output_parsed = output_parsed
 
 
@@ -117,9 +117,9 @@ def test_call_openai_structured_analysis_wraps_openai_error(monkeypatch):
 
     fake_client = FakeClient(responses=fake_responses)
 
-    monkeypatch.setattr(llm_client, "get_openai_client", lambda:fake_client)
+    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
 
-    monkeypatch.setattr(llm_client,"get_openai_model", lambda:"test_model")
+    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test_model")
 
     with pytest.raises(LLMClientError) as error_info:
         llm_client.call_openai_structured_analysis("test prompt")
@@ -134,7 +134,6 @@ def test_call_openai_structured_analysis_raises_error_when_output_parsed_is_none
 
     monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
     monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
-
 
     with pytest.raises(LLMClientError) as error_info:
         llm_client.call_openai_structured_analysis("test prompt")
@@ -202,4 +201,3 @@ def test_call_openai_structured_analysis_uses_deepseek_chat_completions(monkeypa
     assert fake_completions.kwargs["model"] == "deepseek-v4-flash"
     assert fake_completions.kwargs["response_format"] == {"type": "json_object"}
     assert fake_completions.kwargs["messages"][1]["content"].startswith("test prompt")
-

@@ -1,6 +1,11 @@
 import pytest
 
-from lead_cleaner.rag.dense_retriever import build_dense_search_text, cosine_similarity, build_dense_index, retrieve_dense
+from lead_cleaner.rag.dense_retriever import (
+    build_dense_search_text,
+    cosine_similarity,
+    build_dense_index,
+    retrieve_dense,
+)
 from lead_cleaner.rag.schemas import KnowledgeChunk
 
 
@@ -250,6 +255,7 @@ def test_retrieve_dense_rejects_invalid_top_k() -> None:
 
 class DifferentModelEmbeddingProvider(FakeEmbeddingProvider):
     model_name = "different-model"
+
 
 def test_retrieve_dense_rejects_embedding_model_mismatch() -> None:
     chunks = [make_chunk()]

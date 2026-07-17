@@ -139,6 +139,3 @@ def test_retrieve_hybrid_rejects_candidate_top_k_smaller_than_top_k() -> None:
         assert "candidate_top_k must be greater than or equal to top_k" in str(error)
     else:
         raise AssertionError("Expected ValueError for invalid candidate_top_k.")
-
-
-
