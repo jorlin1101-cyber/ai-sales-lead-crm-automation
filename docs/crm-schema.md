@@ -8,7 +8,7 @@
 1. 每个字段必须服务一个明确动作，例如字段校验、AI 分析、CRM 写入、人工审核、通知或日志追踪。
 2. 原始输入字段、AI 生成字段、系统状态字段、人工审核字段必须分开，不混用。
 3. 能使用固定选项的字段优先使用 Select，避免自由文本造成数据混乱。
-4. 长文本内容使用 Long Text，例如 `message`、`lead_summary`、`follow_up_email`。
+4. 长文本内容使用 Long Text，例如 `message`、`lead_summary`、`followup_email_draft`。
 5. 时间字段必须使用 Date / DateTime，不允许用 Text 或 Select。
 6. v1 只保留能跑通 MVP 闭环的字段，不追求完整企业级 CRM。
 7. Leads Table 记录一条销售线索的当前状态；Processing Log Table 记录系统每一步处理过程。
@@ -18,21 +18,25 @@
 
 | Field Name            | Field Type         | Required | Created By        | Purpose                                 | v1  |
 | --------------------- | ------------------ | -------: | ----------------- | --------------------------------------- | --- |
-| `lead_id`             | Text / ID          |      Yes | System            | 唯一识别一条 lead，方便日志和自动化追踪 | Yes |
-| `name`                | Text               |      Yes | Customer          | 识别联系人                              | Yes |
-| `email`               | Email              |      Yes | Customer          | 联系客户、生成 follow-up email          | Yes |
-| `company_name`        | Text               |       No | Customer / AI     | 识别潜在 B2B 公司或机构                 | Yes |
+| `lead_id`             | Text / ID          |      Yes | System            | 服务端生成的 lead 标识，方便日志和自动化追踪 | Yes |
+| `external_lead_id`    | Text               |       No | Customer / Adapter| 保留外部表单或工作流标识；当前不保证唯一性 | Yes |
+| `name`                | Text               |       No | Customer          | 识别联系人；缺失时允许为空              | Yes |
+| `email`               | Email              |       No | Customer          | valid lead 用于联系客户；invalid 记录允许为空 | Yes |
+| `company_name`        | Text               |       No | Customer / Adapter| 标准公司字段；不得由 AI 从 message 猜测 | Yes |
 | `message`             | Long Text          |      Yes | Customer          | 保存原始咨询内容，供 AI 分析            | Yes |
 | `source`              | Select             |      Yes | Customer / System | 记录线索来源                            | Yes |
 | `is_valid`            | Checkbox / Boolean |      Yes | System            | 判断 lead 是否通过基础字段校验          | Yes |
-| `error_reason`        | Long Text          |       No | System            | 记录无效原因，例如缺少 email            | Yes |
+| `error_codes`         | Multi-select       |      Yes | System            | 保存业务验证错误码；有效 lead 为空列表  | Yes |
 | `lead_type`           | Select             |       No | AI                | 判断 lead 是 B2B / B2C / Unknown        | Yes |
-| `b2b_category`        | Select             |       No | AI                | 判断 B2B 子类型                         | Yes |
+| `lead_subtype`        | Select             |       No | AI                | 当前分析契约中的 lead 子类型            | Yes |
 | `intent_level`        | Select             |       No | AI                | 判断跟进优先级                          | Yes |
 | `lead_score`          | Number             |       No | AI                | 量化销售优先级，范围 0-100，必须为整数            | Yes |
 | `lead_summary`        | Long Text          |       No | AI                | 用一句话总结 lead 内容                  | Yes |
 | `recommended_action`  | Long Text          |       No | AI                | 给出下一步跟进建议                      | Yes |
-| `follow_up_email`     | Long Text          |       No | AI                | 生成邮件草稿，不自动发送                | Yes |
+| `followup_email_draft`| Long Text          |       No | AI                | 生成邮件草稿，必须人工审核且不自动发送  | Yes |
+| `analysis_method`     | Select             |       No | System / AI       | 标记当前分析来自 `llm` 或 `rule_fallback` | Yes |
+| `confidence`          | Number             |       No | System / AI       | 当前分析置信度，范围 0～1               | Yes |
+| `sources`             | Long Text / JSON   |       No | API / RAG         | Day 2 为空数组；Day 5 保存脱敏来源       | Yes |
 | `ai_analysis_status`  | Select             |      Yes | System            | 记录 AI 分析业务阶段                    | Yes |
 | `crm_status`          | Select             |      Yes | System / n8n      | 记录 CRM 页面创建状态                       | Yes |
 | `notification_status` | Select             |       Yes | System / n8n      | 记录是否已通知人工审核                  | Yes |
@@ -58,13 +62,15 @@
 | Field Name            | Options                                                                                                                                                    |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `source`              | `Reddit`, `Website`, `Email`, `LinkedIn`, `Instagram`, `WeChat`, `Manual`, `Unknown`                                                                                 |
-| `lead_type`           | `B2B`, `B2C`, `Unknown`, `Spam / Low-value`                                                                                                                |
-| `b2b_category`        | `Overseas Travel Agency`, `DMC / Ground Operator`, `Corporate Client`, `Content Creator / Media`, `Local Partner`, `Other B2B`, `None`                   |
+| `error_codes`         | `empty_email`, `invalid_email_format`, `empty_message_after_cleaning`                                                                                       |
+| `lead_type`           | `B2B`, `B2C`, `Unknown`                                                                                                                                     |
+| `lead_subtype`        | `Agency`, `Operator`, `School`, `Corporate`, `Influencer`, `LargeGroup`, `PrivateCustom`, `LuxuryHighBudget`, `FIT`, `Other`, `Unknown`                    |
 | `intent_level`        | `High`, `Medium`, `Low`, `Unknown`                                                                                                                         |
 | `ai_analysis_status`  | `Not Started`, `Completed`, `Failed`, `Skipped`                                                                                                           |
 | `crm_status`          | `Not Started`, `Created`, `Failed`                                                                                                                        |
 | `notification_status` | `Not Required`, `Pending`, `Sent`, `Failed`                                                                                                                |
 | `review_status`       | `Pending Review`, `Approved`, `Rejected`, `Needs More Info`                                                                                                |
+| `analysis_method`     | `llm`, `rule_fallback`                                                                                                                                      |
 | `step_name`           | `Read Input`, `Clean Fields`, `Validate Lead`, `AI Analysis`, `AI Lead Analysis`, `CRM Mapping`, `CRM Write`, `Notion Create Lead`, `Notification`, `Logging`                 |
 | `status`              | `Success`, `Failed`, `Skipped`                                                                                                                             |
 
@@ -108,6 +114,12 @@
 | `crm_status` | `Not Started` |
 | `notification_status` | `Not Required` |
 | `review_status` | `Rejected` |
+
+Invalid lead 的 `analysis_result` 必须为 `null`，`sources` 必须为 `[]`。CRM 不应为 invalid lead 伪造 `lead_type`、`lead_score` 等分析字段。
+
+## 5.2 Adapter Boundary
+
+CRM 和 FastAPI 的标准公司字段都是 `company_name`。旧输入中的 `company` 只能由 n8n adapter 在调用 API 之前显式转换，并在发送前删除原字段。FastAPI 不执行隐式别名映射。
 
 ## 6. Deferred Fields
 

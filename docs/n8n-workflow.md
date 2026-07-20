@@ -107,11 +107,25 @@ FastAPI 返回：
 cleaned_lead
 validation_result
 analysis_result
+sources
 ```
 
 对于 valid lead，`analysis_result` 包含 lead 分析结果。
 
 对于 invalid lead，`analysis_result` 为 `null`。
+
+Day 2 阶段 `sources` 固定为空数组；Day 5 接入 RAG 后才会返回 1～3 个脱敏来源。
+
+### HTTP Request 之前的输入 adapter
+
+FastAPI 只接受标准字段 `company_name`。如果旧表单仍输出 `company`，必须在 HTTP Request 之前使用 Set 或 Code 节点显式转换：
+
+```text
+company → company_name
+删除 company
+```
+
+如果不转换，`RawLeadInput` 的 `extra="forbid"` 会让请求返回 HTTP 422。不得依赖 FastAPI 静默丢弃旧字段，也不得从 message 中猜测 `company_name`。
 
 ---
 
@@ -255,9 +269,10 @@ Invalid leads 是未通过校验的 lead。
 ```text
 邮箱格式错误
 邮箱为空
-消息为空
-缺少必填字段
+清洗后消息只剩空白
 ```
+
+缺少 `email`、缺少 `message` 或 `message=""` 属于请求结构错误，会返回 HTTP 422，应进入 API Error 分支，而不是 Invalid 分支。
 
 分支输出：
 
@@ -322,13 +337,14 @@ next_step
 
 ```text
 lead_id
+external_lead_id
 name
 email
 company_name
 message
 source
 is_valid
-error_reason
+error_codes
 lead_type
 lead_subtype
 intent_level
@@ -338,21 +354,20 @@ recommended_action
 followup_email_draft
 analysis_method
 confidence
+sources
 crm_status
 priority
 next_step
 ```
 
-Invalid leads 应该使用默认分析值：
+对于 valid lead，Prepare 节点可以展开 `analysis_result`。对于 invalid lead，必须保留：
 
 ```text
-lead_type = Unknown
-lead_subtype = Unknown
-intent_level = Unknown
-lead_score = 0
-analysis_method = none 或空值
-confidence = 0
+analysis_result = null
+sources = []
 ```
+
+不得为 invalid lead 伪造 `lead_type=Unknown`、`lead_score=0` 等分析结果。如果 CRM 使用扁平字段，这些分析字段应该写入 null 或留空。
 
 ---
 
@@ -438,10 +453,11 @@ AI Sales Leads CRM
 lead_id
 email
 is_valid
-error_reason
+error_codes
 intent_level
 lead_score
 analysis_method
+sources
 crm_status
 priority
 next_step

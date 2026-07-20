@@ -14,6 +14,12 @@ This endpoint is called by n8n or other external workflow tools. It receives one
 
 The API is designed around stable data contracts. Downstream workflow tools should rely on the response schema instead of parsing unstructured text.
 
+The design decision behind Contract V2 is recorded in:
+
+```text
+docs/adr/0001-lead-contract-v2.md
+```
+
 ---
 
 ## Endpoint
@@ -32,9 +38,12 @@ Internally, the API triggers the following processing steps:
 RawLeadInput
 → clean_lead()
 → validate_lead()
-→ analyze_lead()
+→ invalid: return without analysis
+→ valid: analyze_lead()
 → LeadProcessingResult
 ```
+
+An invalid lead does not call the analyzer and returns `analysis_result=null` and `sources=[]`.
 
 The `analyze_lead()` step uses an LLM-first strategy:
 
@@ -57,6 +66,7 @@ Example request:
 
 ```json
 {
+  "external_lead_id": "website-form-001",
   "name": "Maria Garcia",
   "email": "maria@example.com",
   "company_name": "Spain Travel Agency",
@@ -67,13 +77,39 @@ Example request:
 
 ### Request Fields
 
-| Field        |           Type | Required | Description                                  |
-| ------------ | -------------: | -------: | -------------------------------------------- |
-| name         | string or null |       No | Contact name.                                |
-| email        |         string |      Yes | Contact email.                               |
-| company_name | string or null |       No | Company or organization name.                |
-| message      |         string |      Yes | Original inquiry message. Must not be empty. |
-| source       |         string |       No | Lead source. Defaults to `Unknown`.          |
+| Field | Type | Required | Limit | Description |
+|---|---|---:|---:|---|
+| `external_lead_id` | string or null | No | 100 | Identifier supplied by an external form, workflow, or CRM. |
+| `name` | string or null | No | 200 | Contact name. |
+| `email` | string | Yes | 320 | Contact email. Format is checked during domain validation. |
+| `company_name` | string or null | No | 300 | Company or organization name. |
+| `message` | string | Yes | 1–5000 | Original inquiry message. |
+| `source` | string or null | No | 100 | Blank or null values become `Unknown` after cleaning. |
+
+Unknown fields are forbidden. For example, `company` is rejected with HTTP 422. External adapters must explicitly map it to `company_name` before calling the API.
+
+### Transport Errors and Domain-Invalid Leads
+
+| Input case | HTTP status | Result |
+|---|---:|---|
+| Missing `email` | 422 | Request-structure error |
+| `email=""` | 200 | Invalid with `empty_email` |
+| Malformed email | 200 | Invalid with `invalid_email_format` |
+| Missing `message` | 422 | Request-structure error |
+| `message=""` | 422 | Request-structure error |
+| `message="   "` | 200 | Invalid with `empty_message_after_cleaning` |
+| Unknown field such as `company` | 422 | `extra_forbidden` |
+| Message longer than 5000 characters | 422 | Request-structure error |
+
+HTTP 422 means the request does not satisfy the API structure. HTTP 200 with `is_valid=false` means the request structure is acceptable, but the lead contains business-invalid data that may still need to be recorded.
+
+---
+
+## Cleaning Rules
+
+The service generates its own `lead_id`, preserves `external_lead_id`, trims leading and trailing whitespace, converts email to lowercase, converts missing names to empty strings, and converts a blank or null source to `Unknown`.
+
+`external_lead_id` is a trace identifier. The current MVP does not claim database-level idempotency or uniqueness for it.
 
 ---
 
@@ -87,6 +123,7 @@ Example response for a valid lead:
 {
   "cleaned_lead": {
     "lead_id": "45fc3a33-ee13-4660-8dab-9fbb01fd10ea",
+    "external_lead_id": "website-form-001",
     "name": "Maria Garcia",
     "email": "maria@example.com",
     "company_name": "Spain Travel Agency",
@@ -95,7 +132,7 @@ Example response for a valid lead:
   },
   "validation_result": {
     "is_valid": true,
-    "error_reason": "valid"
+    "error_codes": []
   },
   "analysis_result": {
     "lead_type": "B2B",
@@ -105,9 +142,10 @@ Example response for a valid lead:
     "lead_summary": "Maria Garcia from Spain Travel Agency requests a quotation and itinerary for a private custom China tour for 20 people in September.",
     "recommended_action": "Review the lead and prepare a tailored response. Confirm exact travel dates, preferred destinations, budget range, and special requirements before sending a proposal.",
     "followup_email_draft": "Dear Maria,\n\nThank you for reaching out to us...",
-    "analysis_method": "llm",
-    "confidence": 0.95
-  }
+    "analysis_method": "rule_fallback",
+    "confidence": 0.55
+  },
+  "sources": []
 }
 ```
 
@@ -122,6 +160,7 @@ Example response for a valid lead:
 | Field        |   Type | Description                                     |
 | ------------ | -----: | ----------------------------------------------- |
 | lead_id      | string | Unique lead identifier generated by the system. |
+| external_lead_id | string or null | Identifier supplied by the external source. |
 | name         | string | Cleaned contact name.                           |
 | email        | string | Lowercased and trimmed email.                   |
 | company_name | string | Cleaned company name.                           |
@@ -134,19 +173,23 @@ Example response for a valid lead:
 
 `validation_result` describes whether the cleaned lead is valid for analysis.
 
-| Field        |    Type | Description                         |
-| ------------ | ------: | ----------------------------------- |
-| is_valid     | boolean | Whether the lead passed validation. |
-| error_reason |  string | Validation result reason.           |
+| Field | Type | Description |
+|---|---|---|
+| `is_valid` | boolean | Whether the lead passed domain validation. |
+| `error_codes` | array of strings | Zero or more machine-readable validation errors. |
 
-Allowed `error_reason` values:
+Allowed `error_codes` values:
 
 ```text
-valid
 empty_email
-empty_message
 invalid_email_format
+empty_message_after_cleaning
 ```
+
+Required invariants:
+
+- `is_valid=true` requires `error_codes=[]`.
+- `is_valid=false` requires at least one error code.
 
 ---
 
@@ -213,6 +256,23 @@ llm
 rule_fallback
 ```
 
+The current analysis contract will be refactored in later stages so the LLM cannot directly control final business scoring. This document does not claim that work is already complete.
+
+---
+
+### sources
+
+`sources` is always present as an array. Each future source will use:
+
+| Field | Type | Description |
+|---|---|---|
+| `chunk_id` | string | Public knowledge chunk identifier. |
+| `source_title` | string | Sanitized source title. |
+| `section` | string | Sanitized section name. |
+| `rank` | integer | Retrieval rank from 1 to 3. |
+
+At the current Day 2 stage, RAG has not yet been connected to `/process-lead`, so `sources` is an empty list. Real sanitized Top 3 sources are a Day 5 task.
+
 ---
 
 ## Invalid Lead Behavior
@@ -225,6 +285,7 @@ Example response:
 {
   "cleaned_lead": {
     "lead_id": "12345",
+    "external_lead_id": "website-form-invalid-001",
     "name": "Bad Lead",
     "email": "invalid-email",
     "company_name": "Example Corp",
@@ -233,13 +294,16 @@ Example response:
   },
   "validation_result": {
     "is_valid": false,
-    "error_reason": "invalid_email_format"
+    "error_codes": [
+      "invalid_email_format"
+    ]
   },
-  "analysis_result": null
+  "analysis_result": null,
+  "sources": []
 }
 ```
 
-Invalid leads should not enter LLM analysis or intent-level routing.
+Invalid leads must not enter analyzer, LLM, RAG, recommendation, or intent-level routing.
 
 In n8n, invalid leads should be routed before accessing:
 
@@ -306,6 +370,14 @@ IF validation_result.is_valid == true
    → Low
 ```
 
+Legacy input mapping must be explicit:
+
+```text
+company → company_name
+```
+
+The FastAPI contract does not silently perform this mapping.
+
 Notion CRM should write from the standardized n8n fields generated after routing and preparation.
 
 ---
@@ -329,6 +401,5 @@ LeadProcessingResult
 
 This keeps the workflow stable even if internal implementation details change.
 
-```
-```
+The response contains cleaned email and message data, so the endpoint is currently intended for internal workflow use. Logs, reports, screenshots, and public examples must use sanitized data.
 

@@ -65,3 +65,27 @@ def test_clean_lead_generates_lead_id():
 
     assert cleaned_lead.lead_id
     assert isinstance(cleaned_lead.lead_id, str)
+
+
+def test_clean_lead_preserves_external_lead_id():
+    raw_lead = RawLeadInput(
+        external_lead_id="website-form-001",
+        email="john@example.com",
+        message="I need a private tour.",
+    )
+
+    cleaned_lead = clean_lead(raw_lead)
+
+    assert cleaned_lead.external_lead_id == "website-form-001"
+
+
+def test_clean_lead_converts_none_source_to_unknown():
+    raw_lead = RawLeadInput(
+        email="john@example.com",
+        message="I need a private tour.",
+        source=None,
+    )
+
+    cleaned_lead = clean_lead(raw_lead)
+
+    assert cleaned_lead.source == "Unknown"

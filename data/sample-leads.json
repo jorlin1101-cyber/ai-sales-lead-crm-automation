@@ -1,30 +1,36 @@
 [
   {
+    "external_lead_id": "sample-lead-001",
     "name": "Tom Wilson",
     "email": "tom.wilson@example.com",
     "message": "Hi, I will visit Chengdu next month with my girlfriend. We are interested in a private panda and local food tour.",
     "source": "Reddit"
   },
   {
+    "external_lead_id": "sample-lead-002",
     "name": "Sarah Lee",
     "email": " sarah.lee@example.com ",
     "message": "Do you provide English-speaking guides for a one-day Chengdu city tour?",
     "source": "Website"
   },
   {
+    "external_lead_id": "sample-lead-003",
     "name": " Mike Brown ",
     "email": "mike.brown@example.com",
     "message": "  I am just checking prices for now.  ",
     "source": "Instagram"
   },
   {
+    "external_lead_id": "sample-lead-004",
     "name": " jorlin ",
     "email": "jorlin@example.com",
     "message": "I am "
   },
   {
+    "external_lead_id": "sample-lead-005",
     "name": "Amily",
-    "message": "  I am just checking prices for now.  ",
+    "email": "",
+    "message": "I am just checking prices for now.",
     "source": "Instagram"
   }
 ]

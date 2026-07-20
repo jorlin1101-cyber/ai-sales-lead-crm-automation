@@ -8,9 +8,10 @@ def clean_lead(raw_lead: RawLeadInput) -> CleanedLead:
     email = raw_lead.email.strip().lower()
     company_name = (raw_lead.company_name or "").strip()
     message = raw_lead.message.strip()
-    source = raw_lead.source.strip() or "Unknown"
+    source = (raw_lead.source or "").strip() or "Unknown"
     return CleanedLead(
         lead_id=lead_id,
+        external_lead_id=raw_lead.external_lead_id,
         name=name,
         email=email,
         company_name=company_name,

@@ -13,7 +13,7 @@ def test_validate_lead_empty_email():
     )
     validation_result = validate_lead(cleaned_lead)
     assert validation_result.is_valid is False
-    assert validation_result.error_reason == "empty_email"
+    assert validation_result.error_codes == ["empty_email"]
 
 
 def test_validate_lead_invalid_email_format():
@@ -27,7 +27,7 @@ def test_validate_lead_invalid_email_format():
     )
     validation_result = validate_lead(cleaned_lead)
     assert validation_result.is_valid is False
-    assert validation_result.error_reason == "invalid_email_format"
+    assert validation_result.error_codes == ["invalid_email_format"]
 
 
 def test_validate_lead_empty_message():
@@ -41,7 +41,7 @@ def test_validate_lead_empty_message():
     )
     validation_result = validate_lead(cleaned_lead)
     assert validation_result.is_valid is False
-    assert validation_result.error_reason == "empty_message"
+    assert validation_result.error_codes == ["empty_message_after_cleaning"]
 
 
 def test_validate_lead_valid_lead():
@@ -55,4 +55,23 @@ def test_validate_lead_valid_lead():
     )
     validation_result = validate_lead(cleaned_lead)
     assert validation_result.is_valid is True
-    assert validation_result.error_reason == "valid"
+    assert validation_result.error_codes == []
+
+
+def test_validate_lead_collects_multiple_error_codes():
+    cleaned_lead = CleanedLead(
+        lead_id="12345",
+        name="John Doe",
+        email="invalid-email-format",
+        company_name="Example Corp",
+        message="",
+        source="Website",
+    )
+
+    validation_result = validate_lead(cleaned_lead)
+
+    assert validation_result.is_valid is False
+    assert validation_result.error_codes == [
+        "invalid_email_format",
+        "empty_message_after_cleaning",
+    ]

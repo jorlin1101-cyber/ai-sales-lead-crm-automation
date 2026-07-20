@@ -15,11 +15,12 @@ def test_process_lead_valid_lead_returns_score_result():
 
     assert result.cleaned_lead.email == "john@example.com"
     assert result.validation_result.is_valid is True
-    assert result.validation_result.error_reason == "valid"
+    assert result.validation_result.error_codes == []
     assert result.analysis_result is not None
     assert result.analysis_result.lead_type == "B2B"
     assert result.analysis_result.lead_subtype == "Agency"
     assert result.analysis_result.intent_level == "High"
+    assert result.sources == []
 
 
 def test_process_lead_invalid_lead_skips_scoring():
@@ -35,5 +36,6 @@ def test_process_lead_invalid_lead_skips_scoring():
 
     assert result.cleaned_lead.email == "invalid-email"
     assert result.validation_result.is_valid is False
-    assert result.validation_result.error_reason == "invalid_email_format"
+    assert result.validation_result.error_codes == ["invalid_email_format"]
     assert result.analysis_result is None
+    assert result.sources == []

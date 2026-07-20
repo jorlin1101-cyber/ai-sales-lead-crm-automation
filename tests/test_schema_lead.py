@@ -73,6 +73,41 @@ def test_raw_lead_input_empty_message():
         )
 
 
+def test_raw_lead_input_preserves_external_lead_id():
+    lead = RawLeadInput(
+        external_lead_id="website-form-001",
+        email="john@example.com",
+        message="I need a private tour.",
+    )
+
+    assert lead.external_lead_id == "website-form-001"
+
+
+def test_raw_lead_input_rejects_unknown_company_field():
+    payload = {
+        "email": "john@example.com",
+        "message": "I need a private tour.",
+        "company": "ABC Travel",
+    }
+
+    with pytest.raises(ValidationError) as exc_info:
+        RawLeadInput.model_validate(payload)
+
+    errors = exc_info.value.errors()
+
+    assert any(
+        error["type"] == "extra_forbidden" and error["loc"] == ("company",) for error in errors
+    )
+
+
+def test_raw_lead_input_rejects_message_over_max_length():
+    with pytest.raises(ValidationError):
+        RawLeadInput(
+            email="john@example.com",
+            message="x" * 5001,
+        )
+
+
 def test_cleaned_lead_valid_data():
     lead = CleanedLead(
         lead_id="12345",
@@ -105,36 +140,45 @@ def test_cleaned_lead_missing_lead_id():
 def test_lead_validation_result_valid_data():
     result = LeadValidationResult(
         is_valid=True,
-        error_reason="valid",
     )
 
     assert result.is_valid is True
-    assert result.error_reason == "valid"
+    assert result.error_codes == []
 
 
-def test_lead_validation_result_missing_error_reason():
+def test_lead_validation_result_invalid_requires_error_code():
     with pytest.raises(ValidationError):
         LeadValidationResult(
             is_valid=False,
         )
 
 
-def test_lead_validation_result_invalid_error_reason():
+def test_lead_validation_result_rejects_unknown_error_code():
+    payload = {
+        "is_valid": False,
+        "error_codes": ["some_invalid_reason"],
+    }
+
     with pytest.raises(ValidationError):
-        LeadValidationResult(
-            is_valid=False,
-            error_reason="some_invalid_reason",
-        )
+        LeadValidationResult.model_validate(payload)
 
 
-def test_lead_validation_result_empty_email_reason():
+def test_lead_validation_result_accepts_empty_email_error():
     result = LeadValidationResult(
         is_valid=False,
-        error_reason="empty_email",
+        error_codes=["empty_email"],
     )
 
     assert result.is_valid is False
-    assert result.error_reason == "empty_email"
+    assert result.error_codes == ["empty_email"]
+
+
+def test_lead_validation_result_valid_cannot_have_error_codes():
+    with pytest.raises(ValidationError):
+        LeadValidationResult(
+            is_valid=True,
+            error_codes=["empty_email"],
+        )
 
 
 def test_lead_score_result_valid_data():
@@ -268,7 +312,6 @@ def test_lead_processing_result_with_analysis_result():
 
     validation_result = LeadValidationResult(
         is_valid=True,
-        error_reason="valid",
     )
 
     analysis_result = make_valid_analysis_result()
@@ -284,6 +327,7 @@ def test_lead_processing_result_with_analysis_result():
     assert result.analysis_result is not None
     assert result.analysis_result.lead_subtype == "Agency"
     assert result.analysis_result.analysis_method == "llm"
+    assert result.sources == []
 
 
 def test_lead_processing_result_without_analysis_result():
@@ -298,7 +342,7 @@ def test_lead_processing_result_without_analysis_result():
 
     validation_result = LeadValidationResult(
         is_valid=False,
-        error_reason="invalid_email_format",
+        error_codes=["invalid_email_format"],
     )
 
     result = LeadProcessingResult(
@@ -308,3 +352,4 @@ def test_lead_processing_result_without_analysis_result():
 
     assert result.validation_result.is_valid is False
     assert result.analysis_result is None
+    assert result.sources == []

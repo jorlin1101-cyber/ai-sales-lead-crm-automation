@@ -21,29 +21,53 @@
 
 ## 2. Lead Field Mapping
 
-| CRM Field             | Source Step            | Source Field                              | Transformation Rule                                      | Required |
-| --------------------- | ---------------------- | ----------------------------------------- | -------------------------------------------------------- | -------- |
-| `lead_id`             | Python / System        | generated                                 | 生成唯一 ID，用于追踪 lead                               | Yes      |
-| `name`                | Raw Lead JSON          | `name`                                    | 去除前后空格                                             | Yes      |
-| `email`               | Raw Lead JSON          | `email`                                   | 去除前后空格，并转换为小写                               | Yes      |
-| `company_name`        | Raw Lead JSON / AI     | `company_name` or inferred from `message` | 可选字段；未知时留空                                     | No       |
-| `message`             | Raw Lead JSON          | `message`                                 | 去除前后空格，保留客户原始表达                           | Yes      |
-| `source`              | Raw Lead JSON          | `source`                                  | 缺失时设置为 `Unknown`                                   | Yes      |
-| `is_valid`            | Python Validation      | validation result                         | 根据必填字段是否完整生成 Boolean 值                      | Yes      |
-| `error_reason`        | Python Validation      | validation error                          | 有效 lead 为空；无效 lead 记录失败原因                   | No       |
-| `lead_type`           | AI Analysis            | `lead_type`                               | 必须匹配 Select Options，例如 `B2B` / `B2C` / `Unknown`  | No       |
-| `b2b_category`        | AI Analysis            | `b2b_category`                            | 必须匹配 Select Options                                  | No       |
-| `intent_level`        | AI Analysis            | `intent_level`                            | 必须匹配 Select Options，例如 `High` / `Medium` / `Low`  | No       |
-| `lead_score`          | AI Analysis            | `lead_score`                              | 数值必须在 0-100 之间                                    | No       |
-| `lead_summary`        | AI Analysis            | `lead_summary`                            | 长文本，简短总结 lead 内容                               | No       |
-| `recommended_action`  | AI Analysis            | `recommended_action`                      | 长文本，说明建议下一步动作                               | No       |
-| `follow_up_email`     | AI Analysis            | `follow_up_email`                         | 长文本，只作为邮件草稿，不自动发送                       | No       |
-| `ai_analysis_status`  | n8n / System           | AI node result                            | 根据 AI 节点结果设置为 `Success`、`Failed` 或 `Skipped`  | Yes      |
-| `crm_status`          | n8n / System           | CRM write result                          | 根据 CRM 写入结果设置为 `Success`、`Failed` 或 `Skipped` | Yes      |
-| `notification_status` | n8n / System           | notification result                       | 根据通知结果设置为 `Sent`、`Failed` 或 `Not Required`    | No       |
-| `review_status`       | Human / System         | review result                             | 默认设置为 `Pending Review`                              | Yes      |
-| `received_at`         | Raw Lead JSON / System | `received_at` or current time             | 使用 lead 原始创建时间；没有则用系统当前时间             | No       |
-| `processed_at`        | System                 | current time                              | 使用系统处理完成时间                                     | No       |
+| CRM Field             | Source Step            | Source Field                            | Transformation Rule                                               | Required |
+| --------------------- | ---------------------- | --------------------------------------- | ----------------------------------------------------------------- | -------- |
+| `lead_id`             | Python / System        | `cleaned_lead.lead_id`                  | 由服务端生成，用于追踪 lead                                      | Yes      |
+| `external_lead_id`    | Raw Lead JSON          | `cleaned_lead.external_lead_id`         | 原样保留外部标识；当前不把它声明为唯一键或幂等保证                | No       |
+| `name`                | Raw Lead JSON          | `cleaned_lead.name`                     | 去除前后空格；缺失时保存空字符串                                  | No       |
+| `email`               | Raw Lead JSON          | `cleaned_lead.email`                    | 去除前后空格并转换为小写；业务 invalid 时允许为空                 | No       |
+| `company_name`        | Raw Lead JSON / Adapter| `cleaned_lead.company_name`             | 只接收标准字段；不得由 AI 从 message 猜测                          | No       |
+| `message`             | Raw Lead JSON          | `cleaned_lead.message`                  | 去除前后空格，保留客户表达                                        | Yes      |
+| `source`              | Raw Lead JSON          | `cleaned_lead.source`                   | 缺失、null、空字符串或纯空白时设置为 `Unknown`                    | Yes      |
+| `is_valid`            | Python Validation      | `validation_result.is_valid`            | 保存业务验证结果 Boolean                                         | Yes      |
+| `error_codes`         | Python Validation      | `validation_result.error_codes`         | 保存零个或多个机器可读错误码；有效 lead 必须为空列表              | Yes      |
+| `lead_type`           | Current Analysis       | `analysis_result.lead_type`             | valid lead 才有值；必须为 `B2B`、`B2C` 或 `Unknown`               | No       |
+| `lead_subtype`        | Current Analysis       | `analysis_result.lead_subtype`          | valid lead 才有值；必须匹配当前 API 枚举                           | No       |
+| `intent_level`        | Current Analysis       | `analysis_result.intent_level`          | valid lead 才有值；必须为 `High`、`Medium`、`Low` 或 `Unknown`     | No       |
+| `lead_score`          | Current Analysis       | `analysis_result.lead_score`            | valid lead 才有值；整数必须在 0～100 之间                          | No       |
+| `lead_summary`        | Current Analysis       | `analysis_result.lead_summary`          | valid lead 的简短总结                                             | No       |
+| `recommended_action`  | Current Analysis       | `analysis_result.recommended_action`    | valid lead 的建议动作                                             | No       |
+| `followup_email_draft`| Current Analysis       | `analysis_result.followup_email_draft`  | 只作为邮件草稿供人工审核，不自动发送                              | No       |
+| `analysis_method`     | Current Analysis       | `analysis_result.analysis_method`       | 当前为 `llm` 或 `rule_fallback`；Day 3 后按新 provenance 契约更新 | No       |
+| `confidence`          | Current Analysis       | `analysis_result.confidence`            | 当前分析置信度，范围 0～1                                         | No       |
+| `sources`             | API / RAG              | `sources`                               | 保存来源数组；Day 2 固定为空，Day 5 接入脱敏 Top 1～3 来源        | No       |
+| `ai_analysis_status`  | n8n / System           | API processing result                   | valid 分析成功后为 `Completed`；invalid 为 `Skipped`              | Yes      |
+| `crm_status`          | n8n / System           | CRM write result                        | 根据 CRM 写入结果设置状态                                         | Yes      |
+| `notification_status` | n8n / System           | notification result                     | 根据通知结果设置为 `Sent`、`Failed` 或 `Not Required`             | No       |
+| `review_status`       | Human / System         | review result                           | 默认设置为 `Pending Review`                                       | Yes      |
+| `received_at`         | Raw Lead JSON / System | `received_at` or current time           | 使用原始创建时间；没有则使用系统当前时间                           | No       |
+| `processed_at`        | System                 | current time                            | 使用系统处理完成时间                                               | No       |
+
+### 2.1 外部字段适配规则
+
+FastAPI 只接受 `company_name`。如果旧表单或旧工作流发送 `company`，n8n 必须在 HTTP Request 节点之前明确转换：
+
+```text
+company → company_name
+删除 company
+```
+
+不得同时保留 `company` 并依赖 API 静默忽略，因为 `RawLeadInput` 已设置 `extra="forbid"`，这种请求会返回 HTTP 422。
+
+### 2.2 invalid lead 映射规则
+
+当 `validation_result.is_valid=false` 时：
+
+- `error_codes` 至少包含一个错误码；
+- `analysis_result` 为 `null`；
+- `sources` 为空列表；
+- n8n 不得读取或伪造 `lead_type`、`lead_score` 等分析字段。
 
 ## 3. Processing Log Field Mapping
 
