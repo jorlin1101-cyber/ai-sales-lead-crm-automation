@@ -1,8 +1,9 @@
 from fastapi.testclient import TestClient
 
 from lead_cleaner.api.main import app
-from lead_cleaner.schemas.ai_output import LeadAnalysisResult
+from lead_cleaner.schemas.policy import LeadFeatures, SecuritySignals
 from lead_cleaner.services import processor
+from lead_cleaner.services.lead_analyzer import build_policy_analysis
 
 client = TestClient(app)
 
@@ -16,16 +17,17 @@ def test_health_check():
 
 def test_process_lead_valid_lead(monkeypatch):
     def fake_analyze_lead(cleaned_lead):
-        return LeadAnalysisResult(
-            lead_type="B2B",
-            lead_subtype="Agency",
-            intent_level="High",
-            lead_score=88,
-            lead_summary="A high-value agency lead asking for a private China tour.",
-            recommended_action="Review the lead and prepare a tailored follow-up.",
-            followup_email_draft="Thank you for your inquiry. We would be happy to discuss your China itinerary.",
-            analysis_method="rule_fallback",
-            confidence=0.55,
+        return build_policy_analysis(
+            LeadFeatures(
+                customer_kind="agency",
+                group_size=20,
+                asks_for_price=True,
+                requests_private_or_custom_service=True,
+                company_name_present=True,
+                cleaned_message_length=len(cleaned_lead.message),
+            ),
+            SecuritySignals(),
+            "rule_features",
         )
 
     monkeypatch.setattr(
@@ -54,10 +56,16 @@ def test_process_lead_valid_lead(monkeypatch):
     assert data["validation_result"]["is_valid"] is True
     assert data["validation_result"]["error_codes"] == []
     assert data["analysis_result"] is not None
-    assert data["analysis_result"]["lead_type"] == "B2B"
-    assert data["analysis_result"]["lead_subtype"] == "Agency"
-    assert data["analysis_result"]["intent_level"] == "High"
-    assert data["analysis_result"]["analysis_method"] == "rule_fallback"
+    assert data["analysis_result"]["features"]["customer_kind"] == "agency"
+    assert data["analysis_result"]["decision"]["lead_type"] == "B2B"
+    assert data["analysis_result"]["decision"]["lead_subtype"] == "Agency"
+    assert data["analysis_result"]["decision"]["intent_level"] == "High"
+    assert data["analysis_result"]["metadata"]["analysis_method"] == "rule_features"
+    assert data["analysis_result"]["security_signals"] == {
+        "injection_suspected": False,
+        "matched_pattern_codes": [],
+        "knowledge_injection_suspected": False,
+    }
     assert data["sources"] == []
 
 
@@ -194,6 +202,31 @@ def test_openapi_schema_matches_lead_contract_v2():
 
     assert "sources" in processing_properties
     assert processing_properties["sources"]["type"] == "array"
+
+    analysis_properties = schemas["LeadAnalysisResult"]["properties"]
+
+    assert set(analysis_properties) == {
+        "features",
+        "security_signals",
+        "decision",
+        "lead_summary",
+        "recommended_action",
+        "followup_email_draft",
+        "metadata",
+    }
+    assert "lead_score" not in analysis_properties
+    assert "analysis_method" not in analysis_properties
+
+    metadata_properties = schemas["AnalysisMetadata"]["properties"]
+
+    assert "analysis_method" in metadata_properties
+    assert "fallback_reason" in metadata_properties
+
+    decision_properties = schemas["LeadDecision"]["properties"]
+
+    assert "lead_score" in decision_properties
+    assert "score_breakdown" in decision_properties
+    assert "policy_version" in decision_properties
 
     source_properties = schemas["KnowledgeSource"]["properties"]
 

@@ -4,7 +4,7 @@ import os
 from openai import OpenAI
 from pydantic import ValidationError
 
-from lead_cleaner.schemas.ai_output import LeadAnalysisResult
+from lead_cleaner.schemas.policy import ExtractedLeadFeatures
 
 
 class LLMClientError(Exception):
@@ -38,33 +38,41 @@ def is_deepseek_configured(model: str) -> bool:
     return "deepseek" in base_url.lower() or model.lower().startswith("deepseek-")
 
 
-def parse_json_analysis_result(raw_content: str) -> LeadAnalysisResult:
+def parse_json_extracted_features(raw_content: str) -> ExtractedLeadFeatures:
+    """Parse provider JSON into the restricted feature-extraction contract."""
+
     try:
         data = json.loads(raw_content)
     except json.JSONDecodeError as error:
-        raise LLMClientError(f"LLM returned invalid JSON: {error}") from error
+        raise LLMClientError(f"LLM returned invalid feature JSON: {error}") from error
 
     try:
-        return LeadAnalysisResult.model_validate(data)
+        return ExtractedLeadFeatures.model_validate(data)
     except ValidationError as error:
-        raise LLMClientError(f"LLM JSON failed schema validation: {error}") from error
+        raise LLMClientError(f"LLM feature JSON failed schema validation: {error}") from error
 
 
-def call_deepseek_structured_analysis(
-    client: OpenAI, model: str, prompt: str
-) -> LeadAnalysisResult:
-    schema = json.dumps(LeadAnalysisResult.model_json_schema(), ensure_ascii=False)
+def call_deepseek_structured_feature_extraction(
+    client: OpenAI,
+    model: str,
+    system_prompt: str,
+    user_prompt: str,
+) -> ExtractedLeadFeatures:
+    """Request constrained lead features through DeepSeek JSON mode."""
+
+    schema = json.dumps(ExtractedLeadFeatures.model_json_schema(), ensure_ascii=False)
     example = json.dumps(
         {
-            "lead_type": "B2B",
-            "lead_subtype": "Agency",
-            "intent_level": "High",
-            "lead_score": 88,
-            "lead_summary": "A travel agency lead is asking for a custom China itinerary for a 20-person group.",
-            "recommended_action": "Review the lead and prepare a tailored follow-up asking for missing trip details.",
-            "followup_email_draft": "Thank you for your inquiry. We would be happy to help plan your China itinerary.",
-            "analysis_method": "llm",
-            "confidence": 0.9,
+            "customer_kind": "agency",
+            "group_size": 20,
+            "mentions_specific_dates": True,
+            "asks_for_price": True,
+            "asks_for_availability": False,
+            "requests_private_or_custom_service": True,
+            "requests_partnership": False,
+            "contains_spam_or_promotion": False,
+            "destinations": ["Sichuan"],
+            "language": "en",
         },
         ensure_ascii=False,
     )
@@ -73,18 +81,11 @@ def call_deepseek_structured_analysis(
         response = client.chat.completions.create(
             model=model,
             messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an AI sales lead analyst. Return only one valid JSON object. "
-                        "Do not use Markdown or code fences. Use enum values exactly as provided. "
-                        "Use numbers for lead_score and confidence."
-                    ),
-                },
+                {"role": "system", "content": system_prompt},
                 {
                     "role": "user",
                     "content": (
-                        f"{prompt}\n\n"
+                        f"{user_prompt}\n\n"
                         "Return JSON that validates against this JSON Schema:\n"
                         f"{schema}\n\n"
                         "Example of the exact shape and value style:\n"
@@ -95,53 +96,54 @@ def call_deepseek_structured_analysis(
             ],
             response_format={"type": "json_object"},
             temperature=0,
-            max_tokens=1200,
+            max_tokens=800,
         )
     except Exception as error:
-        raise LLMClientError(f"DeepSeek structured analysis failed: {error}") from error
+        raise LLMClientError(f"DeepSeek structured feature extraction failed: {error}") from error
 
-    raw_content = response.choices[0].message.content if response.choices else None
+    choices = getattr(response, "choices", None)
+    raw_content = choices[0].message.content if choices else None
 
     if not raw_content:
-        raise LLMClientError("DeepSeek returned empty structured output.")
+        raise LLMClientError("DeepSeek returned empty structured feature output.")
 
-    return parse_json_analysis_result(raw_content)
+    return parse_json_extracted_features(raw_content)
 
 
-def call_openai_structured_analysis(prompt: str) -> LeadAnalysisResult:
-    """
-    Call the configured LLM and return a LeadAnalysisResult.
+def call_openai_structured_feature_extraction(
+    system_prompt: str,
+    user_prompt: str,
+) -> ExtractedLeadFeatures:
+    """Call the configured provider and return only constrained lead features."""
 
-    This function only handles the LLM API call.
-    Business fallback logic should not be placed here.
-    """
     client = get_openai_client()
     model = get_openai_model()
 
     if is_deepseek_configured(model):
-        return call_deepseek_structured_analysis(client, model, prompt)
+        return call_deepseek_structured_feature_extraction(
+            client=client,
+            model=model,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+        )
 
     try:
         response = client.responses.parse(
             model=model,
             input=[
-                {
-                    "role": "system",
-                    "content": "You are an AI sales lead analyst. Return only structured output.",
-                },
-                {
-                    "role": "user",
-                    "content": prompt,
-                },
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
             ],
-            text_format=LeadAnalysisResult,
+            text_format=ExtractedLeadFeatures,
         )
     except Exception as error:
-        raise LLMClientError(f"OpenAI structured analysis failed: {error}") from error
+        raise LLMClientError(f"OpenAI structured feature extraction failed: {error}") from error
 
     parsed_result = response.output_parsed
+    if parsed_result is None:
+        raise LLMClientError("OpenAI returned empty structured feature output.")
 
-    if not parsed_result:
-        raise LLMClientError("OpenAI returned empty structured output.")
-
-    return parsed_result
+    try:
+        return ExtractedLeadFeatures.model_validate(parsed_result)
+    except ValidationError as error:
+        raise LLMClientError(f"OpenAI feature output failed schema validation: {error}") from error

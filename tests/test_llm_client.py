@@ -1,6 +1,8 @@
+import json
+
 import pytest
 
-from lead_cleaner.schemas.ai_output import LeadAnalysisResult
+from lead_cleaner.schemas.policy import ExtractedLeadFeatures
 from lead_cleaner.services import llm_client
 from lead_cleaner.services.llm_client import LLMClientError
 
@@ -14,8 +16,11 @@ class FakeResponses:
     def __init__(self, response=None, error=None):
         self.response = response
         self.error = error
+        self.kwargs = None
 
     def parse(self, **kwargs):
+        self.kwargs = kwargs
+
         if self.error:
             raise self.error
 
@@ -67,17 +72,15 @@ class FakeDeepSeekClient:
         self.chat = FakeChat(completions)
 
 
-def make_valid_analysis_result() -> LeadAnalysisResult:
-    return LeadAnalysisResult(
-        lead_type="B2B",
-        lead_subtype="Agency",
-        intent_level="High",
-        lead_score=88,
-        lead_summary="A high-value travel agency lead asking for a China itinerary.",
-        recommended_action="Review the lead and prepare a tailored follow-up.",
-        followup_email_draft="Thank you for your inquiry. We would be happy to learn more about your group.",
-        analysis_method="llm",
-        confidence=0.9,
+def make_valid_extracted_features() -> ExtractedLeadFeatures:
+    return ExtractedLeadFeatures(
+        customer_kind="agency",
+        group_size=20,
+        mentions_specific_dates=True,
+        asks_for_price=True,
+        requests_private_or_custom_service=True,
+        destinations=["Sichuan"],
+        language="en",
     )
 
 
@@ -112,51 +115,6 @@ def test_get_openai_model_returns_deepseek_model(monkeypatch):
     assert model == "deepseek-v4-flash"
 
 
-def test_call_openai_structured_analysis_wraps_openai_error(monkeypatch):
-    fake_responses = FakeResponses(error=RuntimeError("fake OpenAI error"))
-
-    fake_client = FakeClient(responses=fake_responses)
-
-    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
-
-    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test_model")
-
-    with pytest.raises(LLMClientError) as error_info:
-        llm_client.call_openai_structured_analysis("test prompt")
-
-    assert "OpenAI structured analysis failed" in str(error_info.value)
-
-
-def test_call_openai_structured_analysis_raises_error_when_output_parsed_is_none(monkeypatch):
-    fake_response = FakeResponse(output_parsed=None)
-    fake_responses = FakeResponses(response=fake_response)
-    fake_client = FakeClient(responses=fake_responses)
-
-    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
-    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
-
-    with pytest.raises(LLMClientError) as error_info:
-        llm_client.call_openai_structured_analysis("test prompt")
-    assert "OpenAI returned empty structured output." in str(error_info.value)
-
-
-def test_call_openai_structured_analysis_returns_parsed_result(monkeypatch):
-    expected_result = make_valid_analysis_result()
-    fake_response = FakeResponse(output_parsed=expected_result)
-    fake_responses = FakeResponses(response=fake_response)
-    fake_client = FakeClient(responses=fake_responses)
-
-    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
-    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
-
-    result = llm_client.call_openai_structured_analysis("test prompt")
-
-    assert isinstance(result, LeadAnalysisResult)
-    assert result == expected_result
-    assert result.lead_type == "B2B"
-    assert result.analysis_method == "llm"
-
-
 def test_is_deepseek_configured_from_base_url(monkeypatch):
     monkeypatch.setenv("OPENAI_BASE_URL", "https://api.deepseek.com")
 
@@ -170,34 +128,133 @@ def test_is_deepseek_configured_from_model(monkeypatch):
     assert llm_client.is_deepseek_configured("deepseek-v4-flash") is True
 
 
-def test_parse_json_analysis_result_returns_model():
-    expected_result = make_valid_analysis_result()
+def test_parse_json_extracted_features_returns_restricted_model():
+    expected_features = make_valid_extracted_features()
 
-    result = llm_client.parse_json_analysis_result(expected_result.model_dump_json())
+    result = llm_client.parse_json_extracted_features(expected_features.model_dump_json())
 
-    assert result == expected_result
-
-
-def test_parse_json_analysis_result_rejects_invalid_json():
-    with pytest.raises(LLMClientError) as error_info:
-        llm_client.parse_json_analysis_result("not json")
-
-    assert "invalid JSON" in str(error_info.value)
+    assert isinstance(result, ExtractedLeadFeatures)
+    assert result == expected_features
 
 
-def test_call_openai_structured_analysis_uses_deepseek_chat_completions(monkeypatch):
-    expected_result = make_valid_analysis_result()
+def test_parse_json_extracted_features_rejects_invalid_json():
+    with pytest.raises(LLMClientError, match="invalid feature JSON"):
+        llm_client.parse_json_extracted_features("not json")
+
+
+@pytest.mark.parametrize(
+    ("field_name", "field_value"),
+    [
+        ("lead_score", 100),
+        ("intent_level", "High"),
+        ("disposition", "qualified"),
+        ("company_name_present", True),
+    ],
+)
+def test_parse_json_extracted_features_rejects_forbidden_fields(
+    field_name,
+    field_value,
+):
+    payload = make_valid_extracted_features().model_dump()
+    payload[field_name] = field_value
+
+    with pytest.raises(LLMClientError, match="failed schema validation"):
+        llm_client.parse_json_extracted_features(json.dumps(payload))
+
+
+def test_parse_json_extracted_features_rejects_invalid_customer_kind():
+    payload = make_valid_extracted_features().model_dump()
+    payload["customer_kind"] = "vip"
+
+    with pytest.raises(LLMClientError, match="failed schema validation"):
+        llm_client.parse_json_extracted_features(json.dumps(payload))
+
+
+def test_call_openai_structured_feature_extraction_returns_features_and_separates_roles(
+    monkeypatch,
+):
+    expected_features = make_valid_extracted_features()
+    fake_responses = FakeResponses(response=FakeResponse(expected_features))
+    fake_client = FakeClient(responses=fake_responses)
+
+    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
+    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
+
+    result = llm_client.call_openai_structured_feature_extraction(
+        system_prompt="feature system prompt",
+        user_prompt="untrusted lead JSON",
+    )
+
+    assert result == expected_features
+    assert fake_responses.kwargs["input"] == [
+        {"role": "system", "content": "feature system prompt"},
+        {"role": "user", "content": "untrusted lead JSON"},
+    ]
+    assert fake_responses.kwargs["text_format"] is ExtractedLeadFeatures
+
+
+def test_call_openai_structured_feature_extraction_wraps_provider_error(monkeypatch):
+    fake_responses = FakeResponses(error=RuntimeError("fake OpenAI error"))
+    fake_client = FakeClient(responses=fake_responses)
+
+    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
+    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
+
+    with pytest.raises(LLMClientError, match="structured feature extraction failed"):
+        llm_client.call_openai_structured_feature_extraction(
+            system_prompt="feature system prompt",
+            user_prompt="untrusted lead JSON",
+        )
+
+
+def test_call_openai_structured_feature_extraction_rejects_empty_output(monkeypatch):
+    fake_responses = FakeResponses(response=FakeResponse(None))
+    fake_client = FakeClient(responses=fake_responses)
+
+    monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
+    monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
+
+    with pytest.raises(LLMClientError, match="empty structured feature output"):
+        llm_client.call_openai_structured_feature_extraction(
+            system_prompt="feature system prompt",
+            user_prompt="untrusted lead JSON",
+        )
+
+
+def test_call_openai_structured_feature_extraction_uses_deepseek_json_mode(monkeypatch):
+    expected_features = make_valid_extracted_features()
     fake_completions = FakeChatCompletions(
-        response=FakeChatResponse(expected_result.model_dump_json())
+        response=FakeChatResponse(expected_features.model_dump_json())
     )
     fake_client = FakeDeepSeekClient(completions=fake_completions)
 
     monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
     monkeypatch.setattr(llm_client, "get_openai_model", lambda: "deepseek-v4-flash")
 
-    result = llm_client.call_openai_structured_analysis("test prompt")
+    result = llm_client.call_openai_structured_feature_extraction(
+        system_prompt="feature system prompt",
+        user_prompt="untrusted lead JSON",
+    )
 
-    assert result == expected_result
-    assert fake_completions.kwargs["model"] == "deepseek-v4-flash"
+    assert result == expected_features
+    assert fake_completions.kwargs["messages"][0] == {
+        "role": "system",
+        "content": "feature system prompt",
+    }
+    assert fake_completions.kwargs["messages"][1]["role"] == "user"
+    assert fake_completions.kwargs["messages"][1]["content"].startswith("untrusted lead JSON")
     assert fake_completions.kwargs["response_format"] == {"type": "json_object"}
-    assert fake_completions.kwargs["messages"][1]["content"].startswith("test prompt")
+    assert "lead_score" not in fake_completions.kwargs["messages"][1]["content"]
+
+
+def test_call_deepseek_structured_feature_extraction_rejects_empty_output():
+    fake_completions = FakeChatCompletions(response=FakeChatResponse(None))
+    fake_client = FakeDeepSeekClient(completions=fake_completions)
+
+    with pytest.raises(LLMClientError, match="empty structured feature output"):
+        llm_client.call_deepseek_structured_feature_extraction(
+            client=fake_client,
+            model="deepseek-v4-flash",
+            system_prompt="feature system prompt",
+            user_prompt="untrusted lead JSON",
+        )

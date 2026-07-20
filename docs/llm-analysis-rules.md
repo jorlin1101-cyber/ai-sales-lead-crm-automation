@@ -1,5 +1,9 @@
 # LLM Analysis Rules
 
+> **Historical document — superseded:** the LLM no longer returns a score, intent, disposition, confidence, or final analysis result. It only returns `ExtractedLeadFeatures`; `PolicyV1` owns the decision.
+
+> **Historical document — superseded:** the LLM no longer returns a score, intent, disposition, confidence, or final analysis result. It only returns `ExtractedLeadFeatures`; `PolicyV1` owns the decision.
+
 ## 1. Purpose
 
 本文档定义 AI Sales Automation System 中 LLM lead analysis 的输出规则。

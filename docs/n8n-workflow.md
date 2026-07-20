@@ -62,7 +62,7 @@ n8n 不应该重复实现 Python 里的业务逻辑。它应该消费 FastAPI �
 Manual Trigger / Generate Test Leads
 → HTTP Request to FastAPI /process-lead
 → IF validation_result.is_valid
-→ Switch analysis_result.intent_level
+→ Switch analysis_result.decision.intent_level
 → Prepare High / Medium / Low / Invalid Lead
 → Merge All Leads
 → Create Notion Lead
@@ -144,7 +144,7 @@ validation_result.is_valid
 这个校验必须在访问下面字段之前完成：
 
 ```text
-analysis_result.intent_level
+analysis_result.decision.intent_level
 ```
 
 原因是 invalid lead 的结果是：
@@ -153,7 +153,7 @@ analysis_result.intent_level
 analysis_result = null
 ```
 
-在校验分流之前直接访问 `analysis_result.intent_level` 是不安全的。
+在校验分流之前直接访问 `analysis_result.decision.intent_level` 是不安全的。
 
 ---
 
@@ -162,7 +162,7 @@ analysis_result = null
 Switch 节点检查：
 
 ```text
-analysis_result.intent_level
+analysis_result.decision.intent_level
 ```
 
 当前工作流支持三个 valid intent 分支：
@@ -176,14 +176,14 @@ Low
 意向等级由后端分析层生成，来源可能是：
 
 ```text
-llm
-rule_fallback
+llm_features
+rule_features
 ```
 
 具体来源由下面字段标记：
 
 ```text
-analysis_result.analysis_method
+analysis_result.metadata.analysis_method
 ```
 
 ---
@@ -304,8 +304,8 @@ Prepare 节点负责字段标准化。
 ```text
 cleaned_lead.email
 validation_result.is_valid
-analysis_result.intent_level
-analysis_result.lead_score
+analysis_result.decision.intent_level
+analysis_result.decision.lead_score
 ```
 
 转换成扁平结构：
@@ -353,7 +353,10 @@ lead_summary
 recommended_action
 followup_email_draft
 analysis_method
-confidence
+fallback_reason
+disposition
+needs_review
+policy_version
 sources
 crm_status
 priority
@@ -532,7 +535,7 @@ Create Processing Log: 4 items
 完整 LLM 工作流也已验证：
 
 ```text
-valid leads analysis_method = llm
+valid leads analysis_method = llm_features 或 rule_features
 invalid lead 单独处理
 Notion Leads CRM 写入通过
 Processing Log 写入通过

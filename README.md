@@ -73,14 +73,19 @@ ai-sales-lead-crm-automation/
 │           ├── __init__.py
 │           ├── cleaning.py
 │           ├── validation.py
-│           ├── scoring.py
+│           ├── rule_feature_extractor.py
+│           ├── security_signal_detector.py
+│           ├── policy_v1.py
+│           ├── lead_analyzer.py
 │           └── processor.py
 ├── tests/
 │   ├── test_api.py
 │   ├── test_cleaning.py
 │   ├── test_processor.py
 │   ├── test_schema_lead.py
-│   ├── test_scoring.py
+│   ├── test_policy_v1.py
+│   ├── test_rule_feature_extractor.py
+│   ├── test_security_signal_detector.py
 │   └── test_validation.py
 ├── docs/
 │   ├── lead-analysis-strategy.md
@@ -100,8 +105,9 @@ RawLeadInput
 → CleanedLead
 → validate_lead()
 → LeadValidationResult
-→ score_lead()
-→ LeadScoreResult
+→ LeadFeatures + SecuritySignals
+→ PolicyV1
+→ LeadDecision
 → process_lead()
 → LeadProcessingResult
 ```
@@ -111,7 +117,9 @@ RawLeadInput
 - `RawLeadInput`：外部输入数据契约
 - `CleanedLead`：清洗后的 lead 数据
 - `LeadValidationResult`：业务校验结果
-- `LeadScoreResult`：规则评分结果
+- `LeadFeatures`：模型或规则提取的业务事实，以及服务端补充的确定性字段
+- `SecuritySignals`：确定性安全复核信号
+- `LeadDecision`：PolicyV1 产生的分类、分数、breakdown 和 disposition
 - `LeadProcessingResult`：完整处理流程返回结果
 
 无效 lead 不会进入评分流程：
@@ -119,7 +127,7 @@ RawLeadInput
 ```text
 invalid email
 → validation_result.is_valid = false
-→ score_result = null
+→ analysis_result = null
 ```
 
 ---
@@ -312,21 +320,21 @@ FastAPI 会在进入业务逻辑前返回：
 
 ---
 
-## 11. Rule-based Scoring
+## 11. Deterministic PolicyV1
 
-当前评分是 rule-based fallback，不是最终 AI 判断。
-
-评分维度包括：
+最终评分只由服务端 `PolicyV1` 产生，不由 LLM 直接填写。评分维度包括：
 
 ```text
-customer_type_score
-+ intent_score
-+ order_value_score
-+ information_completeness_score
+customer_fit（最高 30）
++ intent_strength（最高 30）
++ order_value_proxy（最高 25）
++ information_completeness（最高 15）
 = lead_score
 ```
 
-当前可识别：
+`score_breakdown` 会保存每个维度的得分和原因码，并由 Pydantic 保证分项之和等于最终分数。Spam override、manual review、qualified 和 nurture 的优先级也由同一个 PolicyV1 决定。
+
+当前可识别的 lead 类型包括：
 
 ```text
 B2B:
@@ -354,36 +362,27 @@ Unknown:
 0–44   → Low
 ```
 
-详细规则见：
-
-```text
-docs/scoring-rules.md
-```
+旧版独立评分入口已经删除，项目只保留 `LeadFeatures → PolicyV1 → LeadDecision` 这一条评分路径。
 
 ---
 
 ## 12. Lead Analysis Strategy
 
-系统未来采用：
+系统当前采用：
 
 ```text
-LLM-first + rule-based fallback
+LLM / rule feature extraction
+→ SecuritySignals
+→ PolicyV1
+→ LeadDecision
 ```
 
-当前阶段先完成规则评分 fallback。
-
-未来阶段：
-
-- LLM 可用时，优先使用 LLM 做复杂语义判断
-- LLM 不可用、超时、输出不合法时，回退到规则评分
-- LLM 输出必须经过 Pydantic 校验
-- 不允许模型结果未经校验直接写入 CRM
-
-详细策略见：
-
-```text
-docs/lead-analysis-strategy.md
-```
+- LLM 只提取受限业务特征，不返回分数、intent 或 disposition。
+- LLM 不可用或输出不合法时，回退到规则特征提取。
+- 两条提取路径共用同一个 PolicyV1。
+- 模型输出必须经过严格 Pydantic 校验。
+- 客户文本和模型都不能填写服务端 provenance。
+- 中英文可疑注入进入人工复核，不能把分数改成客户指定的值。
 
 ---
 
@@ -391,14 +390,13 @@ docs/lead-analysis-strategy.md
 
 当前版本限制：
 
-- 评分逻辑仍然依赖关键词规则
-- 暂未接入 LLM
+- PolicyV1 权重和阈值仍是工程业务假设，尚未用真实转化数据校准
+- 规则特征提取对复杂语义的能力有限
+- live provider 的运行模式和配置工厂尚待 Day 4 收口
 - 暂未接入数据库
-- 暂未接入 n8n
-- 暂未接入 Notion / CRM 写入
 - 暂未加入 API 鉴权
 - 暂未加入 Docker 部署
-- 对复杂语义、否定表达和非英文文本支持有限
+- RAG 尚未接入 `/process-lead` 主流程
 
 ---
 
@@ -406,15 +404,13 @@ docs/lead-analysis-strategy.md
 
 下一步计划：
 
-- 编写 README 和运行说明
-- 使用 n8n HTTP Request 调用 FastAPI
-- 接入 LLM structured output
-- 加入 LLM fallback 机制
-- 保存处理日志和调用结果
-- 接入 Notion / CRM
+- 完成 `demo / live / rule_only` 三种显式运行模式
+- 完成 provider factory、timeout 和分类 fallback reason
+- 将 RAG 和 recommendation 接入主流程，但不允许修改 LeadDecision
+- 更新 n8n 适配器读取嵌套分析契约
 - 加入 PostgreSQL 数据持久化
 - 加入 Docker Compose 部署
-- 编写项目面试问答文档
+- 使用匿名真实转化数据校准 PolicyV1
 
 ---
 
@@ -427,13 +423,15 @@ docs/lead-analysis-strategy.md
 - 用 processor.py 串联单条 lead 的完整处理流程
 - 用 FastAPI 暴露 HTTP API
 - 用 pytest 保证 schema、service、processor 和 API 行为稳定
-- 当前规则评分作为 LLM 不可用时的 fallback
-- 后续将接入 LLM structured output 和 n8n 自动化流程
+- LLM 只负责提取受限业务事实
+- PolicyV1 独立产生可解释、可回归的最终决策
+- 模型失败时改用规则特征，但评分策略不变
+- 安全信号和 provenance 均由服务端生成
 
 面试中可以这样概括：
 
 ```text
-我把 lead 清洗、校验和评分逻辑从 n8n 中抽离出来，放到 Python / FastAPI 服务中实现。
-这样核心逻辑可以用 pytest 测试，也可以通过 HTTP API 被 n8n、CRM 或前端复用。
-当前评分模块是 rule-based fallback，后续会接入 LLM structured output，并在 LLM 失败时自动回退到规则评分。
+我把 lead 清洗、校验、特征提取和决策逻辑从 n8n 中抽离到 Python / FastAPI 服务。
+LLM 只能提取受限业务事实，最终分数、intent 和 disposition 全部由版本化的 PolicyV1 计算。
+模型失败时系统改用规则特征提取，但仍经过同一个 PolicyV1，因此响应结构和决策规则保持稳定。
 ```

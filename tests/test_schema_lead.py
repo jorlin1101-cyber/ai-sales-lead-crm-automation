@@ -1,27 +1,75 @@
 import pytest
 from pydantic import ValidationError
 
-from lead_cleaner.schemas.ai_output import LeadAnalysisResult
+from lead_cleaner.schemas.ai_output import AnalysisMetadata, LeadAnalysisResult
 from lead_cleaner.schemas.lead import (
     CleanedLead,
     LeadProcessingResult,
-    LeadScoreResult,
     LeadValidationResult,
     RawLeadInput,
+)
+from lead_cleaner.schemas.policy import (
+    LeadDecision,
+    LeadFeatures,
+    ScoreComponent,
+    SecuritySignals,
 )
 
 
 def make_valid_analysis_result() -> LeadAnalysisResult:
     return LeadAnalysisResult(
-        lead_type="B2B",
-        lead_subtype="Agency",
-        intent_level="High",
-        lead_score=85,
+        features=LeadFeatures(
+            customer_kind="agency",
+            asks_for_price=True,
+            company_name_present=True,
+            cleaned_message_length=60,
+        ),
+        security_signals=SecuritySignals(),
+        decision=LeadDecision(
+            lead_type="B2B",
+            lead_subtype="Agency",
+            disposition="qualified",
+            intent_level="High",
+            lead_score=85,
+            score_breakdown=[
+                ScoreComponent(
+                    component="customer_fit",
+                    points=30,
+                    max_points=30,
+                    reason_codes=["agency_customer"],
+                ),
+                ScoreComponent(
+                    component="intent_strength",
+                    points=22,
+                    max_points=30,
+                    reason_codes=["two_intent_signals"],
+                ),
+                ScoreComponent(
+                    component="order_value_proxy",
+                    points=18,
+                    max_points=25,
+                    reason_codes=["private_or_custom_service"],
+                ),
+                ScoreComponent(
+                    component="information_completeness",
+                    points=15,
+                    max_points=15,
+                    reason_codes=["complete_information"],
+                ),
+            ],
+            needs_review=False,
+            review_reasons=[],
+            policy_version="policy-v1",
+        ),
         lead_summary="A high-value agency lead asking for a China tour quotation.",
         recommended_action="Review the lead and prepare a tailored follow-up.",
         followup_email_draft="Thank you for your inquiry. We would be happy to learn more about your group.",
-        analysis_method="llm",
-        confidence=0.9,
+        metadata=AnalysisMetadata(
+            analysis_method="llm_features",
+            recommendation_method="generic_template",
+            retrieval_method="skipped",
+            prompt_version="lead-features-v1",
+        ),
     )
 
 
@@ -181,123 +229,31 @@ def test_lead_validation_result_valid_cannot_have_error_codes():
         )
 
 
-def test_lead_score_result_valid_data():
-    result = LeadScoreResult(
-        lead_type="B2B",
-        lead_subtype="School",
-        intent_level="High",
-        lead_score=85,
-    )
-
-    assert result.lead_type == "B2B"
-    assert result.lead_subtype == "School"
-    assert result.intent_level == "High"
-    assert result.lead_score == 85
-
-
-def test_lead_score_result_invalid_lead_score():
-    with pytest.raises(ValidationError):
-        LeadScoreResult(
-            lead_type="B2B",
-            lead_subtype="School",
-            intent_level="High",
-            lead_score=150,
-        )
-
-
-def test_lead_score_result_invalid_lead_type():
-    with pytest.raises(ValidationError):
-        LeadScoreResult(
-            lead_type="InvalidType",
-            lead_subtype="School",
-            intent_level="High",
-            lead_score=85,
-        )
-
-
-def test_lead_score_result_invalid_lead_subtype():
-    with pytest.raises(ValidationError):
-        LeadScoreResult(
-            lead_type="B2B",
-            lead_subtype="InvalidSubtype",
-            intent_level="High",
-            lead_score=85,
-        )
-
-
-def test_lead_score_result_invalid_intent_level():
-    with pytest.raises(ValidationError):
-        LeadScoreResult(
-            lead_type="B2B",
-            lead_subtype="School",
-            intent_level="InvalidIntentLevel",
-            lead_score=85,
-        )
-
-
-def test_lead_score_result_valid_b2c_large_group():
-    result = LeadScoreResult(
-        lead_type="B2C",
-        lead_subtype="LargeGroup",
-        intent_level="High",
-        lead_score=88,
-    )
-
-    assert result.lead_type == "B2C"
-    assert result.lead_subtype == "LargeGroup"
-    assert result.intent_level == "High"
-    assert result.lead_score == 88
-
-
-def test_lead_score_result_invalid_b2c_subtype():
-    with pytest.raises(ValidationError):
-        LeadScoreResult(
-            lead_type="B2C",
-            lead_subtype="RandomSubtype",
-            intent_level="High",
-            lead_score=80,
-        )
-
-
 def test_lead_analysis_result_valid_data():
     result = make_valid_analysis_result()
 
-    assert result.lead_type == "B2B"
-    assert result.lead_subtype == "Agency"
-    assert result.intent_level == "High"
-    assert result.lead_score == 85
-    assert result.analysis_method == "llm"
-    assert result.confidence == 0.9
+    assert result.features.customer_kind == "agency"
+    assert result.decision.lead_type == "B2B"
+    assert result.decision.lead_subtype == "Agency"
+    assert result.decision.intent_level == "High"
+    assert result.decision.lead_score == 85
+    assert result.metadata.analysis_method == "llm_features"
 
 
 def test_lead_analysis_result_invalid_analysis_method():
+    payload = make_valid_analysis_result().model_dump()
+    payload["metadata"]["analysis_method"] = "invalid_method"
+
     with pytest.raises(ValidationError):
-        LeadAnalysisResult(
-            lead_type="B2B",
-            lead_subtype="Agency",
-            intent_level="High",
-            lead_score=85,
-            lead_summary="A valid summary.",
-            recommended_action="Review manually.",
-            followup_email_draft="Thank you for your inquiry.",
-            analysis_method="invalid_method",
-            confidence=0.9,
-        )
+        LeadAnalysisResult.model_validate(payload)
 
 
-def test_lead_analysis_result_invalid_confidence():
-    with pytest.raises(ValidationError):
-        LeadAnalysisResult(
-            lead_type="B2B",
-            lead_subtype="Agency",
-            intent_level="High",
-            lead_score=85,
-            lead_summary="A valid summary.",
-            recommended_action="Review manually.",
-            followup_email_draft="Thank you for your inquiry.",
-            analysis_method="llm",
-            confidence=1.5,
-        )
+def test_lead_analysis_result_rejects_removed_confidence_field():
+    payload = make_valid_analysis_result().model_dump()
+    payload["confidence"] = 1.0
+
+    with pytest.raises(ValidationError, match="extra_forbidden"):
+        LeadAnalysisResult.model_validate(payload)
 
 
 def test_lead_processing_result_with_analysis_result():
@@ -325,8 +281,8 @@ def test_lead_processing_result_with_analysis_result():
     assert result.cleaned_lead.email == "john@example.com"
     assert result.validation_result.is_valid is True
     assert result.analysis_result is not None
-    assert result.analysis_result.lead_subtype == "Agency"
-    assert result.analysis_result.analysis_method == "llm"
+    assert result.analysis_result.decision.lead_subtype == "Agency"
+    assert result.analysis_result.metadata.analysis_method == "llm_features"
     assert result.sources == []
 
 

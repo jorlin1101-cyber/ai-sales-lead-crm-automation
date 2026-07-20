@@ -1,5 +1,9 @@
 # Lead Analysis Strategy
 
+> **Historical document — superseded:** this file describes the former direct-analysis and `scoring.py` fallback design. The current path is `LeadFeatures + SecuritySignals -> PolicyV1 -> LeadDecision`.
+
+> **Historical document — superseded:** this file describes the former direct-analysis and `scoring.py` fallback design. The current path is `LeadFeatures + SecuritySignals -> PolicyV1 -> LeadDecision`.
+
 ## 1. Purpose
 
 本文档定义 AI Sales Automation System 的 lead 分析策略。

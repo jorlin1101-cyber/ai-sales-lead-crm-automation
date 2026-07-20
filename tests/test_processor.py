@@ -17,9 +17,13 @@ def test_process_lead_valid_lead_returns_score_result():
     assert result.validation_result.is_valid is True
     assert result.validation_result.error_codes == []
     assert result.analysis_result is not None
-    assert result.analysis_result.lead_type == "B2B"
-    assert result.analysis_result.lead_subtype == "Agency"
-    assert result.analysis_result.intent_level == "High"
+    assert result.analysis_result.decision.lead_type == "B2B"
+    assert result.analysis_result.decision.lead_subtype == "Agency"
+    assert result.analysis_result.decision.intent_level == "High"
+    assert result.analysis_result.metadata.analysis_method in {
+        "llm_features",
+        "rule_features",
+    }
     assert result.sources == []
 
 

@@ -1,5 +1,52 @@
 # API Contract
 
+## Day 3 analysis contract update
+
+The authoritative `analysis_result` structure is now nested:
+
+```text
+analysis_result
+|- features
+|- security_signals
+|- decision
+|  |- lead_type
+|  |- lead_subtype
+|  |- disposition
+|  |- intent_level
+|  |- lead_score
+|  |- score_breakdown
+|  |- needs_review
+|  |- review_reasons
+|  `- policy_version
+|- lead_summary
+|- recommended_action
+|- followup_email_draft
+`- metadata
+   |- analysis_method
+   |- recommendation_method
+   |- retrieval_method
+   |- provider
+   |- model
+   |- prompt_version
+   `- fallback_reason
+```
+
+The LLM only produces restricted business features. Deterministic code supplies security signals and server-owned facts, and `PolicyV1` alone produces the final decision. The removed flat paths such as `analysis_result.lead_score` and `analysis_result.analysis_method` must not be used.
+
+Current downstream paths are:
+
+```text
+analysis_result.decision.lead_score
+analysis_result.decision.intent_level
+analysis_result.decision.disposition
+analysis_result.metadata.analysis_method
+analysis_result.metadata.fallback_reason
+```
+
+Current analysis methods are `llm_features` and `rule_features`; `demo_fixture` is reserved for the explicit demo mode. When LLM feature extraction fails, the response schema stays unchanged and metadata records `rule_features` plus a server-owned fallback reason.
+
+The older flat examples later in this document are retained only as Day 2 history and are superseded by this section.
+
 ## Overview
 
 This document defines the API contract for the AI Sales Lead CRM Automation project.
@@ -113,7 +160,7 @@ The service generates its own `lead_id`, preserves `external_lead_id`, trims lea
 
 ---
 
-## Response Body
+## Historical Day 2 Response Body (superseded by the Day 3 contract above)
 
 The endpoint returns a `LeadProcessingResult`.
 
@@ -193,7 +240,7 @@ Required invariants:
 
 ---
 
-### analysis_result
+### Historical flat analysis_result (do not use)
 
 `analysis_result` contains the unified lead analysis output.
 
@@ -315,7 +362,7 @@ because `analysis_result` is `null` for invalid leads.
 
 ---
 
-## Why `analysis_result` Instead of `score_result`
+## Historical Day 2 rationale (superseded)
 
 Earlier versions of the project returned `score_result`, which only represented rule-based scoring.
 
@@ -346,7 +393,7 @@ This allows n8n, Notion, and other CRM integrations to consume one stable respon
 
 ---
 
-## Downstream Usage in n8n
+## Historical Day 2 n8n paths (superseded)
 
 n8n should use these fields:
 

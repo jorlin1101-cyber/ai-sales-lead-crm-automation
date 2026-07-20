@@ -8,7 +8,7 @@
 
 1. Python 读取和清洗原始 lead JSON。
 2. Python 执行基础字段校验。
-3. AI 进行 lead 类型判断、意向判断、评分、摘要和邮件草稿生成。
+3. LLM 或规则提取受限业务特征；SecuritySignalDetector 生成复核信号；PolicyV1 生成最终决策。
 4. n8n 负责流程编排、CRM 写入和通知。
 5. Notion / Airtable CRM 保存结构化结果。
 6. 人工审核高价值或高风险 lead。
@@ -32,15 +32,19 @@
 | `source`              | Raw Lead JSON          | `cleaned_lead.source`                   | 缺失、null、空字符串或纯空白时设置为 `Unknown`                    | Yes      |
 | `is_valid`            | Python Validation      | `validation_result.is_valid`            | 保存业务验证结果 Boolean                                         | Yes      |
 | `error_codes`         | Python Validation      | `validation_result.error_codes`         | 保存零个或多个机器可读错误码；有效 lead 必须为空列表              | Yes      |
-| `lead_type`           | Current Analysis       | `analysis_result.lead_type`             | valid lead 才有值；必须为 `B2B`、`B2C` 或 `Unknown`               | No       |
-| `lead_subtype`        | Current Analysis       | `analysis_result.lead_subtype`          | valid lead 才有值；必须匹配当前 API 枚举                           | No       |
-| `intent_level`        | Current Analysis       | `analysis_result.intent_level`          | valid lead 才有值；必须为 `High`、`Medium`、`Low` 或 `Unknown`     | No       |
-| `lead_score`          | Current Analysis       | `analysis_result.lead_score`            | valid lead 才有值；整数必须在 0～100 之间                          | No       |
+| `lead_type`           | PolicyV1               | `analysis_result.decision.lead_type`             | valid lead 才有值；必须为 `B2B`、`B2C` 或 `Unknown`               | No       |
+| `lead_subtype`        | PolicyV1               | `analysis_result.decision.lead_subtype`          | valid lead 才有值；必须匹配当前 API 枚举                           | No       |
+| `intent_level`        | PolicyV1               | `analysis_result.decision.intent_level`          | valid lead 才有值；必须为 `High`、`Medium` 或 `Low`                | No       |
+| `lead_score`          | PolicyV1               | `analysis_result.decision.lead_score`            | valid lead 才有值；整数必须在 0～100 之间                          | No       |
+| `disposition`         | PolicyV1               | `analysis_result.decision.disposition`           | `qualified`、`nurture`、`spam` 或 `manual_review`                  | No       |
+| `needs_review`        | PolicyV1               | `analysis_result.decision.needs_review`          | 是否需要人工复核                                                   | No       |
+| `review_reasons`      | PolicyV1               | `analysis_result.decision.review_reasons`        | 服务端机器可读复核原因                                             | No       |
+| `policy_version`      | PolicyV1               | `analysis_result.decision.policy_version`        | 当前固定为 `policy-v1`                                             | No       |
 | `lead_summary`        | Current Analysis       | `analysis_result.lead_summary`          | valid lead 的简短总结                                             | No       |
 | `recommended_action`  | Current Analysis       | `analysis_result.recommended_action`    | valid lead 的建议动作                                             | No       |
 | `followup_email_draft`| Current Analysis       | `analysis_result.followup_email_draft`  | 只作为邮件草稿供人工审核，不自动发送                              | No       |
-| `analysis_method`     | Current Analysis       | `analysis_result.analysis_method`       | 当前为 `llm` 或 `rule_fallback`；Day 3 后按新 provenance 契约更新 | No       |
-| `confidence`          | Current Analysis       | `analysis_result.confidence`            | 当前分析置信度，范围 0～1                                         | No       |
+| `analysis_method`     | Python / System        | `analysis_result.metadata.analysis_method`       | 当前为 `llm_features` 或 `rule_features`                           | No       |
+| `fallback_reason`     | Python / System        | `analysis_result.metadata.fallback_reason`       | 未降级时为空；降级时保存服务端原因码                               | No       |
 | `sources`             | API / RAG              | `sources`                               | 保存来源数组；Day 2 固定为空，Day 5 接入脱敏 Top 1～3 来源        | No       |
 | `ai_analysis_status`  | n8n / System           | API processing result                   | valid 分析成功后为 `Completed`；invalid 为 `Skipped`              | Yes      |
 | `crm_status`          | n8n / System           | CRM write result                        | 根据 CRM 写入结果设置状态                                         | Yes      |
@@ -79,5 +83,5 @@ company → company_name
 | `step_name`       | n8n / System | current node name  | 必须匹配 Select Options                 | Yes      |
 | `status`          | n8n / System | step result        | 设置为 `Success`、`Failed` 或 `Skipped` | Yes      |
 | `error_message`   | n8n / System | error details      | 成功时为空；失败时记录错误详情          | No       |
-| `raw_ai_output`   | AI Analysis  | raw model response | 保存原始 AI 输出，只用于 debug          | No       |
+| `fallback_reason` | Python / System | analysis metadata | 只保存服务端原因码，不保存完整 provider response | No       |
 | `received_at`     | System       | current time       | 日志创建时间                            | Yes      |

@@ -1,5 +1,9 @@
 # AI 输出结构设计
 
+> **历史文档（已被替代）：** 本文记录旧版“AI 直接输出评分”的设计。当前正式契约以 `schemas/policy.py`、`schemas/ai_output.py` 和 `docs/api-contract.md` 顶部的 Day 3 结构为准。
+
+> **历史文档（已被替代）：** 本文记录旧版“AI 直接输出评分”的设计。当前正式契约以 `schemas/policy.py`、`schemas/ai_output.py` 和 `docs/api-contract.md` 顶部的 Day 3 结构为准。
+
 > [!IMPORTANT]
 > 本文件记录 Contract V2 之前的历史 AI 输出设计，不是当前 API 契约。
 > 当前可执行契约以 `docs/api-contract.md` 和 Pydantic OpenAPI schema 为准；其中使用

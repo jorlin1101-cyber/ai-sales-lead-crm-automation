@@ -27,15 +27,19 @@
 | `source`              | Select             |      Yes | Customer / System | 记录线索来源                            | Yes |
 | `is_valid`            | Checkbox / Boolean |      Yes | System            | 判断 lead 是否通过基础字段校验          | Yes |
 | `error_codes`         | Multi-select       |      Yes | System            | 保存业务验证错误码；有效 lead 为空列表  | Yes |
-| `lead_type`           | Select             |       No | AI                | 判断 lead 是 B2B / B2C / Unknown        | Yes |
-| `lead_subtype`        | Select             |       No | AI                | 当前分析契约中的 lead 子类型            | Yes |
-| `intent_level`        | Select             |       No | AI                | 判断跟进优先级                          | Yes |
-| `lead_score`          | Number             |       No | AI                | 量化销售优先级，范围 0-100，必须为整数            | Yes |
+| `lead_type`           | Select             |       No | PolicyV1          | 判断 lead 是 B2B / B2C / Unknown        | Yes |
+| `lead_subtype`        | Select             |       No | PolicyV1          | 当前决策契约中的 lead 子类型            | Yes |
+| `intent_level`        | Select             |       No | PolicyV1          | 根据确定性分数映射跟进优先级            | Yes |
+| `lead_score`          | Number             |       No | PolicyV1          | 量化销售优先级，范围 0-100，必须为整数  | Yes |
+| `disposition`         | Select             |       No | PolicyV1          | qualified / nurture / spam / manual_review | Yes |
+| `needs_review`        | Checkbox / Boolean |       No | PolicyV1          | 是否要求人工复核                        | Yes |
+| `review_reasons`      | Multi-select       |       No | PolicyV1          | 保存机器可读复核原因                    | Yes |
+| `policy_version`      | Text               |       No | PolicyV1          | 当前决策规则版本                        | Yes |
 | `lead_summary`        | Long Text          |       No | AI                | 用一句话总结 lead 内容                  | Yes |
 | `recommended_action`  | Long Text          |       No | AI                | 给出下一步跟进建议                      | Yes |
 | `followup_email_draft`| Long Text          |       No | AI                | 生成邮件草稿，必须人工审核且不自动发送  | Yes |
-| `analysis_method`     | Select             |       No | System / AI       | 标记当前分析来自 `llm` 或 `rule_fallback` | Yes |
-| `confidence`          | Number             |       No | System / AI       | 当前分析置信度，范围 0～1               | Yes |
+| `analysis_method`     | Select             |       No | System            | `llm_features` 或 `rule_features`        | Yes |
+| `fallback_reason`     | Text               |       No | System            | 服务端记录的降级原因码                  | Yes |
 | `sources`             | Long Text / JSON   |       No | API / RAG         | Day 2 为空数组；Day 5 保存脱敏来源       | Yes |
 | `ai_analysis_status`  | Select             |      Yes | System            | 记录 AI 分析业务阶段                    | Yes |
 | `crm_status`          | Select             |      Yes | System / n8n      | 记录 CRM 页面创建状态                       | Yes |
@@ -54,7 +58,7 @@
 | `step_name`       | Select          |      Yes | System       | 记录当前执行步骤             | Yes |
 | `status` | Select | Yes | System | 记录该步骤成功、失败或跳过 | Yes |
 | `error_message`   | Long Text       |       No | System       | 保存错误详情                 | Yes |
-| `raw_ai_output`   | Long Text       |       No | AI           | 保存原始 AI 输出，方便 debug | Yes |
+| `fallback_reason` | Text            |       No | System       | 服务端降级原因码；不保存完整模型响应 | Yes |
 | `created_at`     | DateTime        |      Yes | System       | 记录日志创建时间             | Yes |
 
 ## 4. Select Options
@@ -66,11 +70,12 @@
 | `lead_type`           | `B2B`, `B2C`, `Unknown`                                                                                                                                     |
 | `lead_subtype`        | `Agency`, `Operator`, `School`, `Corporate`, `Influencer`, `LargeGroup`, `PrivateCustom`, `LuxuryHighBudget`, `FIT`, `Other`, `Unknown`                    |
 | `intent_level`        | `High`, `Medium`, `Low`, `Unknown`                                                                                                                         |
+| `disposition`         | `qualified`, `nurture`, `spam`, `manual_review`                                                                                                             |
 | `ai_analysis_status`  | `Not Started`, `Completed`, `Failed`, `Skipped`                                                                                                           |
 | `crm_status`          | `Not Started`, `Created`, `Failed`                                                                                                                        |
 | `notification_status` | `Not Required`, `Pending`, `Sent`, `Failed`                                                                                                                |
 | `review_status`       | `Pending Review`, `Approved`, `Rejected`, `Needs More Info`                                                                                                |
-| `analysis_method`     | `llm`, `rule_fallback`                                                                                                                                      |
+| `analysis_method`     | `llm_features`, `rule_features`, `demo_fixture`                                                                                                             |
 | `step_name`           | `Read Input`, `Clean Fields`, `Validate Lead`, `AI Analysis`, `AI Lead Analysis`, `CRM Mapping`, `CRM Write`, `Notion Create Lead`, `Notification`, `Logging`                 |
 | `status`              | `Success`, `Failed`, `Skipped`                                                                                                                             |
 
