@@ -5,10 +5,12 @@ from openai import OpenAI
 from pydantic import ValidationError
 
 from lead_cleaner.schemas.policy import ExtractedLeadFeatures
-
-
-class LLMClientError(Exception):
-    """Raised when the LLM client fails to return a valid result."""
+from lead_cleaner.services.llm_errors import (
+    LLMClientError,
+    LLMConfigurationError,
+    LLMInvalidJSONError,
+    LLMSchemaValidationError,
+)
 
 
 def get_openai_client() -> OpenAI:
@@ -16,7 +18,7 @@ def get_openai_client() -> OpenAI:
     base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("DEEPSEEK_BASE_URL")
 
     if not api_key:
-        raise LLMClientError("OPENAI_API_KEY or DEEPSEEK_API_KEY is missing.")
+        raise LLMConfigurationError("OPENAI_API_KEY or DEEPSEEK_API_KEY is missing.")
 
     if base_url:
         return OpenAI(api_key=api_key, base_url=base_url)
@@ -28,7 +30,7 @@ def get_openai_model() -> str:
     model = os.getenv("OPENAI_MODEL") or os.getenv("DEEPSEEK_MODEL")
 
     if not model:
-        raise LLMClientError("OPENAI_MODEL or DEEPSEEK_MODEL is missing.")
+        raise LLMConfigurationError("OPENAI_MODEL or DEEPSEEK_MODEL is missing.")
 
     return model
 
@@ -44,12 +46,14 @@ def parse_json_extracted_features(raw_content: str) -> ExtractedLeadFeatures:
     try:
         data = json.loads(raw_content)
     except json.JSONDecodeError as error:
-        raise LLMClientError(f"LLM returned invalid feature JSON: {error}") from error
+        raise LLMInvalidJSONError(f"LLM returned invalid feature JSON: {error}") from error
 
     try:
         return ExtractedLeadFeatures.model_validate(data)
     except ValidationError as error:
-        raise LLMClientError(f"LLM feature JSON failed schema validation: {error}") from error
+        raise LLMSchemaValidationError(
+            f"LLM feature JSON failed schema validation: {error}"
+        ) from error
 
 
 def call_deepseek_structured_feature_extraction(
@@ -105,7 +109,7 @@ def call_deepseek_structured_feature_extraction(
     raw_content = choices[0].message.content if choices else None
 
     if not raw_content:
-        raise LLMClientError("DeepSeek returned empty structured feature output.")
+        raise LLMInvalidJSONError("DeepSeek returned empty structured feature output.")
 
     return parse_json_extracted_features(raw_content)
 
@@ -141,9 +145,11 @@ def call_openai_structured_feature_extraction(
 
     parsed_result = response.output_parsed
     if parsed_result is None:
-        raise LLMClientError("OpenAI returned empty structured feature output.")
+        raise LLMInvalidJSONError("OpenAI returned empty structured feature output.")
 
     try:
         return ExtractedLeadFeatures.model_validate(parsed_result)
     except ValidationError as error:
-        raise LLMClientError(f"OpenAI feature output failed schema validation: {error}") from error
+        raise LLMSchemaValidationError(
+            f"OpenAI feature output failed schema validation: {error}"
+        ) from error

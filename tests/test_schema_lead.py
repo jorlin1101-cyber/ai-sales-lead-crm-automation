@@ -65,9 +65,12 @@ def make_valid_analysis_result() -> LeadAnalysisResult:
         recommended_action="Review the lead and prepare a tailored follow-up.",
         followup_email_draft="Thank you for your inquiry. We would be happy to learn more about your group.",
         metadata=AnalysisMetadata(
+            execution_mode="live",
             analysis_method="llm_features",
             recommendation_method="generic_template",
             retrieval_method="skipped",
+            provider="openai",
+            model="test-model",
             prompt_version="lead-features-v1",
         ),
     )

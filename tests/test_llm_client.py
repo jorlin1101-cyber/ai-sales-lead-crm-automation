@@ -4,7 +4,12 @@ import pytest
 
 from lead_cleaner.schemas.policy import ExtractedLeadFeatures
 from lead_cleaner.services import llm_client
-from lead_cleaner.services.llm_client import LLMClientError
+from lead_cleaner.services.llm_errors import (
+    LLMClientError,
+    LLMConfigurationError,
+    LLMInvalidJSONError,
+    LLMSchemaValidationError,
+)
 
 
 class FakeResponse:
@@ -88,7 +93,7 @@ def test_get_openai_client_missing_api_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
 
-    with pytest.raises(LLMClientError):
+    with pytest.raises(LLMConfigurationError):
         llm_client.get_openai_client()
 
 
@@ -96,7 +101,7 @@ def test_get_openai_model_missing_model(monkeypatch):
     monkeypatch.delenv("OPENAI_MODEL", raising=False)
     monkeypatch.delenv("DEEPSEEK_MODEL", raising=False)
 
-    with pytest.raises(LLMClientError):
+    with pytest.raises(LLMConfigurationError):
         llm_client.get_openai_model()
 
 
@@ -138,7 +143,7 @@ def test_parse_json_extracted_features_returns_restricted_model():
 
 
 def test_parse_json_extracted_features_rejects_invalid_json():
-    with pytest.raises(LLMClientError, match="invalid feature JSON"):
+    with pytest.raises(LLMInvalidJSONError, match="invalid feature JSON"):
         llm_client.parse_json_extracted_features("not json")
 
 
@@ -158,7 +163,7 @@ def test_parse_json_extracted_features_rejects_forbidden_fields(
     payload = make_valid_extracted_features().model_dump()
     payload[field_name] = field_value
 
-    with pytest.raises(LLMClientError, match="failed schema validation"):
+    with pytest.raises(LLMSchemaValidationError, match="failed schema validation"):
         llm_client.parse_json_extracted_features(json.dumps(payload))
 
 
@@ -166,7 +171,7 @@ def test_parse_json_extracted_features_rejects_invalid_customer_kind():
     payload = make_valid_extracted_features().model_dump()
     payload["customer_kind"] = "vip"
 
-    with pytest.raises(LLMClientError, match="failed schema validation"):
+    with pytest.raises(LLMSchemaValidationError, match="failed schema validation"):
         llm_client.parse_json_extracted_features(json.dumps(payload))
 
 
@@ -214,7 +219,7 @@ def test_call_openai_structured_feature_extraction_rejects_empty_output(monkeypa
     monkeypatch.setattr(llm_client, "get_openai_client", lambda: fake_client)
     monkeypatch.setattr(llm_client, "get_openai_model", lambda: "test-model")
 
-    with pytest.raises(LLMClientError, match="empty structured feature output"):
+    with pytest.raises(LLMInvalidJSONError, match="empty structured feature output"):
         llm_client.call_openai_structured_feature_extraction(
             system_prompt="feature system prompt",
             user_prompt="untrusted lead JSON",
@@ -251,7 +256,7 @@ def test_call_deepseek_structured_feature_extraction_rejects_empty_output():
     fake_completions = FakeChatCompletions(response=FakeChatResponse(None))
     fake_client = FakeDeepSeekClient(completions=fake_completions)
 
-    with pytest.raises(LLMClientError, match="empty structured feature output"):
+    with pytest.raises(LLMInvalidJSONError, match="empty structured feature output"):
         llm_client.call_deepseek_structured_feature_extraction(
             client=fake_client,
             model="deepseek-v4-flash",

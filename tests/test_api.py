@@ -1,33 +1,49 @@
+import pytest
 from fastapi.testclient import TestClient
 
-from lead_cleaner.api.main import app
+from lead_cleaner.api.main import create_app
+from lead_cleaner.config import AppMode, Settings
 from lead_cleaner.schemas.policy import LeadFeatures, SecuritySignals
 from lead_cleaner.services import processor
+from lead_cleaner.services.feature_extractor import FeatureExtractionOutcome
 from lead_cleaner.services.lead_analyzer import build_policy_analysis
 
-client = TestClient(app)
+
+@pytest.fixture
+def client():
+    settings = Settings(
+        _env_file=None,
+        app_mode=AppMode.RULE_ONLY,
+        allow_network=False,
+    )
+
+    with TestClient(create_app(settings=settings)) as test_client:
+        yield test_client
 
 
-def test_health_check():
+def test_health_check(client):
     response = client.get("/health")
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
 
 
-def test_process_lead_valid_lead(monkeypatch):
-    def fake_analyze_lead(cleaned_lead):
+def test_process_lead_valid_lead(client, monkeypatch):
+    def fake_analyze_lead(cleaned_lead, *, feature_extractor=None):
         return build_policy_analysis(
-            LeadFeatures(
-                customer_kind="agency",
-                group_size=20,
-                asks_for_price=True,
-                requests_private_or_custom_service=True,
-                company_name_present=True,
-                cleaned_message_length=len(cleaned_lead.message),
+            FeatureExtractionOutcome(
+                features=LeadFeatures(
+                    customer_kind="agency",
+                    group_size=20,
+                    asks_for_price=True,
+                    requests_private_or_custom_service=True,
+                    company_name_present=True,
+                    cleaned_message_length=len(cleaned_lead.message),
+                ),
+                execution_mode="rule_only",
+                analysis_method="rule_features",
             ),
             SecuritySignals(),
-            "rule_features",
         )
 
     monkeypatch.setattr(
@@ -61,6 +77,7 @@ def test_process_lead_valid_lead(monkeypatch):
     assert data["analysis_result"]["decision"]["lead_subtype"] == "Agency"
     assert data["analysis_result"]["decision"]["intent_level"] == "High"
     assert data["analysis_result"]["metadata"]["analysis_method"] == "rule_features"
+    assert data["analysis_result"]["metadata"]["execution_mode"] == "rule_only"
     assert data["analysis_result"]["security_signals"] == {
         "injection_suspected": False,
         "matched_pattern_codes": [],
@@ -69,8 +86,8 @@ def test_process_lead_valid_lead(monkeypatch):
     assert data["sources"] == []
 
 
-def test_process_lead_invalid_email_skips_analysis(monkeypatch):
-    def fail_if_analysis_is_called(cleaned_lead):
+def test_process_lead_invalid_email_skips_analysis(client, monkeypatch):
+    def fail_if_analysis_is_called(cleaned_lead, *, feature_extractor=None):
         raise AssertionError("analyze_lead must not be called for an invalid lead")
 
     monkeypatch.setattr(
@@ -99,7 +116,7 @@ def test_process_lead_invalid_email_skips_analysis(monkeypatch):
     assert data["sources"] == []
 
 
-def test_process_lead_empty_email_returns_domain_invalid():
+def test_process_lead_empty_email_returns_domain_invalid(client):
     payload = {
         "email": "",
         "message": "I need a private tour.",
@@ -117,7 +134,7 @@ def test_process_lead_empty_email_returns_domain_invalid():
     assert data["sources"] == []
 
 
-def test_process_lead_whitespace_message_returns_domain_invalid():
+def test_process_lead_whitespace_message_returns_domain_invalid(client):
     payload = {
         "email": "john@example.com",
         "message": "   ",
@@ -135,7 +152,7 @@ def test_process_lead_whitespace_message_returns_domain_invalid():
     assert data["sources"] == []
 
 
-def test_process_lead_empty_message_returns_422():
+def test_process_lead_empty_message_returns_422(client):
     payload = {
         "email": "john@example.com",
         "message": "",
@@ -146,7 +163,7 @@ def test_process_lead_empty_message_returns_422():
     assert response.status_code == 422
 
 
-def test_process_lead_unknown_company_field_returns_422():
+def test_process_lead_unknown_company_field_returns_422(client):
     payload = {
         "email": "john@example.com",
         "message": "I need a private tour.",
@@ -165,7 +182,7 @@ def test_process_lead_unknown_company_field_returns_422():
     )
 
 
-def test_process_lead_missing_email_returns_422():
+def test_process_lead_missing_email_returns_422(client):
     payload = {
         "name": "No Email",
         "company_name": "Example Corp",
@@ -179,6 +196,13 @@ def test_process_lead_missing_email_returns_422():
 
 
 def test_openapi_schema_matches_lead_contract_v2():
+    app = create_app(
+        settings=Settings(
+            _env_file=None,
+            app_mode=AppMode.RULE_ONLY,
+            allow_network=False,
+        )
+    )
     openapi_schema = app.openapi()
     schemas = openapi_schema["components"]["schemas"]
 
@@ -219,6 +243,7 @@ def test_openapi_schema_matches_lead_contract_v2():
 
     metadata_properties = schemas["AnalysisMetadata"]["properties"]
 
+    assert "execution_mode" in metadata_properties
     assert "analysis_method" in metadata_properties
     assert "fallback_reason" in metadata_properties
 

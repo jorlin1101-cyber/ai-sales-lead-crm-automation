@@ -1,7 +1,12 @@
 import re
 
+from lead_cleaner.config import AppMode
 from lead_cleaner.schemas.lead import CleanedLead
 from lead_cleaner.schemas.policy import CustomerKind, LeadFeatures
+from lead_cleaner.services.feature_extractor import (
+    FallbackReason,
+    FeatureExtractionOutcome,
+)
 
 
 CUSTOMER_KIND_KEYWORDS: dict[CustomerKind, tuple[str, ...]] = {
@@ -286,3 +291,29 @@ def extract_rule_features(cleaned_lead: CleanedLead) -> LeadFeatures:
         cleaned_message_length=len(cleaned_lead.message.strip()),
         conflict_codes=group_conflict_codes + customer_conflict_codes,
     )
+
+
+class RuleFeatureExtractor:
+    """FeatureExtractor implementation backed by deterministic local rules."""
+
+    def __init__(
+        self,
+        *,
+        execution_mode: AppMode = AppMode.RULE_ONLY,
+        fallback_reason: FallbackReason | None = None,
+    ) -> None:
+        self._execution_mode = execution_mode
+        self._fallback_reason = fallback_reason
+
+    def extract(
+        self,
+        cleaned_lead: CleanedLead,
+    ) -> FeatureExtractionOutcome:
+        features = extract_rule_features(cleaned_lead)
+
+        return FeatureExtractionOutcome(
+            features=features,
+            execution_mode=self._execution_mode,
+            analysis_method="rule_features",
+            fallback_reason=self._fallback_reason,
+        )

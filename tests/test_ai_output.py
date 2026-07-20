@@ -68,9 +68,12 @@ def make_analysis_result() -> LeadAnalysisResult:
         recommended_action="Review the lead and prepare a tailored follow-up.",
         followup_email_draft="",
         metadata=AnalysisMetadata(
+            execution_mode="live",
             analysis_method="llm_features",
             recommendation_method="generic_template",
             retrieval_method="skipped",
+            provider="openai",
+            model="test-model",
             prompt_version="lead-features-v1",
         ),
     )
@@ -114,20 +117,23 @@ def test_lead_analysis_result_rejects_old_flat_scoring_fields():
 
 def test_analysis_metadata_accepts_rule_fallback_provenance():
     metadata = AnalysisMetadata(
+        execution_mode="live",
         analysis_method="rule_features",
         recommendation_method="generic_template",
         retrieval_method="skipped",
-        fallback_reason="llm_client_error",
+        fallback_reason="timeout",
     )
 
     assert metadata.analysis_method == "rule_features"
-    assert metadata.fallback_reason == "llm_client_error"
+    assert metadata.execution_mode == "live"
+    assert metadata.fallback_reason == "timeout"
     assert metadata.provider is None
 
 
 def test_analysis_metadata_rejects_invalid_analysis_method():
     with pytest.raises(ValidationError):
         AnalysisMetadata(
+            execution_mode="live",
             analysis_method="llm",
             recommendation_method="generic_template",
             retrieval_method="skipped",

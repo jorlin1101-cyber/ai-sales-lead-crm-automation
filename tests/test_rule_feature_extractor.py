@@ -1,5 +1,10 @@
+from lead_cleaner.config import AppMode
 from lead_cleaner.schemas.lead import CleanedLead
-from lead_cleaner.services.rule_feature_extractor import extract_rule_features
+from lead_cleaner.services.feature_extractor import FeatureExtractor
+from lead_cleaner.services.rule_feature_extractor import (
+    RuleFeatureExtractor,
+    extract_rule_features,
+)
 
 
 def make_cleaned_lead(
@@ -121,3 +126,39 @@ def test_company_presence_and_message_length_are_server_derived():
 
     assert features.company_name_present is True
     assert features.cleaned_message_length == len("Short message")
+
+
+def test_rule_feature_extractor_returns_standard_outcome():
+    lead = make_cleaned_lead(
+        "We are a travel agency requesting a quotation for 20 travelers.",
+        company_name="Example Travel Agency",
+    )
+    extractor = RuleFeatureExtractor()
+
+    outcome = extractor.extract(lead)
+
+    assert outcome.execution_mode == AppMode.RULE_ONLY
+    assert outcome.analysis_method == "rule_features"
+    assert outcome.fallback_reason is None
+    assert outcome.provider is None
+    assert outcome.features == extract_rule_features(lead)
+
+
+def test_rule_feature_extractor_records_live_fallback_reason():
+    lead = make_cleaned_lead("We need a quotation for a private Chengdu tour.")
+    extractor = RuleFeatureExtractor(
+        execution_mode=AppMode.LIVE,
+        fallback_reason="timeout",
+    )
+
+    outcome = extractor.extract(lead)
+
+    assert outcome.execution_mode == AppMode.LIVE
+    assert outcome.analysis_method == "rule_features"
+    assert outcome.fallback_reason == "timeout"
+
+
+def test_rule_feature_extractor_matches_common_protocol():
+    extractor = RuleFeatureExtractor()
+
+    assert isinstance(extractor, FeatureExtractor)

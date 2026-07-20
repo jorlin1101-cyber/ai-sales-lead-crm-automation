@@ -1,5 +1,27 @@
 # API Contract
 
+## Day 4 runtime mode and provider lifecycle
+
+The API creates one feature extractor when the application starts and reuses it for every request. `APP_MODE` chooses that extractor:
+
+| `APP_MODE` | Extractor | External network |
+|---|---|---:|
+| `demo` | Saved demo fixture, with rule fallback when an ID is missing | Disabled |
+| `rule_only` | Deterministic rule features | Disabled |
+| `live` | Configured OpenAI feature client, with approved rule fallbacks | Must be explicitly enabled |
+
+Offline modes never construct the OpenAI client, even if API-key environment variables are present. Live configuration is validated before the application accepts traffic. The reusable live client is closed when the application shuts down.
+
+Approved live runtime failures such as timeout, rate limit, provider unavailability, invalid JSON, or schema failure return HTTP 200 through deterministic rule fallback. The response records the real path in `analysis_result.metadata`.
+
+Non-fallback provider errors use stable transport responses without returning secret values or raw provider errors:
+
+| Provider failure | HTTP status | Public error code |
+|---|---:|---|
+| Authentication failure | 503 | `authentication_error` |
+| Runtime configuration failure | 503 | `configuration_error` |
+| Unexpected client failure | 500 | `internal_error` |
+
 ## Day 3 analysis contract update
 
 The authoritative `analysis_result` structure is now nested:
@@ -22,6 +44,7 @@ analysis_result
 |- recommended_action
 |- followup_email_draft
 `- metadata
+   |- execution_mode
    |- analysis_method
    |- recommendation_method
    |- retrieval_method
@@ -39,11 +62,12 @@ Current downstream paths are:
 analysis_result.decision.lead_score
 analysis_result.decision.intent_level
 analysis_result.decision.disposition
+analysis_result.metadata.execution_mode
 analysis_result.metadata.analysis_method
 analysis_result.metadata.fallback_reason
 ```
 
-Current analysis methods are `llm_features` and `rule_features`; `demo_fixture` is reserved for the explicit demo mode. When LLM feature extraction fails, the response schema stays unchanged and metadata records `rule_features` plus a server-owned fallback reason.
+Current execution modes are `demo`, `live`, and `rule_only`. Current analysis methods are `llm_features`, `demo_fixture`, and `rule_features`. When live LLM feature extraction fails, the response schema stays unchanged and metadata records `execution_mode=live`, `analysis_method=rule_features`, and a server-owned fallback reason.
 
 The older flat examples later in this document are retained only as Day 2 history and are superseded by this section.
 

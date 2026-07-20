@@ -6,6 +6,7 @@ from lead_cleaner.schemas.policy import LeadDecision, LeadFeatures, SecuritySign
 
 
 AnalysisMethod = Literal["llm_features", "demo_fixture", "rule_features"]
+ExecutionMode = Literal["demo", "live", "rule_only"]
 RecommendationMethod = Literal[
     "llm_grounded",
     "demo_template",
@@ -26,6 +27,7 @@ class AnalysisMetadata(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    execution_mode: ExecutionMode
     analysis_method: AnalysisMethod
     recommendation_method: RecommendationMethod
     retrieval_method: RetrievalMethod
