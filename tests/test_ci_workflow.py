@@ -18,8 +18,8 @@ def test_ci_workflow_is_an_offline_python_312_quality_gate() -> None:
     assert quality["runs-on"] == "ubuntu-latest"
     assert env["APP_MODE"] == "demo"
     assert env["ALLOW_NETWORK"] == "false"
-    assert env["RAG_BACKEND"] == "keyword_rrf"
-    assert env["RAG_REQUIRED"] == "true"
+    assert "RAG_BACKEND" not in env
+    assert "RAG_REQUIRED" not in env
     assert env["OPENAI_API_KEY"] == ""
     assert env["DEEPSEEK_API_KEY"] == ""
     assert env["NOTION_API_KEY"] == ""
@@ -32,3 +32,7 @@ def test_ci_workflow_is_an_offline_python_312_quality_gate() -> None:
     assert "python -m pytest -q" in step_text
     assert "python scripts/ci_offline_smoke.py" in step_text
     assert "${{ secrets." not in text
+
+    smoke_step = next(step for step in steps if step["name"] == "Offline demo smoke")
+    assert smoke_step["env"]["RAG_BACKEND"] == "keyword_rrf"
+    assert smoke_step["env"]["RAG_REQUIRED"] == "true"

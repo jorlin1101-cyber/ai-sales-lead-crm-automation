@@ -14,8 +14,6 @@ jobs:
     env:
       APP_MODE: demo
       ALLOW_NETWORK: "false"
-      RAG_BACKEND: keyword_rrf
-      RAG_REQUIRED: "true"
       OPENAI_API_KEY: ""
       OPENAI_MODEL: ""
       DEEPSEEK_API_KEY: ""
@@ -53,4 +51,7 @@ jobs:
         run: python -m pytest -q
 
       - name: Offline demo smoke
+        env:
+          RAG_BACKEND: keyword_rrf
+          RAG_REQUIRED: "true"
         run: python scripts/ci_offline_smoke.py
