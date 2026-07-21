@@ -9,9 +9,7 @@ from lead_cleaner.rag.schemas import KnowledgeChunk, RetrievedChunk
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CHUNKS_PATH = (
-    PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
-)
+DEFAULT_CHUNKS_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
 
 
 DEMO_QUERIES = [

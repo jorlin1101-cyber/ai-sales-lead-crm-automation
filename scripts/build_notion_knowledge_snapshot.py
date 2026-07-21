@@ -19,9 +19,7 @@ DEFAULT_MANIFEST_PATH = PROJECT_ROOT / "config" / "knowledge_manifest.yml"
 DEFAULT_PAGE_ID_MAP_PATH = (
     PROJECT_ROOT / "data" / "knowledge_snapshot" / "notion_page_tree_ids.json"
 )
-DEFAULT_OUTPUT_PATH = (
-    PROJECT_ROOT / "data" / "knowledge_snapshot" / "notion_pages.json"
-)
+DEFAULT_OUTPUT_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "notion_pages.json"
 
 
 def get_required_env(name: str) -> str:
@@ -79,9 +77,7 @@ def build_knowledge_snapshot(
         page_id = page_id_map.get(source_path)
 
         if not page_id:
-            raise ValueError(
-                f"Missing Notion page id for manifest source_path: {source_path}"
-            )
+            raise ValueError(f"Missing Notion page id for manifest source_path: {source_path}")
 
         document = build_knowledge_document_for_source_path(
             source_path=source_path,
@@ -107,10 +103,7 @@ def save_knowledge_documents(
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    serialized_documents = [
-        knowledge_document_to_dict(document)
-        for document in documents
-    ]
+    serialized_documents = [knowledge_document_to_dict(document) for document in documents]
 
     output_path.write_text(
         json.dumps(

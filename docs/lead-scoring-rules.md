@@ -6,6 +6,10 @@
 
 # 我的新判断
 
+> **历史文档（已被替代）：** 本文包含早期评分探索和已经删除的 `LeadScoreResult` / `scoring.py`。当前唯一正式评分实现为 `services/policy_v1.py`，规则以其测试为准。
+
+> **历史文档（已被替代）：** 本文包含早期评分探索和已经删除的 `LeadScoreResult` / `scoring.py`。当前唯一正式评分实现为 `services/policy_v1.py`，规则以其测试为准。
+
 你的 `LeadScoreResult` 现在用：
 
 ```python

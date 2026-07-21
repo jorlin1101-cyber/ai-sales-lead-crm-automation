@@ -48,6 +48,7 @@ _BACKOFF_BASE = 1.0  # seconds
 # Resilient HTTP request helper
 # ---------------------------------------------------------------------------
 
+
 def _request(
     client: httpx.Client,
     headers: dict[str, str],
@@ -93,10 +94,7 @@ def _request(
                     f"{_MAX_RETRY_5XX} retries: {response.text}"
                 )
             wait = _BACKOFF_BASE * (2 ** (retries_5xx - 1))
-            print(
-                f"  [retry] {response.status_code} — "
-                f"waiting {wait:.1f}s (retry {retries_5xx})"
-            )
+            print(f"  [retry] {response.status_code} — waiting {wait:.1f}s (retry {retries_5xx})")
             time.sleep(wait)
             continue
 
@@ -117,6 +115,7 @@ def _parse_retry_after(response: httpx.Response) -> float:
 # ---------------------------------------------------------------------------
 # Notion API helpers
 # ---------------------------------------------------------------------------
+
 
 def _notion_headers(api_key: str) -> dict[str, str]:
     """Standard Notion API headers."""
@@ -147,8 +146,7 @@ def _list_child_blocks(
         )
         if response.status_code != 200:
             raise RuntimeError(
-                f"Failed to list children of {block_id}: "
-                f"{response.status_code} {response.text}"
+                f"Failed to list children of {block_id}: {response.status_code} {response.text}"
             )
         data = response.json()
         results.extend(data.get("results", []))
@@ -174,8 +172,7 @@ def _get_page_title(
     )
     if response.status_code != 200:
         raise RuntimeError(
-            f"Failed to retrieve page {page_id}: "
-            f"{response.status_code} {response.text}"
+            f"Failed to retrieve page {page_id}: {response.status_code} {response.text}"
         )
 
     data = response.json()
@@ -185,9 +182,7 @@ def _get_page_title(
         if prop_value.get("type") == "title":
             title_parts = prop_value.get("title", [])
             if title_parts:
-                return "".join(
-                    part.get("plain_text", "") for part in title_parts
-                )
+                return "".join(part.get("plain_text", "") for part in title_parts)
 
     raise RuntimeError(f"Could not find title property on page {page_id}")
 
@@ -195,6 +190,7 @@ def _get_page_title(
 # ---------------------------------------------------------------------------
 # Recursive discovery
 # ---------------------------------------------------------------------------
+
 
 def _discover_recursive(
     client: httpx.Client,
@@ -302,6 +298,7 @@ def _discover_dry_run(root_name: str, root_id: str) -> dict[str, str]:
 # Setup
 # ---------------------------------------------------------------------------
 
+
 def _validate_env() -> tuple[str, str]:
     """Read and validate environment variables. Returns (api_key, root_id)."""
     api_key = os.getenv("NOTION_API_KEY")
@@ -329,6 +326,7 @@ def _is_dry_run(api_key: str) -> bool:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     """Recursively discover the Notion knowledge base page tree."""

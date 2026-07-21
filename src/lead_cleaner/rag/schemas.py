@@ -9,8 +9,37 @@ This module will define Pydantic models for:
 """
 
 # ─── Pydantic models will be added in subsequent commits ───
-from typing import Literal, Any
-from pydantic import BaseModel, Field
+from typing import Any, Literal
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from lead_cleaner.schemas.policy import CustomerKind, Destination
+
+
+RetrievalTopic = Literal[
+    "pricing",
+    "payment_policy",
+    "travel_permit",
+    "family_travel",
+    "cultural_experience",
+    "trip_duration",
+    "flexible_pacing",
+    "private_custom",
+    "availability",
+    "partnership",
+]
+
+
+class RetrievalIntent(BaseModel):
+    """Deterministic, retrieval-only facts derived from a cleaned lead."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    customer_kind: CustomerKind
+    destinations: list[Destination] = Field(default_factory=list, max_length=10)
+    group_size: int | None = Field(default=None, ge=1, le=10000)
+    topic_codes: list[RetrievalTopic] = Field(default_factory=list, max_length=10)
+    language: str = Field(default="unknown", min_length=2, max_length=30)
 
 
 class RawNotionPage(BaseModel):
@@ -20,7 +49,6 @@ class RawNotionPage(BaseModel):
     raw_text: str = Field(min_length=1)
     raw_blocks: list[dict[str, Any]]
     last_edited_time: str = Field(min_length=1)
-
 
 
 class KnowledgeDocument(BaseModel):

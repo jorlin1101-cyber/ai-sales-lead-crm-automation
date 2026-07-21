@@ -11,9 +11,7 @@ from lead_cleaner.rag.schemas import KnowledgeChunk
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CHUNKS_PATH = (
-    PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
-)
+DEFAULT_CHUNKS_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
 
 
 DEMO_QUERIES = [
@@ -61,11 +59,16 @@ def print_results_for_query(
     for result in results:
         print(
             result.rank,
-            "| score=", round(result.score, 4),
-            "|", result.doc_type,
-            "|", result.region,
-            "|", result.source_title,
-            "|", result.section,
+            "| score=",
+            round(result.score, 4),
+            "|",
+            result.doc_type,
+            "|",
+            result.region,
+            "|",
+            result.source_title,
+            "|",
+            result.section,
         )
 
 

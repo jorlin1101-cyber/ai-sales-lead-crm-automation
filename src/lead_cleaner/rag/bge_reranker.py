@@ -120,9 +120,7 @@ class BgeReranker:
                 raise RuntimeError(f"Rerank response index out of range: {index}")
 
             if not isinstance(relevance_score, int | float):
-                raise RuntimeError(
-                    "Rerank response item must contain numeric relevance_score."
-                )
+                raise RuntimeError("Rerank response item must contain numeric relevance_score.")
 
             scored_candidates.append(
                 (
@@ -131,9 +129,7 @@ class BgeReranker:
                 )
             )
 
-        scored_candidates.sort(
-            key=lambda item: (-item[1], item[0].rank, item[0].chunk_id)
-        )
+        scored_candidates.sort(key=lambda item: (-item[1], item[0].rank, item[0].chunk_id))
 
         return [
             _copy_as_rerank_result(

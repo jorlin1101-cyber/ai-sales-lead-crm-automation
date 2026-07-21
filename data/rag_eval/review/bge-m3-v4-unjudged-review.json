@@ -1,0 +1,418 @@
+{
+  "review_schema_version": "rag-unjudged-review-v1",
+  "source_report": "reports/rag-eval-bge-m3-v4-20260721.json",
+  "evaluation_path": "runtime_fused_query",
+  "label_contract_version": "paired-graded-relevance-v2",
+  "dataset_sha256": "d0331383cc972035959de5fea55b89e5a8c37e144206ed7203ccef88202e5e6e",
+  "knowledge_sha256": "db438bcf4b45a93b749edb081b74abb75fe9020863f9ef59590ee54d6c7ed6d3",
+  "grading_guide": {
+    "3": "Directly and sufficiently answers the full query, including all core facets.",
+    "2": "Provides clearly useful but incomplete or supporting information.",
+    "1": "Is topically related but offers little practical help.",
+    "0": "Has been reviewed and is irrelevant to the query facets."
+  },
+  "review_instructions": [
+    "Fill review.relevance_grade with 0, 1, 2, or 3.",
+    "Use an empty covers_facets list for grade 0.",
+    "For grades 1, 2, or 3, select one or more facet_id values listed on the item.",
+    "Write a short evidence-based reason for every judgment."
+  ],
+  "item_count": 13,
+  "items": [
+    {
+      "review_id": "payment_policy_001::chunk_275d951a1103",
+      "query_id": "payment_policy_001",
+      "query": "When do clients need to pay the deposit and final balance?",
+      "language": "en",
+      "query_type": "single_intent",
+      "facets": [
+        {
+          "facet_id": "payment_schedule",
+          "description": "State when the deposit and remaining balance are due."
+        }
+      ],
+      "retrieval_queries": [
+        "When do clients need to pay the deposit and final balance?",
+        "traveler | payment policy deposit final balance"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_275d951a1103",
+      "source_title": "Travel Permit and Payment FAQ",
+      "section": "Sales Notes",
+      "chunk_text": "# Travel Permit and Payment FAQ\n## Sales Notes\n- Always remind clients about the permit timeline at the first email. Many Tibet trip cancellations happen because clients didn't know about the 3-week lead time.\n- For western Sichuan, Yunnan, and other non-Tibet destinations: no special permits needed — standard tourist visa is sufficient.\n- Group booking payments: for agency groups, we can issue a single invoice for the entire group. We do not split invoices per traveller.\n- If a client asks about last-minute Tibet travel (<14 days), be honest about feasibility — express permit processing is sometimes possible but not guaranteed and costs extra.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只说明团体统一开票等销售事项，没有说明定金和尾款的支付时间。"
+      }
+    },
+    {
+      "review_id": "yunnan_family_001::chunk_002f31150e91",
+      "query_id": "yunnan_family_001",
+      "query": "Is Yunnan good for families with children?",
+      "language": "en",
+      "query_type": "single_intent",
+      "facets": [
+        {
+          "facet_id": "family_fit",
+          "description": "Explain whether Yunnan is suitable for families with children."
+        }
+      ],
+      "retrieval_queries": [
+        "Is Yunnan good for families with children?",
+        "individual traveler | destinations Yunnan | family children suitable tour"
+      ],
+      "rank": 2,
+      "chunk_id": "chunk_002f31150e91",
+      "source_title": "Yunnan Family Tour",
+      "section": "Pricing Notes",
+      "chunk_text": "# Yunnan Family Tour\n## Pricing Notes\n- Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents.\n- Hotel level: 4–5 star preferred for family travellers; Western-brand hotels available in major cities.\n- Private vehicle with driver-guide recommended for families — adds cost but greatly improves convenience.\n- Internal flights (Kunming–Shangri-La or Lijiang–Kunming) can reduce travel time but increase budget.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "儿童折扣、家庭酒店和私人车辆说明该产品对家庭友好，但没有直接给出云南适合儿童的完整结论。"
+      }
+    },
+    {
+      "review_id": "tibet_culture_001::chunk_76637fb2f2a9",
+      "query_id": "tibet_culture_001",
+      "query": "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+      "language": "en",
+      "query_type": "fuzzy",
+      "facets": [
+        {
+          "facet_id": "tibetan_cultural_experience",
+          "description": "Recommend meaningful Tibetan cultural experiences."
+        }
+      ],
+      "retrieval_queries": [
+        "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+        "individual traveler | destinations Tibet | cultural journey local experiences"
+      ],
+      "rank": 2,
+      "chunk_id": "chunk_76637fb2f2a9",
+      "source_title": "Tibet Cultural Tour",
+      "section": "Sales Follow-up Notes",
+      "chunk_text": "# Tibet Cultural Tour\n## Sales Follow-up Notes\n- Remind clients well in advance: Tibet Travel Permit requires passport scan at least 14 working days before departure.\n- Confirm whether the client requires the alien travel permit for areas beyond Lhasa (Nagari, Mount Kailash).\n- Ask about any health concerns related to high altitude (Lhasa 3650 m, EBC 5200 m).\n- Agency clients: clarify if they need the guide to meet the group at Lhasa airport or join from Chengdu.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只讲许可证、健康和接团安排，没有介绍有意义的藏族文化体验。"
+      }
+    },
+    {
+      "review_id": "trip_duration_001::chunk_7eca38e94502",
+      "query_id": "trip_duration_001",
+      "query": "How many days do travelers usually need for a Yunnan family trip?",
+      "language": "en",
+      "query_type": "single_intent",
+      "facets": [
+        {
+          "facet_id": "trip_duration",
+          "description": "State the typical duration of a Yunnan family trip."
+        }
+      ],
+      "retrieval_queries": [
+        "How many days do travelers usually need for a Yunnan family trip?",
+        "individual traveler | destinations Yunnan | family children suitable tour | typical trip duration number of days"
+      ],
+      "rank": 2,
+      "chunk_id": "chunk_7eca38e94502",
+      "source_title": "Travel Permit and Payment FAQ",
+      "section": "Common Questions",
+      "chunk_text": "# Travel Permit and Payment FAQ\n## Common Questions\n- Q: Do I need a permit to travel to Tibet? A: Yes, all foreign travellers need a Tibet Travel Permit (TTP) processed through a licensed travel agency.\n- Q: How long does the Tibet permit take? A: The permit processing takes 10–14 working days. We need a clear passport scan at least 3 weeks before the planned entry date.\n- Q: What payment methods do you accept? A: We accept bank wire transfer, PayPal (4% surcharge), and Alipay. Credit card payments processed through Stripe for most currencies.\n- Q: What is the deposit and cancellation policy? A: 30% deposit confirms the booking. Balance due 14 days before arrival. Free cancellation 30+ days before departure.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段中的天数是西藏许可证办理时间，不是云南家庭旅行的典型行程天数。"
+      }
+    },
+    {
+      "review_id": "trip_duration_001::chunk_275d951a1103",
+      "query_id": "trip_duration_001",
+      "query": "How many days do travelers usually need for a Yunnan family trip?",
+      "language": "en",
+      "query_type": "single_intent",
+      "facets": [
+        {
+          "facet_id": "trip_duration",
+          "description": "State the typical duration of a Yunnan family trip."
+        }
+      ],
+      "retrieval_queries": [
+        "How many days do travelers usually need for a Yunnan family trip?",
+        "individual traveler | destinations Yunnan | family children suitable tour | typical trip duration number of days"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_275d951a1103",
+      "source_title": "Travel Permit and Payment FAQ",
+      "section": "Sales Notes",
+      "chunk_text": "# Travel Permit and Payment FAQ\n## Sales Notes\n- Always remind clients about the permit timeline at the first email. Many Tibet trip cancellations happen because clients didn't know about the 3-week lead time.\n- For western Sichuan, Yunnan, and other non-Tibet destinations: no special permits needed — standard tourist visa is sufficient.\n- Group booking payments: for agency groups, we can issue a single invoice for the entire group. We do not split invoices per traveller.\n- If a client asks about last-minute Tibet travel (<14 days), be honest about feasibility — express permit processing is sometimes possible but not guaranteed and costs extra.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段讨论许可证和开票事项，没有回答云南家庭旅行需要多少天。"
+      }
+    },
+    {
+      "review_id": "fuzzy_family_pace_001::chunk_ae2e88eeb34f",
+      "query_id": "fuzzy_family_pace_001",
+      "query": "We want a trip that is not too rushed and works well for children.",
+      "language": "en",
+      "query_type": "fuzzy",
+      "facets": [
+        {
+          "facet_id": "family_fit",
+          "description": "Identify a trip suitable for children."
+        },
+        {
+          "facet_id": "relaxed_pace",
+          "description": "Identify an itinerary that can avoid a rushed pace."
+        }
+      ],
+      "retrieval_queries": [
+        "We want a trip that is not too rushed and works well for children.",
+        "traveler | family children suitable tour | flexible pacing not rushed"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_ae2e88eeb34f",
+      "source_title": "Western Sichuan Destination Overview",
+      "section": "Sales Follow-up Notes",
+      "chunk_text": "# Western Sichuan Destination Overview\n## Sales Follow-up Notes\n- For agency clients, highlight that western Sichuan offers 'Tibet-lite' culture with easier logistics and no permit delays.\n- Ask whether the group is comfortable with daily driving distances of 4–6 hours on mountain roads.\n- Recommend a minimum of 8 days to do a proper loop without rushing the itinerary.\n- Spring (May–June) is the best compromise between good weather and off-peak pricing — suggest this window to price-sensitive groups.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 2,
+        "covers_facets": [
+          "relaxed_pace"
+        ],
+        "reason": "至少安排八天可以避免赶行程，能支持轻松节奏需求，但没有说明是否适合儿童，未完整回答整个问题。"
+      }
+    },
+    {
+      "review_id": "fuzzy_culture_depth_001::chunk_43af7738e91e",
+      "query_id": "fuzzy_culture_depth_001",
+      "query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+      "language": "en",
+      "query_type": "fuzzy",
+      "facets": [
+        {
+          "facet_id": "tibetan_culture_depth",
+          "description": "Identify a deeper Tibetan cultural experience rather than generic sightseeing."
+        }
+      ],
+      "retrieval_queries": [
+        "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+        "individual traveler | destinations Tibet | cultural journey local experiences"
+      ],
+      "rank": 2,
+      "chunk_id": "chunk_43af7738e91e",
+      "source_title": "Tibet Cultural Tour",
+      "section": "Pricing Notes",
+      "chunk_text": "# Tibet Cultural Tour\n## Pricing Notes\n- Tibet tour pricing is higher than western Sichuan due to mandatory guided tour requirement and permit processing fees.\n- Group size affects per-person land cost significantly — 4–6 pax is the sweet spot for cost and comfort.\n- Hotel level options: comfortable 3-star in Lhasa city, basic guesthouses in remote areas (no 5-star outside Lhasa).\n- Vehicle: 4WD Land Cruiser or similar required for EBC extension; standard minibus for Lhasa–Shigatse highway sections.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 1,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "片段与西藏旅行相关，但主要讲价格、酒店和车辆，对深度藏族文化体验仅有很弱的帮助。"
+      }
+    },
+    {
+      "review_id": "fuzzy_culture_depth_001::chunk_9bf5678be357",
+      "query_id": "fuzzy_culture_depth_001",
+      "query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+      "language": "en",
+      "query_type": "fuzzy",
+      "facets": [
+        {
+          "facet_id": "tibetan_culture_depth",
+          "description": "Identify a deeper Tibetan cultural experience rather than generic sightseeing."
+        }
+      ],
+      "retrieval_queries": [
+        "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+        "individual traveler | destinations Tibet | cultural journey local experiences"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_9bf5678be357",
+      "source_title": "Western Sichuan Destination Overview",
+      "section": "Best For",
+      "chunk_text": "# Western Sichuan Destination Overview\n## Best For\n- Travellers seeking a Tibetan cultural experience without the full permit complexity of the Tibet Autonomous Region.\n- Nature and photography enthusiasts — the landscape diversity rivals any destination in China.\n- Small private groups wanting a customisable road trip itinerary with moderate infrastructure.\n- Agency clients looking for a unique product that combines Tibetan culture, mountain scenery, and accessible logistics.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "片段提供四川西部藏族文化体验这一替代方案，但目的地不是客户明确询问的西藏，也未提供深入的文化行程细节。"
+      }
+    },
+    {
+      "review_id": "multi_family_price_001::chunk_3ccc6d609841",
+      "query_id": "multi_family_price_001",
+      "query": "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+      "language": "en",
+      "query_type": "multi_intent",
+      "facets": [
+        {
+          "facet_id": "family_fit",
+          "description": "Confirm that the Yunnan trip is suitable for a family."
+        },
+        {
+          "facet_id": "quote_drivers",
+          "description": "Explain what affects the final Yunnan quotation."
+        }
+      ],
+      "retrieval_queries": [
+        "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+        "individual traveler | destinations Yunnan | pricing quotation cost factors | family children suitable tour"
+      ],
+      "rank": 2,
+      "chunk_id": "chunk_3ccc6d609841",
+      "source_title": "Yunnan Destination Overview",
+      "section": "Sales Follow-up Notes",
+      "chunk_text": "# Yunnan Destination Overview\n## Sales Follow-up Notes\n- For family groups, suggest the 'Dali + Lijiang' combo as the core with optional Shangri-La extension if the family wants a Tibetan experience.\n- Ask whether the group prefers boutique guesthouses (more character) or standard hotels (more predictable comfort).\n- For agency clients, emphasise that Yunnan works well as a standalone destination or paired with a Yangtse River cruise or Xi'an.\n- Winter family travellers: recommend Kunming + Dali only; Shangri-La may be too cold for children and elderly.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "片段给家庭提供云南路线和季节建议，能支持家庭适配判断，但没有解释最终报价因素，未完整回答多意图问题。"
+      }
+    },
+    {
+      "review_id": "payment_before_arrival_001::chunk_76637fb2f2a9",
+      "query_id": "payment_before_arrival_001",
+      "query": "Do clients need to pay everything before they arrive in China?",
+      "language": "en",
+      "query_type": "single_intent",
+      "facets": [
+        {
+          "facet_id": "payment_timing",
+          "description": "Explain whether full payment is due before arrival."
+        }
+      ],
+      "retrieval_queries": [
+        "Do clients need to pay everything before they arrive in China?",
+        "individual traveler | destinations China | payment policy deposit final balance"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_76637fb2f2a9",
+      "source_title": "Tibet Cultural Tour",
+      "section": "Sales Follow-up Notes",
+      "chunk_text": "# Tibet Cultural Tour\n## Sales Follow-up Notes\n- Remind clients well in advance: Tibet Travel Permit requires passport scan at least 14 working days before departure.\n- Confirm whether the client requires the alien travel permit for areas beyond Lhasa (Nagari, Mount Kailash).\n- Ask about any health concerns related to high altitude (Lhasa 3650 m, EBC 5200 m).\n- Agency clients: clarify if they need the guide to meet the group at Lhasa airport or join from Chengdu.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只涉及许可证、健康和接团安排，没有说明客户是否需要在抵达中国前付清费用。"
+      }
+    },
+    {
+      "review_id": "payment_deposit_balance_002::chunk_275d951a1103",
+      "query_id": "payment_deposit_balance_002",
+      "query": "Can the client pay a deposit first and settle the remaining balance later?",
+      "language": "en",
+      "query_type": "single_intent",
+      "facets": [
+        {
+          "facet_id": "payment_schedule",
+          "description": "Explain whether a deposit can be paid before the remaining balance."
+        }
+      ],
+      "retrieval_queries": [
+        "Can the client pay a deposit first and settle the remaining balance later?",
+        "traveler | payment policy deposit final balance"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_275d951a1103",
+      "source_title": "Travel Permit and Payment FAQ",
+      "section": "Sales Notes",
+      "chunk_text": "# Travel Permit and Payment FAQ\n## Sales Notes\n- Always remind clients about the permit timeline at the first email. Many Tibet trip cancellations happen because clients didn't know about the 3-week lead time.\n- For western Sichuan, Yunnan, and other non-Tibet destinations: no special permits needed — standard tourist visa is sufficient.\n- Group booking payments: for agency groups, we can issue a single invoice for the entire group. We do not split invoices per traveller.\n- If a client asks about last-minute Tibet travel (<14 days), be honest about feasibility — express permit processing is sometimes possible but not guaranteed and costs extra.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只提到团体统一开票，没有说明客户能否先付定金再支付剩余尾款。"
+      }
+    },
+    {
+      "review_id": "region_tibetan_culture_not_lhasa_001::chunk_43af7738e91e",
+      "query_id": "region_tibetan_culture_not_lhasa_001",
+      "query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+      "language": "en",
+      "query_type": "multi_intent",
+      "facets": [
+        {
+          "facet_id": "tibetan_culture",
+          "description": "Identify a product focused on Tibetan culture."
+        },
+        {
+          "facet_id": "beyond_lhasa",
+          "description": "Identify experiences and routes that extend beyond standard Lhasa sightseeing."
+        }
+      ],
+      "retrieval_queries": [
+        "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+        "individual traveler | destinations Tibet | cultural journey local experiences"
+      ],
+      "rank": 3,
+      "chunk_id": "chunk_43af7738e91e",
+      "source_title": "Tibet Cultural Tour",
+      "section": "Pricing Notes",
+      "chunk_text": "# Tibet Cultural Tour\n## Pricing Notes\n- Tibet tour pricing is higher than western Sichuan due to mandatory guided tour requirement and permit processing fees.\n- Group size affects per-person land cost significantly — 4–6 pax is the sweet spot for cost and comfort.\n- Hotel level options: comfortable 3-star in Lhasa city, basic guesthouses in remote areas (no 5-star outside Lhasa).\n- Vehicle: 4WD Land Cruiser or similar required for EBC extension; standard minibus for Lhasa–Shigatse highway sections.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 2,
+        "covers_facets": [
+          "beyond_lhasa"
+        ],
+        "reason": "片段提到珠峰大本营及拉萨至日喀则等拉萨以外路线，但没有介绍藏族文化体验内容，无法完整回答客户的两个需求。"
+      }
+    },
+    {
+      "review_id": "zh_yunnan_family_001::chunk_002f31150e91",
+      "query_id": "zh_yunnan_family_001",
+      "query": "云南适合带小朋友去吗？我们不想行程太赶。",
+      "language": "zh",
+      "query_type": "cross_lingual",
+      "facets": [
+        {
+          "facet_id": "family_fit",
+          "description": "确认云南是否适合带小朋友的家庭。"
+        },
+        {
+          "facet_id": "relaxed_pace",
+          "description": "确认行程是否可以安排得比较轻松。"
+        }
+      ],
+      "retrieval_queries": [
+        "云南适合带小朋友去吗？我们不想行程太赶。",
+        "individual traveler | destinations Yunnan | family children suitable tour | flexible pacing not rushed"
+      ],
+      "rank": 2,
+      "chunk_id": "chunk_002f31150e91",
+      "source_title": "Yunnan Family Tour",
+      "section": "Pricing Notes",
+      "chunk_text": "# Yunnan Family Tour\n## Pricing Notes\n- Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents.\n- Hotel level: 4–5 star preferred for family travellers; Western-brand hotels available in major cities.\n- Private vehicle with driver-guide recommended for families — adds cost but greatly improves convenience.\n- Internal flights (Kunming–Shangri-La or Lijiang–Kunming) can reduce travel time but increase budget.",
+      "current_status": "reviewed",
+      "review": {
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "儿童折扣、家庭酒店和私人车辆支持家庭出行，内部航班也能缩短交通时间，但没有直接给出完整的适合性和轻松行程结论。"
+      }
+    }
+  ]
+}

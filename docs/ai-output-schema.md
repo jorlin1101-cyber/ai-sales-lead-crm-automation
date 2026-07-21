@@ -1,5 +1,16 @@
 # AI 输出结构设计
 
+> **历史文档（已被替代）：** 本文记录旧版“AI 直接输出评分”的设计。当前正式契约以 `schemas/policy.py`、`schemas/ai_output.py` 和 `docs/api-contract.md` 顶部的 Day 3 结构为准。
+
+> **历史文档（已被替代）：** 本文记录旧版“AI 直接输出评分”的设计。当前正式契约以 `schemas/policy.py`、`schemas/ai_output.py` 和 `docs/api-contract.md` 顶部的 Day 3 结构为准。
+
+> [!IMPORTANT]
+> 本文件记录 Contract V2 之前的历史 AI 输出设计，不是当前 API 契约。
+> 当前可执行契约以 `docs/api-contract.md` 和 Pydantic OpenAPI schema 为准；其中使用
+> `lead_subtype`、`followup_email_draft` 等字段。Day 3 将进一步用
+> `LeadFeatures → PolicyV1 → LeadDecision` 替换当前过渡分析结构。在完成 Day 3 前，
+> n8n、CRM 和新代码不得根据本文件中的 `b2b_category` 或 `follow_up_email` 新增映射。
+
 ## 1. 文件目的
 
 本文档用于定义 AI Lead Analysis 节点的结构化输出格式。

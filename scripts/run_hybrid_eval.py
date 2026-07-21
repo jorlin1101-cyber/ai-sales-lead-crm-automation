@@ -1,137 +1,81 @@
-import json
+import argparse
 from pathlib import Path
 
-from lead_cleaner.rag.bm25_retriever import build_bm25_index
-from lead_cleaner.rag.demo_embedding_provider import KeywordEmbeddingProvider
-from lead_cleaner.rag.dense_retriever import build_dense_index
-from lead_cleaner.rag.eval_runner import has_expected_match, evaluate_match_detail
-from lead_cleaner.rag.eval_schemas import RagEvalCase
-from lead_cleaner.rag.hybrid_retriever import retrieve_hybrid
-from lead_cleaner.rag.schemas import KnowledgeChunk, RetrievedChunk
+from lead_cleaner.rag.evaluation_report import (
+    run_keyword_evaluation,
+    write_evaluation_report,
+)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CHUNKS_PATH = (
-    PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
-)
+DEFAULT_CHUNKS_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
 DEFAULT_EVAL_QUERIES_PATH = PROJECT_ROOT / "data" / "rag_eval" / "eval_queries.json"
+DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "rag-eval-v4-20260721.json"
 
 
-def load_knowledge_chunks(chunks_path: Path) -> list[KnowledgeChunk]:
-    if not chunks_path.exists():
-        raise FileNotFoundError(f"Knowledge chunks file not found: {chunks_path}")
-
-    raw_chunks = json.loads(chunks_path.read_text(encoding="utf-8"))
-
-    if not isinstance(raw_chunks, list):
-        raise ValueError("Knowledge chunks file must contain a JSON list.")
-
-    return [KnowledgeChunk(**item) for item in raw_chunks]
-
-
-def load_eval_cases(eval_queries_path: Path) -> list[RagEvalCase]:
-    if not eval_queries_path.exists():
-        raise FileNotFoundError(f"Eval queries file not found: {eval_queries_path}")
-
-    raw_eval_cases = json.loads(eval_queries_path.read_text(encoding="utf-8"))
-
-    if not isinstance(raw_eval_cases, list):
-        raise ValueError("Eval queries file must contain a JSON list.")
-
-    return [RagEvalCase(**item) for item in raw_eval_cases]
-
-
-def print_retrieved_results(
-    results: list[RetrievedChunk],
-    eval_case: RagEvalCase,
-) -> None:
-    for result in results:
-        detail = evaluate_match_detail(result=result, eval_case=eval_case)
-
-        print(
-            f"    {result.rank}. "
-            f"score={result.score:.6f} | "
-            f"{result.doc_type} | "
-            f"{result.region} | "
-            f"{result.source_title} | "
-            f"{result.section} | "
-            f"doc_type_hit={detail.doc_type_hit} | "
-            f"region_hit={detail.region_hit} | "
-            f"source_title_hit={detail.source_title_hit} | "
-            f"section_hit={detail.section_hit} | "
-            f"overall_match={detail.overall_match}"
-        )
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run the frozen offline keyword-RRF evaluation.",
+    )
+    parser.add_argument("--chunks", type=Path, default=DEFAULT_CHUNKS_PATH)
+    parser.add_argument("--queries", type=Path, default=DEFAULT_EVAL_QUERIES_PATH)
+    parser.add_argument("--output", type=Path, default=DEFAULT_REPORT_PATH)
+    return parser.parse_args()
 
 
 def main() -> None:
-    eval_cases = load_eval_cases(DEFAULT_EVAL_QUERIES_PATH)
-    chunks = load_knowledge_chunks(DEFAULT_CHUNKS_PATH)
-
-    provider = KeywordEmbeddingProvider()
-    bm25_index = build_bm25_index(chunks)
-    dense_index = build_dense_index(
-        chunks=chunks,
-        embedding_provider=provider,
+    args = parse_args()
+    report = run_keyword_evaluation(
+        chunks_path=args.chunks,
+        eval_queries_path=args.queries,
     )
+    write_evaluation_report(report, args.output)
 
-    top_1_hits = 0
-    top_3_hits = 0
-
-    print("Loaded eval cases:", len(eval_cases))
-    print("Loaded chunks:", len(chunks))
-    print("Embedding provider:", provider.model_name)
+    raw_metrics = report["evaluations"]["raw_query"]["metrics"]
+    runtime_metrics = report["evaluations"]["runtime_rule_query"]["metrics"]
+    fused_metrics = report["evaluations"]["runtime_fused_query"]["metrics"]
+    raw_direct = raw_metrics["direct"]
+    raw_source = raw_metrics["source"]
+    runtime_direct = runtime_metrics["direct"]
+    runtime_source = runtime_metrics["source"]
+    fused_direct = fused_metrics["direct"]
+    fused_source = fused_metrics["source"]
+    print(f"Report: {args.output}")
+    print(f"Total eval cases: {raw_direct['top_1_total']}")
     print(
-        "\nNOTE: This eval uses KeywordEmbeddingProvider. "
-        "It validates retrieval pipeline behavior, not real semantic quality."
+        "Raw query direct-answer hits: "
+        f"Top 1 {raw_direct['top_1_hits']}/{raw_direct['top_1_total']}, "
+        f"Top 3 {raw_direct['top_3_hits']}/{raw_direct['top_3_total']}"
     )
-
-    for eval_case in eval_cases:
-        results = retrieve_hybrid(
-            query=eval_case.query,
-            bm25_index=bm25_index,
-            dense_index=dense_index,
-            embedding_provider=provider,
-            top_k=3,
-            candidate_top_k=5,
-        )
-
-        top_1_hit = has_expected_match(
-            results=results,
-            eval_case=eval_case,
-            top_k=1,
-        )
-        top_3_hit = has_expected_match(
-            results=results,
-            eval_case=eval_case,
-            top_k=3,
-        )
-
-        if top_1_hit:
-            top_1_hits += 1
-
-        if top_3_hit:
-            top_3_hits += 1
-
-        print("\n" + "=" * 100)
-        print(f"Query ID: {eval_case.query_id}")
-        print(f"Query: {eval_case.query}")
-        print(f"Expected doc_type: {eval_case.expected_doc_type}")
-        print(f"Expected region: {eval_case.expected_region}")
-        print(f"Expected source_titles: {eval_case.expected_source_titles}")
-        print(f"Expected sections: {eval_case.expected_sections}")
-        print(f"top_1_hit: {top_1_hit}")
-        print(f"top_3_hit: {top_3_hit}")
-        print("Results:")
-        print_retrieved_results(results=results, eval_case=eval_case)
-
-    total = len(eval_cases)
-
-    print("\n" + "=" * 100)
-    print("SUMMARY")
-    print(f"Total eval cases: {total}")
-    print(f"Top 1 hits: {top_1_hits}/{total}")
-    print(f"Top 3 hits: {top_3_hits}/{total}")
-    print(f"Top 1 hit rate: {top_1_hits / total:.2%}")
-    print(f"Top 3 hit rate: {top_3_hits / total:.2%}")
+    print(
+        "Raw query source hits: "
+        f"Top 1 {raw_source['top_1_hits']}/{raw_source['top_1_total']}, "
+        f"Top 3 {raw_source['top_3_hits']}/{raw_source['top_3_total']}"
+    )
+    print(
+        "Runtime rule query direct-answer hits: "
+        f"Top 1 {runtime_direct['top_1_hits']}/{runtime_direct['top_1_total']}, "
+        f"Top 3 {runtime_direct['top_3_hits']}/{runtime_direct['top_3_total']}"
+    )
+    print(
+        "Runtime rule query source hits: "
+        f"Top 1 {runtime_source['top_1_hits']}/{runtime_source['top_1_total']}, "
+        f"Top 3 {runtime_source['top_3_hits']}/{runtime_source['top_3_total']}"
+    )
+    print(
+        "Runtime fused query direct-answer hits: "
+        f"Top 1 {fused_direct['top_1_hits']}/{fused_direct['top_1_total']}, "
+        f"Top 3 {fused_direct['top_3_hits']}/{fused_direct['top_3_total']}"
+    )
+    print(
+        "Runtime fused query source hits: "
+        f"Top 1 {fused_source['top_1_hits']}/{fused_source['top_1_total']}, "
+        f"Top 3 {fused_source['top_3_hits']}/{fused_source['top_3_total']}"
+    )
+    print(f"Dataset SHA-256: {report['dataset']['sha256']}")
+    print(f"Knowledge SHA-256: {report['knowledge_snapshot']['sha256']}")
+    print(f"Label contract: {report['label_contract_version']}")
+    print("BGE status: historical_not_rerun")
 
 
 if __name__ == "__main__":

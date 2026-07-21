@@ -178,11 +178,14 @@ def test_bge_reranker_uses_original_rank_as_tie_breaker() -> None:
 def test_bge_reranker_returns_empty_for_empty_candidates() -> None:
     reranker = BgeReranker(base_url="http://testserver/v1")
 
-    assert reranker.rerank(
-        query="hello",
-        candidates=[],
-        top_k=3,
-    ) == []
+    assert (
+        reranker.rerank(
+            query="hello",
+            candidates=[],
+            top_k=3,
+        )
+        == []
+    )
 
 
 def test_bge_reranker_returns_empty_for_blank_query() -> None:
@@ -198,11 +201,14 @@ def test_bge_reranker_returns_empty_for_blank_query() -> None:
 
     reranker = BgeReranker(base_url="http://testserver/v1")
 
-    assert reranker.rerank(
-        query="   ",
-        candidates=candidates,
-        top_k=3,
-    ) == []
+    assert (
+        reranker.rerank(
+            query="   ",
+            candidates=candidates,
+            top_k=3,
+        )
+        == []
+    )
 
 
 def test_bge_reranker_raises_for_invalid_top_k() -> None:

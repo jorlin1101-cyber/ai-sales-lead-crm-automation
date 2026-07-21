@@ -45,9 +45,7 @@ def test_split_text_by_heading_sections_returns_sections() -> None:
     assert result == [
         (
             "Pricing Variables",
-            "## Pricing Variables\n"
-            "- Group size affects quotation.\n"
-            "- Hotel level affects cost.",
+            "## Pricing Variables\n- Group size affects quotation.\n- Hotel level affects cost.",
         ),
         (
             "Group Size",
@@ -77,9 +75,7 @@ def test_chunk_document_by_heading_sections_creates_chunks_with_metadata() -> No
     assert first_chunk.chunk_index == 0
     assert first_chunk.chunk_strategy == "heading_section"
     assert first_chunk.last_edited_time == "2026-06-16T10:00:00Z"
-    assert first_chunk.text.startswith(
-        "# Private Tour Pricing Rules\n## Pricing Variables"
-    )
+    assert first_chunk.text.startswith("# Private Tour Pricing Rules\n## Pricing Variables")
     assert "Group size affects quotation." in first_chunk.text
 
 
@@ -89,9 +85,7 @@ def test_chunk_document_by_heading_sections_creates_stable_chunk_ids() -> None:
     first_run = chunk_document_by_heading_sections(document)
     second_run = chunk_document_by_heading_sections(document)
 
-    assert [chunk.chunk_id for chunk in first_run] == [
-        chunk.chunk_id for chunk in second_run
-    ]
+    assert [chunk.chunk_id for chunk in first_run] == [chunk.chunk_id for chunk in second_run]
 
 
 def test_chunk_document_by_heading_sections_falls_back_to_single_chunk() -> None:
@@ -103,10 +97,8 @@ def test_chunk_document_by_heading_sections_falls_back_to_single_chunk() -> None
 
     assert len(chunks) == 1
     assert chunks[0].section == "Private Tour Pricing Rules"
-    assert chunks[0].text == (
-        "# Private Tour Pricing Rules\n"
-        "Plain text without markdown headings."
-    )
+    assert chunks[0].text == ("# Private Tour Pricing Rules\nPlain text without markdown headings.")
+
 
 def test_chunk_documents_by_heading_sections_preserves_document_order() -> None:
     first_document = make_document(source_path="path_1")

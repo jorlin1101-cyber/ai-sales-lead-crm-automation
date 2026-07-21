@@ -73,9 +73,7 @@ def test_fuse_retrieved_chunks_boosts_chunks_found_by_multiple_retrievers() -> N
     ]
     assert results[0].retrieval_source == "fusion"
     assert results[0].rank == 1
-    assert results[0].score == pytest.approx(
-        rrf_score(rank=2) + rrf_score(rank=1)
-    )
+    assert results[0].score == pytest.approx(rrf_score(rank=2) + rrf_score(rank=1))
 
 
 def test_fuse_retrieved_chunks_respects_top_k() -> None:
@@ -108,6 +106,3 @@ def test_fuse_retrieved_chunks_rejects_invalid_top_k() -> None:
         assert "top_k must be greater than 0" in str(error)
     else:
         raise AssertionError("Expected ValueError for invalid top_k.")
-
-
-

@@ -16,9 +16,7 @@ def make_retrieved_chunk() -> RetrievedChunk:
         product_name=None,
         section="Group Size",
         text=(
-            "# Private Tour Pricing Rules\n"
-            "## Group Size\n"
-            "- 15–25 travelers may require a coach."
+            "# Private Tour Pricing Rules\n## Group Size\n- 15–25 travelers may require a coach."
         ),
         score=12.5,
         rank=1,

@@ -52,9 +52,8 @@ def fuse_retrieved_chunks(
 
     for results in result_lists:
         for result in results:
-            fusion_scores[result.chunk_id] = (
-                fusion_scores.get(result.chunk_id, 0.0)
-                + rrf_score(rank=result.rank, k=k)
+            fusion_scores[result.chunk_id] = fusion_scores.get(result.chunk_id, 0.0) + rrf_score(
+                rank=result.rank, k=k
             )
 
             if result.chunk_id not in representative_chunks:

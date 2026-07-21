@@ -1,5 +1,7 @@
 # LLM Provider Configuration
 
+> **Historical configuration notes:** examples using `llm`, `rule_fallback`, or the old flat analysis result describe the pre-Day-3 implementation. Current feature extraction uses `ExtractedLeadFeatures`; Day 4 will finalize runtime modes and provider provenance.
+
 ## Overview
 
 This project supports an LLM-first lead analysis strategy with rule-based fallback.

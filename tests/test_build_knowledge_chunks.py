@@ -20,10 +20,7 @@ def make_document() -> KnowledgeDocument:
         tags=["pricing", "quotation"],
         last_edited_time="2026-06-16T10:00:00Z",
         text=(
-            "# Private Tour Pricing Rules\n"
-            "\n"
-            "## Group Size\n"
-            "- 15–25 travelers may require a coach."
+            "# Private Tour Pricing Rules\n\n## Group Size\n- 15–25 travelers may require a coach."
         ),
     )
 
@@ -42,9 +39,7 @@ def make_chunk() -> KnowledgeChunk:
         chunk_index=0,
         chunk_strategy="heading_section",
         text=(
-            "# Private Tour Pricing Rules\n"
-            "## Group Size\n"
-            "- 15–25 travelers may require a coach."
+            "# Private Tour Pricing Rules\n## Group Size\n- 15–25 travelers may require a coach."
         ),
         last_edited_time="2026-06-16T10:00:00Z",
     )

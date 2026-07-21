@@ -11,7 +11,6 @@ Covers:
 
 # ─── Tests will be added alongside the schemas in subsequent commits ───
 
-
 import pytest
 from pydantic import ValidationError
 

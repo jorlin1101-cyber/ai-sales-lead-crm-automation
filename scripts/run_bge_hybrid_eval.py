@@ -1,125 +1,87 @@
-import json
+import argparse
 from pathlib import Path
 
-from lead_cleaner.rag.bge_embedding_provider import BgeM3EmbeddingProvider
-from lead_cleaner.rag.bm25_retriever import build_bm25_index
-from lead_cleaner.rag.dense_retriever import build_dense_index
-from lead_cleaner.rag.eval_runner import evaluate_match_detail, has_expected_match
-from lead_cleaner.rag.eval_schemas import RagEvalCase
-from lead_cleaner.rag.hybrid_retriever import retrieve_hybrid
-from lead_cleaner.rag.schemas import KnowledgeChunk, RetrievedChunk
+from lead_cleaner.rag.bge_embedding_provider import DEFAULT_BGE_EMBEDDING_MODEL
+from lead_cleaner.rag.evaluation_report import (
+    run_bge_evaluation,
+    write_evaluation_report,
+)
 
 
-CHUNKS_PATH = Path("data/knowledge_snapshot/knowledge_chunks.json")
-EVAL_CASES_PATH = Path("data/rag_eval/eval_queries.json")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_CHUNKS_PATH = PROJECT_ROOT / "data" / "knowledge_snapshot" / "knowledge_chunks.json"
+DEFAULT_EVAL_QUERIES_PATH = PROJECT_ROOT / "data" / "rag_eval" / "eval_queries.json"
+DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "rag-eval-bge-m3-v4-20260721.json"
+DEFAULT_LOCAL_PROXY_URL = "http://127.0.0.1:8000/v1"
 
 
-def load_chunks(path: Path) -> list[KnowledgeChunk]:
-    raw_items = json.loads(path.read_text(encoding="utf-8"))
-    return [KnowledgeChunk(**item) for item in raw_items]
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run the v4 paired graded-relevance evaluation with BGE-M3.",
+    )
+    parser.add_argument("--chunks", type=Path, default=DEFAULT_CHUNKS_PATH)
+    parser.add_argument("--queries", type=Path, default=DEFAULT_EVAL_QUERIES_PATH)
+    parser.add_argument("--output", type=Path, default=DEFAULT_REPORT_PATH)
+    parser.add_argument("--base-url", default=DEFAULT_LOCAL_PROXY_URL)
+    parser.add_argument("--model", default=DEFAULT_BGE_EMBEDDING_MODEL)
+    parser.add_argument("--timeout", type=float, default=60.0)
+    return parser.parse_args()
 
 
-def load_eval_cases(path: Path) -> list[RagEvalCase]:
-    raw_items = json.loads(path.read_text(encoding="utf-8"))
-    return [RagEvalCase(**item) for item in raw_items]
+def _print_path_summary(path_label: str, evaluation: dict[str, object]) -> None:
+    metrics = evaluation["metrics"]
+    assert isinstance(metrics, dict)
+    direct = metrics["direct"]
+    ranking = metrics["ranking"]
+    assert isinstance(direct, dict)
+    assert isinstance(ranking, dict)
+    print(
+        f"{path_label}: Direct Top 1 "
+        f"{direct['top_1_hits']}/{direct['top_1_total']}, "
+        f"Top 3 {direct['top_3_hits']}/{direct['top_3_total']}, "
+        f"MRR@3 {ranking['mean_reciprocal_rank_at_3']}, "
+        f"nDCG@3 {ranking['mean_ndcg_at_3']}, "
+        f"Facet Recall@3 {ranking['mean_facet_recall_at_3']}, "
+        f"Unjudged@3 {ranking['mean_unjudged_rate_at_3']}"
+    )
 
 
-def print_results(
-    results: list[RetrievedChunk],
-    eval_case: RagEvalCase,
-) -> None:
-    for result in results:
-        detail = evaluate_match_detail(result=result, eval_case=eval_case)
-
-        print(
-            f"    {result.rank}. "
-            f"score={result.score:.6f} | "
-            f"{result.doc_type} | "
-            f"{result.region} | "
-            f"{result.source_title} | "
-            f"{result.section} | "
-            f"doc_type_hit={detail.doc_type_hit} | "
-            f"region_hit={detail.region_hit} | "
-            f"source_title_hit={detail.source_title_hit} | "
-            f"section_hit={detail.section_hit} | "
-            f"overall_match={detail.overall_match}"
-        )
+def _failed_top_3_query_ids(evaluation: dict[str, object]) -> list[str]:
+    cases = evaluation["cases"]
+    assert isinstance(cases, list)
+    return [
+        str(case["query_id"])
+        for case in cases
+        if isinstance(case, dict) and not case["direct_top_3_hit"]
+    ]
 
 
 def main() -> None:
-    chunks = load_chunks(CHUNKS_PATH)
-    eval_cases = load_eval_cases(EVAL_CASES_PATH)
-
-    embedding_provider = BgeM3EmbeddingProvider()
-
-    print(f"Loaded chunks: {len(chunks)}")
-    print(f"Loaded eval cases: {len(eval_cases)}")
-    print(f"Embedding model: {embedding_provider.model_name}")
-    print("Building BM25 index...")
-    bm25_index = build_bm25_index(chunks)
-
-    print("Building BGE-M3 dense index...")
-    dense_index = build_dense_index(
-        chunks=chunks,
-        embedding_provider=embedding_provider,
+    args = parse_args()
+    report = run_bge_evaluation(
+        chunks_path=args.chunks,
+        eval_queries_path=args.queries,
+        base_url=args.base_url,
+        model_name=args.model,
+        timeout=args.timeout,
     )
+    write_evaluation_report(report, args.output)
 
-    print(f"Dense vector dimension: {dense_index.vector_dimension}")
-    print()
+    evaluations = report["evaluations"]
+    raw_evaluation = evaluations["raw_query"]
+    rule_evaluation = evaluations["runtime_rule_query"]
+    fused_evaluation = evaluations["runtime_fused_query"]
 
-    top_1_hits = 0
-    top_3_hits = 0
-
-    for eval_case in eval_cases:
-        print("=" * 100)
-        print(f"Query ID: {eval_case.query_id}")
-        print(f"Query: {eval_case.query}")
-        print(
-            "Expected: "
-            f"doc_type={eval_case.expected_doc_type}, "
-            f"region={eval_case.expected_region}, "
-            f"titles={eval_case.expected_source_titles}, "
-            f"sections={eval_case.expected_sections}"
-        )
-
-        results = retrieve_hybrid(
-            query=eval_case.query,
-            bm25_index=bm25_index,
-            dense_index=dense_index,
-            embedding_provider=embedding_provider,
-            top_k=10,
-            candidate_top_k=20,
-        )
-
-        top_1_hit = has_expected_match(
-            results=results,
-            eval_case=eval_case,
-            top_k=1,
-        )
-        top_3_hit = has_expected_match(
-            results=results,
-            eval_case=eval_case,
-            top_k=3,
-        )
-
-        if top_1_hit:
-            top_1_hits += 1
-
-        if top_3_hit:
-            top_3_hits += 1
-
-        print(f"Top 1 hit: {top_1_hit}")
-        print(f"Top 3 hit: {top_3_hit}")
-        print("Results:")
-        print_results(results=results, eval_case=eval_case)
-        print()
-
-    total = len(eval_cases)
-
-    print("=" * 100)
-    print("Summary")
-    print(f"Top 1 hits: {top_1_hits}/{total} = {top_1_hits / total:.2%}")
-    print(f"Top 3 hits: {top_3_hits}/{total} = {top_3_hits / total:.2%}")
+    print(f"Report: {args.output}")
+    print(f"Model: {report['retrieval']['embedding_provider']}")
+    print(f"Dataset SHA-256: {report['dataset']['sha256']}")
+    print(f"Knowledge SHA-256: {report['knowledge_snapshot']['sha256']}")
+    print(f"Label contract: {report['label_contract_version']}")
+    _print_path_summary("Raw query", raw_evaluation)
+    _print_path_summary("Runtime rule query", rule_evaluation)
+    _print_path_summary("Runtime fused query", fused_evaluation)
+    print(f"Raw Top-3 failures: {_failed_top_3_query_ids(raw_evaluation)}")
+    print(f"Fused Top-3 failures: {_failed_top_3_query_ids(fused_evaluation)}")
 
 
 if __name__ == "__main__":

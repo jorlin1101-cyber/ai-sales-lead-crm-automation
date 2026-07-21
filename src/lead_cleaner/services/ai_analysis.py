@@ -1,12 +1,23 @@
-from lead_cleaner.schemas.ai_output import LeadAnalysisResult
 from lead_cleaner.schemas.lead import CleanedLead
-from lead_cleaner.services.llm_client import call_openai_structured_analysis
-from lead_cleaner.services.prompt_builder import build_lead_analysis_prompt
+from lead_cleaner.schemas.policy import ExtractedLeadFeatures
+from lead_cleaner.services.llm_client import call_openai_structured_feature_extraction
+from lead_cleaner.services.prompt_builder import (
+    FeaturePromptLanguage,
+    build_lead_feature_prompt,
+    get_lead_feature_system_prompt,
+)
 
 
-def analyze_lead_with_llm(cleaned_lead: CleanedLead) -> LeadAnalysisResult:
-    prompt = build_lead_analysis_prompt(cleaned_lead)
+def extract_lead_features_with_llm(
+    cleaned_lead: CleanedLead,
+    language: FeaturePromptLanguage = "en",
+) -> ExtractedLeadFeatures:
+    """Extract constrained business facts without asking the LLM to score the lead."""
 
-    analysis_result = call_openai_structured_analysis(prompt)
+    system_prompt = get_lead_feature_system_prompt(language)
+    user_prompt = build_lead_feature_prompt(cleaned_lead, language=language)
 
-    return analysis_result
+    return call_openai_structured_feature_extraction(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+    )

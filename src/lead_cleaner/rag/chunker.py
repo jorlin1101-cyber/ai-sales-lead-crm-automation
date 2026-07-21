@@ -102,4 +102,3 @@ def chunk_documents_by_heading_sections(
         chunks.extend(chunk_document_by_heading_sections(document))
 
     return chunks
-
