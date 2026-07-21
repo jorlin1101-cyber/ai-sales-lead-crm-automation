@@ -3,7 +3,7 @@ from typing import Any
 import httpx
 
 
-DEFAULT_BGE_API_BASE_URL = "http://127.0.0.1:8000/v1"
+DEFAULT_BGE_API_BASE_URL = "http://127.0.0.1:8001/v1"
 DEFAULT_BGE_EMBEDDING_MODEL = "BAAI/bge-m3"
 
 
@@ -61,6 +61,9 @@ class BgeM3EmbeddingProvider:
             payload=payload,
             expected_count=len(texts),
         )
+
+    def close(self) -> None:
+        self._client.close()
 
     @staticmethod
     def _extract_embeddings(

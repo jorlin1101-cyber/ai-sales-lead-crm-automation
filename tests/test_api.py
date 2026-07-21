@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from lead_cleaner.api.main import create_app
-from lead_cleaner.config import AppMode, Settings
+from lead_cleaner.config import AppMode, RagBackend, Settings
 from lead_cleaner.schemas.policy import LeadFeatures, SecuritySignals
 from lead_cleaner.services import processor
 from lead_cleaner.services.feature_extractor import FeatureExtractionOutcome
@@ -15,6 +15,7 @@ def client():
         _env_file=None,
         app_mode=AppMode.RULE_ONLY,
         allow_network=False,
+        rag_backend=RagBackend.DISABLED,
     )
 
     with TestClient(create_app(settings=settings)) as test_client:
@@ -201,6 +202,7 @@ def test_openapi_schema_matches_lead_contract_v2():
             _env_file=None,
             app_mode=AppMode.RULE_ONLY,
             allow_network=False,
+            rag_backend=RagBackend.DISABLED,
         )
     )
     openapi_schema = app.openapi()

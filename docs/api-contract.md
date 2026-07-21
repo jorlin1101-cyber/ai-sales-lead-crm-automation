@@ -1,5 +1,36 @@
 # API Contract
 
+## Day 5 grounded sources and recommendation boundary
+
+RAG runs only after validation, feature extraction, security detection, and `PolicyV1`. It may add sanitized `sources` and update recommendation provenance, but it cannot change `LeadDecision`.
+
+```text
+valid non-spam lead
+-> LeadFeatures
+-> PolicyV1 LeadDecision (final)
+-> deterministic query builder
+-> configured RAG backend
+-> sanitized Top 3 sources
+-> deterministic recommendation
+```
+
+Runtime backends are `disabled`, `keyword_rrf`, and `bge_rrf`. The default `keyword_rrf` path uses the local public knowledge snapshot and does not require network access. The BGE service uses port `8001`, separate from the FastAPI port.
+
+`RAG_REQUIRED=false` keeps the API available when retrieval fails: `sources=[]`, `retrieval_method=unavailable`, and `recommendation_method=generic_template`. `RAG_REQUIRED=true` fails startup or returns HTTP 503 with public code `rag_unavailable`; it never invents sources.
+
+Invalid and spam leads do not call RAG. Suspected prompt injection never invokes an LLM recommendation generator. The current Day 5 implementation intentionally keeps live recommendation on the generic deterministic template.
+
+Only these public source fields are returned:
+
+```text
+chunk_id
+source_title
+section
+rank
+```
+
+Internal chunk text, Notion page IDs, source paths, and retrieval scores are never included in the API response.
+
 ## Day 4 runtime mode and provider lifecycle
 
 The API creates one feature extractor when the application starts and reuses it for every request. `APP_MODE` chooses that extractor:

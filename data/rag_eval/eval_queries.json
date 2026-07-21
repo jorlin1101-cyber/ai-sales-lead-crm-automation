@@ -2,145 +2,1216 @@
   {
     "query_id": "pricing_private_001",
     "query": "How much does a private customized tour usually cost?",
-    "expected_region": "general",
-    "expected_doc_type": "pricing",
-    "expected_source_titles": ["Private Tour Pricing Rules"],
-    "expected_sections": ["Pricing Variables", "Quotation Notes"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "pricing_basis",
+        "description": "Explain what determines the price of a private customized tour."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Pricing Variables",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Directly lists the variables used to calculate a private-tour quotation."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Explains quotation inclusions, exclusions, commission, and payment terms."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Group Size",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Explains how group size changes per-person cost."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Hotel Level",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Describes an important accommodation cost variable."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Vehicle Type",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Describes vehicle choices that affect the quotation."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Guide Requirement",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Describes guide choices and their cost implications."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Seasonal Factors",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "pricing_basis"
+        ],
+        "reason": "Explains seasonal price changes."
+      }
+    ]
   },
   {
     "query_id": "pricing_group_001",
     "query": "How much would a private tour cost for 20 people?",
-    "expected_region": "general",
-    "expected_doc_type": "pricing",
-    "expected_source_titles": ["Private Tour Pricing Rules"],
-    "expected_sections": ["Group Size", "Pricing Variables", "Quotation Notes"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "group_price",
+        "description": "Explain the pricing implications of a private group of about 20 people."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Group Size",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_price"
+        ],
+        "reason": "Directly covers 13–25+ person groups and their cost structure."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Pricing Variables",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_price"
+        ],
+        "reason": "Directly states that group size is a core quotation variable."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Guide Requirement",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "group_price"
+        ],
+        "reason": "Explains the additional guide requirement for groups above 20."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Vehicle Type",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "group_price"
+        ],
+        "reason": "Explains the coach requirement for a group of this size."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "group_price"
+        ],
+        "reason": "Provides supporting quotation and commission context."
+      }
+    ]
   },
   {
     "query_id": "payment_policy_001",
     "query": "When do clients need to pay the deposit and final balance?",
-    "expected_region": "general",
-    "expected_doc_type": "faq",
-    "expected_source_titles": ["Travel Permit and Payment FAQ"],
-    "expected_sections": ["Payment FAQ", "Common Questions", "Short Answers"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "payment_schedule",
+        "description": "State when the deposit and remaining balance are due."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Common Questions",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_schedule"
+        ],
+        "reason": "Directly states the 30% deposit and balance deadline."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Short Answers",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_schedule"
+        ],
+        "reason": "Directly summarizes the deposit and balance schedule."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_schedule"
+        ],
+        "reason": "Contains the same authoritative deposit and balance terms."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Sales Notes",
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只说明团体统一开票等销售事项，没有说明定金和尾款的支付时间。"
+      }
+    ]
   },
   {
     "query_id": "tibet_permit_001",
     "query": "Do foreign travelers need a permit to visit Tibet?",
-    "expected_region": "general",
-    "expected_doc_type": "faq",
-    "expected_source_titles": ["Travel Permit and Payment FAQ"],
-    "expected_sections": ["Permit and Payment FAQ", "Common Questions", "Short Answers"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "tibet_permit",
+        "description": "Explain whether foreign travelers need a Tibet permit."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Common Questions",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibet_permit"
+        ],
+        "reason": "Directly answers that all foreign travelers need a Tibet Travel Permit."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Short Answers",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibet_permit"
+        ],
+        "reason": "Directly summarizes permit requirements for foreign nationals."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Operational Notes",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibet_permit"
+        ],
+        "reason": "Directly lists the permits required for Tibet travel."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibet_permit"
+        ],
+        "reason": "States that foreign tourists must use a licensed organized tour."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibet_permit"
+        ],
+        "reason": "Provides practical permit lead-time guidance."
+      }
+    ]
   },
   {
     "query_id": "yunnan_family_001",
     "query": "Is Yunnan good for families with children?",
-    "expected_region": "yunnan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Yunnan Family Tour"],
-    "expected_sections": ["Suitable For", "Key Experiences"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "family_fit",
+        "description": "Explain whether Yunnan is suitable for families with children."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Directly identifies families with children as the target travelers."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Directly identifies family and multi-generational travelers."
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Describes family-friendly activities and pacing."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Describes Yunnan as an accessible family destination."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Provides practical route advice for families."
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Pricing Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "儿童折扣、家庭酒店和私人车辆说明该产品对家庭友好，但没有直接给出云南适合儿童的完整结论。"
+      }
+    ]
   },
   {
     "query_id": "western_sichuan_private_001",
     "query": "What kind of private travel experience can we arrange in Western Sichuan?",
-    "expected_region": "western_sichuan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Western Sichuan Private Tour"],
-    "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "western_sichuan_private_experience",
+        "description": "Describe private-tour experiences available in Western Sichuan."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Western Sichuan Private Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "western_sichuan_private_experience"
+        ],
+        "reason": "Directly lists the experiences included in the private tour."
+      },
+      {
+        "source_title": "Western Sichuan Private Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "western_sichuan_private_experience"
+        ],
+        "reason": "Directly describes the private groups and experience styles supported."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "western_sichuan_private_experience"
+        ],
+        "reason": "Directly describes customizable private road-trip experiences."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Travel Style",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "western_sichuan_private_experience"
+        ],
+        "reason": "Directly explains the private vehicle and driver-guide travel style."
+      },
+      {
+        "source_title": "Western Sichuan Private Tour",
+        "section": "Typical Duration",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "western_sichuan_private_experience"
+        ],
+        "reason": "Adds useful itinerary-length context."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "western_sichuan_private_experience"
+        ],
+        "reason": "Adds useful destination context and travel flexibility."
+      }
+    ]
   },
   {
     "query_id": "tibet_culture_001",
     "query": "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
-    "expected_region": "tibet",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Tibet Cultural Tour"],
-    "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+    "language": "en",
+    "query_type": "fuzzy",
+    "facets": [
+      {
+        "facet_id": "tibetan_cultural_experience",
+        "description": "Recommend meaningful Tibetan cultural experiences."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_cultural_experience"
+        ],
+        "reason": "Directly lists Tibetan cultural and heritage experiences."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_cultural_experience"
+        ],
+        "reason": "Directly describes travelers seeking an in-depth cultural journey."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_cultural_experience"
+        ],
+        "reason": "Directly recommends Tibet for cultural and spiritual travelers."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_cultural_experience"
+        ],
+        "reason": "Provides useful cultural and geographic context."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Travel Style",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_cultural_experience"
+        ],
+        "reason": "Provides useful context about how Tibet journeys operate."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只讲许可证、健康和接团安排，没有介绍有意义的藏族文化体验。"
+      }
+    ]
   },
   {
     "query_id": "trip_duration_001",
     "query": "How many days do travelers usually need for a Yunnan family trip?",
-    "expected_region": "yunnan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Yunnan Family Tour"],
-    "expected_sections": ["Typical Duration"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "trip_duration",
+        "description": "State the typical duration of a Yunnan family trip."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Typical Duration",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "trip_duration"
+        ],
+        "reason": "Directly provides standard, extended, and minimum trip durations."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Common Questions",
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段中的天数是西藏许可证办理时间，不是云南家庭旅行的典型行程天数。"
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Sales Notes",
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段讨论许可证和开票事项，没有回答云南家庭旅行需要多少天。"
+      }
+    ]
   },
   {
     "query_id": "fuzzy_family_pace_001",
     "query": "We want a trip that is not too rushed and works well for children.",
-    "expected_region": "yunnan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Yunnan Family Tour"],
-    "expected_sections": ["Suitable For", "Key Experiences"]
+    "language": "en",
+    "query_type": "fuzzy",
+    "facets": [
+      {
+        "facet_id": "family_fit",
+        "description": "Identify a trip suitable for children."
+      },
+      {
+        "facet_id": "relaxed_pace",
+        "description": "Identify an itinerary that can avoid a rushed pace."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "Directly targets families and travelers seeking a relaxed tour."
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Typical Duration",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "relaxed_pace"
+        ],
+        "reason": "Directly recommends a minimum duration for a trip without rushing."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "Directly describes Yunnan as a gentle family destination."
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "Describes relaxed activities suitable for all ages."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Travel Style",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "relaxed_pace"
+        ],
+        "reason": "Describes flexible transport and travel styles."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Provides practical route advice for families."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "relaxed_pace"
+        ],
+        "reason": "至少安排八天可以避免赶行程，能支持轻松节奏需求，但没有说明是否适合儿童，未完整回答整个问题。"
+      }
+    ]
   },
   {
-  "query_id": "fuzzy_culture_depth_001",
-  "query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
-  "expected_region": "tibet",
-  "expected_doc_type": "product",
-  "expected_source_titles": ["Tibet Cultural Tour"],
-  "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+    "query_id": "fuzzy_culture_depth_001",
+    "query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+    "language": "en",
+    "query_type": "fuzzy",
+    "facets": [
+      {
+        "facet_id": "tibetan_culture_depth",
+        "description": "Identify a deeper Tibetan cultural experience rather than generic sightseeing."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "Directly describes an in-depth exploration for cultural travelers."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "Directly describes a deeper and more distinctive Tibetan experience."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "Lists concrete cultural and heritage experiences."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "Provides useful cultural context for a deeper journey."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Pricing Notes",
+        "relevance_grade": 1,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "片段与西藏旅行相关，但主要讲价格、酒店和车辆，对深度藏族文化体验仅有很弱的帮助。"
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_culture_depth"
+        ],
+        "reason": "片段提供四川西部藏族文化体验这一替代方案，但目的地不是客户明确询问的西藏，也未提供深入的文化行程细节。"
+      }
+    ]
   },
   {
     "query_id": "multi_family_price_001",
     "query": "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
-    "expected_region": "yunnan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Yunnan Family Tour"],
-    "expected_sections": ["Pricing Notes", "Suitable For"]
+    "language": "en",
+    "query_type": "multi_intent",
+    "facets": [
+      {
+        "facet_id": "family_fit",
+        "description": "Confirm that the Yunnan trip is suitable for a family."
+      },
+      {
+        "facet_id": "quote_drivers",
+        "description": "Explain what affects the final Yunnan quotation."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Directly confirms the product is designed for families."
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Pricing Notes",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit",
+          "quote_drivers"
+        ],
+        "reason": "Directly explains family pricing and the main Yunnan cost variables."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Pricing Variables",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "quote_drivers"
+        ],
+        "reason": "Directly lists the general variables used in private-tour quotations."
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Provides useful family qualification and pacing questions."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "Provides useful confirmation that Yunnan fits family travelers."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "quote_drivers"
+        ],
+        "reason": "Adds useful quotation inclusion and exclusion context."
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "片段给家庭提供云南路线和季节建议，能支持家庭适配判断，但没有解释最终报价因素，未完整回答多意图问题。"
+      }
+    ]
   },
   {
-  "query_id": "multi_private_group_price_001",
-  "query": "We have around 20 people and want a private customized trip. What factors affect the price?",
-  "expected_region": "general",
-  "expected_doc_type": "pricing",
-  "expected_source_titles": ["Private Tour Pricing Rules"],
-  "expected_sections": ["Group Size", "Pricing Variables", "Quotation Notes", "Seasonal Factors"]
+    "query_id": "multi_private_group_price_001",
+    "query": "We have around 20 people and want a private customized trip. What factors affect the price?",
+    "language": "en",
+    "query_type": "multi_intent",
+    "facets": [
+      {
+        "facet_id": "group_size",
+        "description": "Explain operational implications of a group of about 20 people."
+      },
+      {
+        "facet_id": "price_factors",
+        "description": "Explain the factors that affect a private-tour quotation."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Group Size",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "Directly covers 20-person groups and their per-person cost implications."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Pricing Variables",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "Directly lists group size and the other quotation variables."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Guide Requirement",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "Directly explains the additional guide requirement around this group size."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Vehicle Type",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "Directly explains the coach requirement and vehicle cost factor."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Hotel Level",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "price_factors"
+        ],
+        "reason": "Directly explains a major quotation factor."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Seasonal Factors",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "price_factors"
+        ],
+        "reason": "Directly explains seasonal quotation changes."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "price_factors"
+        ],
+        "reason": "Adds useful quotation and commission context."
+      }
+    ]
   },
   {
     "query_id": "payment_before_arrival_001",
     "query": "Do clients need to pay everything before they arrive in China?",
-    "expected_region": "general",
-    "expected_doc_type": "faq",
-    "expected_source_titles": ["Travel Permit and Payment FAQ"],
-    "expected_sections": ["Payment FAQ", "Common Questions", "Short Answers"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "payment_timing",
+        "description": "Explain whether full payment is due before arrival."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Common Questions",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_timing"
+        ],
+        "reason": "Directly states that the balance is due before arrival."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Short Answers",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_timing"
+        ],
+        "reason": "Directly summarizes the balance deadline and last-minute rule."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_timing"
+        ],
+        "reason": "Directly states the deposit and pre-arrival balance deadline."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Sales Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "payment_timing"
+        ],
+        "reason": "Adds the special rule for last-minute Tibet bookings."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只涉及许可证、健康和接团安排，没有说明客户是否需要在抵达中国前付清费用。"
+      }
+    ]
   },
   {
     "query_id": "payment_deposit_balance_002",
     "query": "Can the client pay a deposit first and settle the remaining balance later?",
-    "expected_region": "general",
-    "expected_doc_type": "faq",
-    "expected_source_titles": ["Travel Permit and Payment FAQ"],
-    "expected_sections": ["Payment FAQ", "Common Questions", "Short Answers"]
+    "language": "en",
+    "query_type": "single_intent",
+    "facets": [
+      {
+        "facet_id": "payment_schedule",
+        "description": "Explain whether a deposit can be paid before the remaining balance."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Common Questions",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_schedule"
+        ],
+        "reason": "Directly states the deposit-first and balance-later policy."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Short Answers",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_schedule"
+        ],
+        "reason": "Directly summarizes the deposit and later balance sequence."
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "payment_schedule"
+        ],
+        "reason": "Contains the same authoritative deposit and balance terms."
+      },
+      {
+        "source_title": "Travel Permit and Payment FAQ",
+        "section": "Sales Notes",
+        "relevance_grade": 0,
+        "covers_facets": [],
+        "reason": "片段只提到团体统一开票，没有说明客户能否先付定金再支付剩余尾款。"
+      }
+    ]
   },
   {
-  "query_id": "region_tibetan_culture_not_lhasa_001",
-  "query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
-  "expected_region": "tibet",
-  "expected_doc_type": "product",
-  "expected_source_titles": ["Tibet Cultural Tour"],
-  "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+    "query_id": "region_tibetan_culture_not_lhasa_001",
+    "query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+    "language": "en",
+    "query_type": "multi_intent",
+    "facets": [
+      {
+        "facet_id": "tibetan_culture",
+        "description": "Identify a product focused on Tibetan culture."
+      },
+      {
+        "facet_id": "beyond_lhasa",
+        "description": "Identify experiences and routes that extend beyond standard Lhasa sightseeing."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_culture",
+          "beyond_lhasa"
+        ],
+        "reason": "Directly lists cultural sites and route extensions beyond Lhasa."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Typical Duration",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "beyond_lhasa"
+        ],
+        "reason": "Directly describes full cultural circuits and extended routes."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "tibetan_culture"
+        ],
+        "reason": "Directly identifies travelers seeking an in-depth Tibet experience."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_culture",
+          "beyond_lhasa"
+        ],
+        "reason": "Provides useful context about Tibet's cultural regions beyond Lhasa."
+      },
+      {
+        "source_title": "Tibet Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "tibetan_culture"
+        ],
+        "reason": "Provides useful cultural-suitability context."
+      },
+      {
+        "source_title": "Tibet Cultural Tour",
+        "section": "Pricing Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "beyond_lhasa"
+        ],
+        "reason": "片段提到珠峰大本营及拉萨至日喀则等拉萨以外路线，但没有介绍藏族文化体验内容，无法完整回答客户的两个需求。"
+      }
+    ]
   },
   {
     "query_id": "region_western_sichuan_private_002",
     "query": "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?",
-    "expected_region": "western_sichuan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Western Sichuan Private Tour"],
-    "expected_sections": ["Key Experiences", "Suitable For", "Overview"]
+    "language": "en",
+    "query_type": "multi_intent",
+    "facets": [
+      {
+        "facet_id": "local_experiences",
+        "description": "Identify local cultural and landscape experiences in Western Sichuan."
+      },
+      {
+        "facet_id": "flexible_private_travel",
+        "description": "Confirm that a flexible private journey can be arranged."
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Western Sichuan Private Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "local_experiences"
+        ],
+        "reason": "Directly lists local cultural and landscape experiences."
+      },
+      {
+        "source_title": "Western Sichuan Private Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "local_experiences",
+          "flexible_private_travel"
+        ],
+        "reason": "Directly describes custom private groups and cultural travelers."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "local_experiences",
+          "flexible_private_travel"
+        ],
+        "reason": "Directly describes customizable road trips with local cultural experiences."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Travel Style",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "flexible_private_travel"
+        ],
+        "reason": "Directly explains the dedicated-vehicle private travel style."
+      },
+      {
+        "source_title": "Western Sichuan Private Tour",
+        "section": "Typical Duration",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "flexible_private_travel"
+        ],
+        "reason": "Adds useful custom-duration options."
+      },
+      {
+        "source_title": "Western Sichuan Destination Overview",
+        "section": "Region Overview",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "local_experiences"
+        ],
+        "reason": "Adds useful cultural and geographic context."
+      }
+    ]
   },
   {
     "query_id": "zh_yunnan_family_001",
     "query": "云南适合带小朋友去吗？我们不想行程太赶。",
-    "expected_region": "yunnan",
-    "expected_doc_type": "product",
-    "expected_source_titles": ["Yunnan Family Tour"],
-    "expected_sections": ["Suitable For", "Key Experiences"]
+    "language": "zh",
+    "query_type": "cross_lingual",
+    "facets": [
+      {
+        "facet_id": "family_fit",
+        "description": "确认云南是否适合带小朋友的家庭。"
+      },
+      {
+        "facet_id": "relaxed_pace",
+        "description": "确认行程是否可以安排得比较轻松。"
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Suitable For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "直接说明该产品适合带儿童并希望轻松旅行的家庭。"
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Typical Duration",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "relaxed_pace"
+        ],
+        "reason": "直接说明不赶行程所需的建议天数。"
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Best For",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "直接说明云南适合家庭并且旅行节奏温和。"
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Key Experiences",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "提供适合不同年龄并且节奏轻松的活动信息。"
+      },
+      {
+        "source_title": "Yunnan Destination Overview",
+        "section": "Sales Follow-up Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit"
+        ],
+        "reason": "提供家庭路线选择的实用建议。"
+      },
+      {
+        "source_title": "Yunnan Family Tour",
+        "section": "Pricing Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "family_fit",
+          "relaxed_pace"
+        ],
+        "reason": "儿童折扣、家庭酒店和私人车辆支持家庭出行，内部航班也能缩短交通时间，但没有直接给出完整的适合性和轻松行程结论。"
+      }
+    ]
   },
   {
     "query_id": "zh_private_price_001",
     "query": "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？",
-    "expected_region": "general",
-    "expected_doc_type": "pricing",
-    "expected_source_titles": ["Private Tour Pricing Rules"],
-    "expected_sections": ["Group Size", "Pricing Variables", "Quotation Notes"]
+    "language": "zh",
+    "query_type": "cross_lingual",
+    "facets": [
+      {
+        "facet_id": "group_size",
+        "description": "说明二十人左右团队的运营和价格影响。"
+      },
+      {
+        "facet_id": "price_factors",
+        "description": "说明私人定制行程的主要价格因素。"
+      }
+    ],
+    "judgments": [
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Group Size",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "直接说明二十人左右团队的人均成本和运营要求。"
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Pricing Variables",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "直接列出团体人数及其他报价变量。"
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Guide Requirement",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "直接说明二十人以上团队可能增加导游的要求。"
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Vehicle Type",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "group_size",
+          "price_factors"
+        ],
+        "reason": "直接说明大型团队所需车辆及其价格影响。"
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Hotel Level",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "price_factors"
+        ],
+        "reason": "直接说明酒店等级这一主要报价因素。"
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Seasonal Factors",
+        "relevance_grade": 3,
+        "covers_facets": [
+          "price_factors"
+        ],
+        "reason": "直接说明季节对报价的影响。"
+      },
+      {
+        "source_title": "Private Tour Pricing Rules",
+        "section": "Quotation Notes",
+        "relevance_grade": 2,
+        "covers_facets": [
+          "price_factors"
+        ],
+        "reason": "补充说明报价包含项、排除项和佣金。"
+      }
+    ]
   }
 ]

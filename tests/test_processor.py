@@ -1,4 +1,5 @@
 from lead_cleaner.config import AppMode
+from lead_cleaner.rag.retriever import RagRetrievalOutcome
 from lead_cleaner.schemas.lead import CleanedLead, RawLeadInput
 from lead_cleaner.schemas.policy import LeadFeatures
 from lead_cleaner.services.feature_extractor import FeatureExtractionOutcome
@@ -18,6 +19,21 @@ class StubFeatureExtractor:
 class FailIfCalledFeatureExtractor:
     def extract(self, cleaned_lead: CleanedLead) -> FeatureExtractionOutcome:
         raise AssertionError("Invalid leads must skip feature extraction")
+
+
+class StubRagRetriever:
+    def __init__(self, outcome: RagRetrievalOutcome) -> None:
+        self.outcome = outcome
+        self.queries: list[str] = []
+
+    def retrieve(self, query: str) -> RagRetrievalOutcome:
+        self.queries.append(query)
+        return self.outcome
+
+
+class FailIfCalledRagRetriever:
+    def retrieve(self, query: str) -> RagRetrievalOutcome:
+        raise AssertionError("This lead must skip RAG")
 
 
 def test_process_lead_valid_lead_uses_safe_rule_only_default():
@@ -85,6 +101,7 @@ def test_process_lead_invalid_lead_skips_feature_extraction():
     result = process_lead(
         raw_lead,
         feature_extractor=FailIfCalledFeatureExtractor(),
+        rag_retriever=FailIfCalledRagRetriever(),
     )
 
     assert result.cleaned_lead.email == "invalid-email"
@@ -92,3 +109,76 @@ def test_process_lead_invalid_lead_skips_feature_extraction():
     assert result.validation_result.error_codes == ["invalid_email_format"]
     assert result.analysis_result is None
     assert result.sources == []
+
+
+def test_process_lead_spam_skips_rag() -> None:
+    raw_lead = RawLeadInput(
+        email="spam@example.com",
+        message="Buy followers now. Click this promotional offer.",
+    )
+    extractor = StubFeatureExtractor(
+        FeatureExtractionOutcome(
+            features=LeadFeatures(
+                customer_kind="unknown",
+                contains_spam_or_promotion=True,
+                cleaned_message_length=len(raw_lead.message),
+            ),
+            execution_mode=AppMode.RULE_ONLY,
+            analysis_method="rule_features",
+        )
+    )
+
+    result = process_lead(
+        raw_lead,
+        feature_extractor=extractor,
+        rag_retriever=FailIfCalledRagRetriever(),
+    )
+
+    assert result.analysis_result is not None
+    assert result.analysis_result.decision.disposition == "spam"
+    assert result.analysis_result.metadata.retrieval_method == "skipped"
+    assert result.sources == []
+
+
+def test_rag_availability_does_not_change_decision() -> None:
+    raw_lead = RawLeadInput(
+        email="agency@example.com",
+        company_name="Example Travel Agency",
+        message="We need a private tour quotation for 20 people.",
+    )
+    feature_outcome = FeatureExtractionOutcome(
+        features=LeadFeatures(
+            customer_kind="agency",
+            group_size=20,
+            asks_for_price=True,
+            requests_private_or_custom_service=True,
+            company_name_present=True,
+            cleaned_message_length=len(raw_lead.message),
+        ),
+        execution_mode=AppMode.RULE_ONLY,
+        analysis_method="rule_features",
+    )
+    available_retriever = StubRagRetriever(RagRetrievalOutcome(retrieval_method="keyword_rrf"))
+    unavailable_retriever = StubRagRetriever(
+        RagRetrievalOutcome(
+            retrieval_method="unavailable",
+            failure_reason="retrieval_failure",
+        )
+    )
+
+    with_rag = process_lead(
+        raw_lead,
+        feature_extractor=StubFeatureExtractor(feature_outcome),
+        rag_retriever=available_retriever,
+    )
+    without_rag = process_lead(
+        raw_lead,
+        feature_extractor=StubFeatureExtractor(feature_outcome),
+        rag_retriever=unavailable_retriever,
+    )
+
+    assert with_rag.analysis_result is not None
+    assert without_rag.analysis_result is not None
+    assert with_rag.analysis_result.decision == without_rag.analysis_result.decision
+    assert with_rag.analysis_result.metadata.retrieval_method == "keyword_rrf"
+    assert without_rag.analysis_result.metadata.retrieval_method == "unavailable"

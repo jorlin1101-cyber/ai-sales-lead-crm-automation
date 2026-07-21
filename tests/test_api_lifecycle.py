@@ -5,7 +5,8 @@ from fastapi.testclient import TestClient
 
 from lead_cleaner.api import main as api_main
 from lead_cleaner.api.main import create_app
-from lead_cleaner.config import AppMode, LLMProvider, Settings
+from lead_cleaner.config import AppMode, LLMProvider, RagBackend, Settings
+from lead_cleaner.rag.retriever import RagRetrievalOutcome
 from lead_cleaner.schemas.lead import CleanedLead
 from lead_cleaner.schemas.policy import ExtractedLeadFeatures
 from lead_cleaner.services import feature_extractor_factory
@@ -37,6 +38,19 @@ class TrackingFeatureExtractor:
     def extract(self, cleaned_lead: CleanedLead) -> FeatureExtractionOutcome:
         self.extract_calls += 1
         return RuleFeatureExtractor().extract(cleaned_lead)
+
+    def close(self) -> None:
+        self.close_calls += 1
+
+
+class TrackingRagRetriever:
+    def __init__(self) -> None:
+        self.retrieve_calls = 0
+        self.close_calls = 0
+
+    def retrieve(self, query: str) -> RagRetrievalOutcome:
+        self.retrieve_calls += 1
+        return RagRetrievalOutcome(retrieval_method="disabled")
 
     def close(self) -> None:
         self.close_calls += 1
@@ -88,14 +102,22 @@ def fail_if_openai_client_is_created(*args, **kwargs):
 
 def test_application_creates_one_extractor_reuses_it_and_closes_it(monkeypatch):
     extractor = TrackingFeatureExtractor()
+    rag_retriever = TrackingRagRetriever()
     factory_calls = 0
+    rag_factory_calls = 0
 
     def fake_factory(settings: Settings):
         nonlocal factory_calls
         factory_calls += 1
         return extractor
 
+    def fake_rag_factory(settings: Settings):
+        nonlocal rag_factory_calls
+        rag_factory_calls += 1
+        return rag_retriever
+
     monkeypatch.setattr(api_main, "create_feature_extractor", fake_factory)
+    monkeypatch.setattr(api_main, "create_rag_retriever", fake_rag_factory)
     settings = Settings(
         _env_file=None,
         app_mode=AppMode.RULE_ONLY,
@@ -109,10 +131,14 @@ def test_application_creates_one_extractor_reuses_it_and_closes_it(monkeypatch):
         assert first_response.status_code == 200
         assert second_response.status_code == 200
         assert factory_calls == 1
+        assert rag_factory_calls == 1
         assert extractor.extract_calls == 2
+        assert rag_retriever.retrieve_calls == 2
         assert extractor.close_calls == 0
+        assert rag_retriever.close_calls == 0
 
     assert extractor.close_calls == 1
+    assert rag_retriever.close_calls == 1
 
 
 @pytest.mark.parametrize(
@@ -139,6 +165,7 @@ def test_offline_application_modes_never_construct_openai_client(
         openai_api_key="real-looking-key-must-not-be-used",
         openai_model="real-looking-model",
         demo_feature_fixtures_path=FIXTURE_PATH,
+        rag_backend=RagBackend.DISABLED,
     )
 
     with TestClient(create_app(settings=settings)) as client:
@@ -165,6 +192,7 @@ def test_live_application_uses_fake_client_and_closes_it(monkeypatch):
         llm_provider=LLMProvider.OPENAI,
         openai_api_key="test-key",
         openai_model="test-model",
+        rag_backend=RagBackend.DISABLED,
     )
 
     with TestClient(create_app(settings=settings)) as client:
@@ -188,6 +216,7 @@ def test_unsupported_live_provider_fails_during_application_startup():
         llm_provider=LLMProvider.DEEPSEEK,
         deepseek_api_key="test-key",
         deepseek_model="test-model",
+        rag_backend=RagBackend.DISABLED,
     )
 
     with pytest.raises(
@@ -221,6 +250,7 @@ def test_non_fallback_llm_errors_return_safe_transport_errors(
         _env_file=None,
         app_mode=AppMode.RULE_ONLY,
         allow_network=False,
+        rag_backend=RagBackend.DISABLED,
     )
 
     with TestClient(create_app(settings=settings)) as client:

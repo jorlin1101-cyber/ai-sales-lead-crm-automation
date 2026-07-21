@@ -3,7 +3,14 @@ import json
 import httpx
 import pytest
 
-from lead_cleaner.rag.bge_embedding_provider import BgeM3EmbeddingProvider
+from lead_cleaner.rag.bge_embedding_provider import (
+    DEFAULT_BGE_API_BASE_URL,
+    BgeM3EmbeddingProvider,
+)
+
+
+def test_bge_default_port_does_not_conflict_with_fastapi() -> None:
+    assert DEFAULT_BGE_API_BASE_URL == "http://127.0.0.1:8001/v1"
 
 
 def test_bge_embedding_provider_posts_expected_payload_and_orders_by_index() -> None:
@@ -121,3 +128,12 @@ def test_bge_embedding_provider_raises_for_missing_embedding_data() -> None:
 
     with pytest.raises(RuntimeError):
         provider.embed_text("hello")
+
+
+def test_bge_embedding_provider_closes_owned_http_client() -> None:
+    client = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200)))
+    provider = BgeM3EmbeddingProvider(client=client)
+
+    provider.close()
+
+    assert client.is_closed is True

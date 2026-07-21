@@ -1,0 +1,3364 @@
+{
+  "report_schema_version": "rag-eval-v4",
+  "label_contract_version": "paired-graded-relevance-v2",
+  "retrieval_pipeline_version": "keyword-rrf-v1",
+  "generated_at_utc": "2026-07-21T08:30:54.564939+00:00",
+  "backend": "keyword_rrf",
+  "network_access_required": false,
+  "dataset": {
+    "path": "data/rag_eval/eval_queries.json",
+    "sha256": "4a677c21056008039885f98af3a4929ee57fe70f1d39e7d89541ef9fc8bb79b6",
+    "eval_case_count": 18,
+    "facet_count": 25,
+    "judgment_count": 103
+  },
+  "knowledge_snapshot": {
+    "path": "data/knowledge_snapshot/knowledge_chunks.json",
+    "sha256": "db438bcf4b45a93b749edb081b74abb75fe9020863f9ef59590ee54d6c7ed6d3",
+    "knowledge_chunk_count": 47
+  },
+  "retrieval": {
+    "pipeline": "BM25 + keyword feature vectors + reciprocal rank fusion",
+    "embedding_provider": "keyword-demo-embedding-provider",
+    "top_k": 3,
+    "candidate_top_k": 5,
+    "rrf_k": 60,
+    "query_fusion": "weighted_rrf",
+    "primary_query_weight": 2,
+    "reranker_used": false
+  },
+  "indexing": {
+    "timer": "time.perf_counter",
+    "index_build_ms": 3.719,
+    "query_embeddings_prewarmed": false,
+    "unique_query_embedding_count": 0,
+    "query_embedding_prewarm_ms": 0.0
+  },
+  "evaluations": {
+    "raw_query": {
+      "path_name": "raw_query",
+      "description": "The frozen evaluation question is sent directly to retrieval.",
+      "metrics": {
+        "source": {
+          "top_1_hits": 17,
+          "top_1_total": 18,
+          "top_1_hit_rate_percent": 94.44,
+          "top_3_hits": 18,
+          "top_3_total": 18,
+          "top_3_hit_rate_percent": 100.0
+        },
+        "direct": {
+          "top_1_hits": 13,
+          "top_1_total": 18,
+          "top_1_hit_rate_percent": 72.22,
+          "top_3_hits": 17,
+          "top_3_total": 18,
+          "top_3_hit_rate_percent": 94.44
+        },
+        "ranking": {
+          "mean_reciprocal_rank_at_3": 0.8148,
+          "mean_ndcg_at_3": 0.6368,
+          "mean_facet_recall_at_3": 0.8889,
+          "mean_unjudged_rate_at_3": 0.2778
+        }
+      },
+      "latency": {
+        "timer": "time.perf_counter",
+        "query_latency_scope": "Each case is measured after both indexes are built; it includes one direct retrieval call. Each retrieval call includes BM25, keyword-vector dense retrieval, and RRF. It excludes file loading, index building, application startup, feature model loading, and JSON report serialization.",
+        "query_count": 18,
+        "mean_query_ms": 0.263,
+        "p95_query_ms": 0.39,
+        "max_query_ms": 0.39
+      },
+      "cases": [
+        {
+          "query_id": "pricing_private_001",
+          "input_query": "How much does a private customized tour usually cost?",
+          "retrieval_queries": [
+            "How much does a private customized tour usually cost?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.39,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "pricing_group_001",
+          "input_query": "How much would a private tour cost for 20 people?",
+          "retrieval_queries": [
+            "How much would a private tour cost for 20 people?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.243,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "payment_policy_001",
+          "input_query": "When do clients need to pay the deposit and final balance?",
+          "retrieval_queries": [
+            "When do clients need to pay the deposit and final balance?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.4693,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.229,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            },
+            {
+              "chunk_id": "chunk_7dfb1c7c56dc",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Risk Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "tibet_permit_001",
+          "input_query": "Do foreign travelers need a permit to visit Tibet?",
+          "retrieval_queries": [
+            "Do foreign travelers need a permit to visit Tibet?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.7039,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.219,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibet_permit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6ab97a033ba9",
+              "source_title": "Tibet Destination Overview",
+              "section": "Seasonality",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibet_permit"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "yunnan_family_001",
+          "input_query": "Is Yunnan good for families with children?",
+          "retrieval_queries": [
+            "Is Yunnan good for families with children?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.2323,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.329,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_002f31150e91",
+              "source_title": "Yunnan Family Tour",
+              "section": "Pricing Notes",
+              "rank": 1,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_f9049bbbcdb1",
+              "source_title": "Yunnan Family Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "western_sichuan_private_001",
+          "input_query": "What kind of private travel experience can we arrange in Western Sichuan?",
+          "retrieval_queries": [
+            "What kind of private travel experience can we arrange in Western Sichuan?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8659,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.334,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_c9e8d0d19364",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Suitable For",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            },
+            {
+              "chunk_id": "chunk_9bf5678be357",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Best For",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            },
+            {
+              "chunk_id": "chunk_9af799833430",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Typical Duration",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "tibet_culture_001",
+          "input_query": "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+          "retrieval_queries": [
+            "I want a meaningful cultural journey in Tibetan areas. What should I look at?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.2346,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.246,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_76637fb2f2a9",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_0645e536739a",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Best Season",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1965ab8b688d",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Suitable For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_cultural_experience"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "trip_duration_001",
+          "input_query": "How many days do travelers usually need for a Yunnan family trip?",
+          "retrieval_queries": [
+            "How many days do travelers usually need for a Yunnan family trip?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.216,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "trip_duration"
+              ]
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_275d951a1103",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Sales Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "fuzzy_family_pace_001",
+          "input_query": "We want a trip that is not too rushed and works well for children.",
+          "retrieval_queries": [
+            "We want a trip that is not too rushed and works well for children."
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.4358,
+          "facet_recall_at_3": 0.5,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.238,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_3ccc6d609841",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Sales Follow-up Notes",
+              "rank": 1,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_f9049bbbcdb1",
+              "source_title": "Yunnan Family Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "relaxed_pace"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "fuzzy_culture_depth_001",
+          "input_query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+          "retrieval_queries": [
+            "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet."
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.4581,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.257,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0645e536739a",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Best Season",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture_depth"
+              ]
+            },
+            {
+              "chunk_id": "chunk_3e2c139cda1e",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Key Experiences",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture_depth"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "multi_family_price_001",
+          "input_query": "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+          "retrieval_queries": [
+            "We are a family interested in Yunnan, but we also want to understand what affects the final quote."
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.5962,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.248,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_002f31150e91",
+              "source_title": "Yunnan Family Tour",
+              "section": "Pricing Notes",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit",
+                "quote_drivers"
+              ]
+            },
+            {
+              "chunk_id": "chunk_f9049bbbcdb1",
+              "source_title": "Yunnan Family Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "multi_private_group_price_001",
+          "input_query": "We have around 20 people and want a private customized trip. What factors affect the price?",
+          "retrieval_queries": [
+            "We have around 20 people and want a private customized trip. What factors affect the price?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8308,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.288,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_d69747b5ec63",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Seasonal Factors",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "payment_before_arrival_001",
+          "input_query": "Do clients need to pay everything before they arrive in China?",
+          "retrieval_queries": [
+            "Do clients need to pay everything before they arrive in China?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": false,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.2961,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.268,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_76637fb2f2a9",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_timing"
+              ]
+            },
+            {
+              "chunk_id": "chunk_e7e523f7ca46",
+              "source_title": "Tibet Destination Overview",
+              "section": "Sales Follow-up Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "payment_deposit_balance_002",
+          "input_query": "Can the client pay a deposit first and settle the remaining balance later?",
+          "retrieval_queries": [
+            "Can the client pay a deposit first and settle the remaining balance later?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.4693,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.261,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            },
+            {
+              "chunk_id": "chunk_7dfb1c7c56dc",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Risk Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "region_tibetan_culture_not_lhasa_001",
+          "input_query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+          "retrieval_queries": [
+            "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.7039,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.259,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_7a1518bdcf84",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Typical Duration",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "beyond_lhasa"
+              ]
+            },
+            {
+              "chunk_id": "chunk_0645e536739a",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Best Season",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1965ab8b688d",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Suitable For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "region_western_sichuan_private_002",
+          "input_query": "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?",
+          "retrieval_queries": [
+            "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8659,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.255,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_c9e8d0d19364",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Suitable For",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "local_experiences",
+                "flexible_private_travel"
+              ]
+            },
+            {
+              "chunk_id": "chunk_73b44c0df7c7",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Travel Style",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "flexible_private_travel"
+              ]
+            },
+            {
+              "chunk_id": "chunk_9af799833430",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Typical Duration",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "flexible_private_travel"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "zh_yunnan_family_001",
+          "input_query": "云南适合带小朋友去吗？我们不想行程太赶。",
+          "retrieval_queries": [
+            "云南适合带小朋友去吗？我们不想行程太赶。"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.4693,
+          "facet_recall_at_3": 0.5,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.211,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "relaxed_pace"
+              ]
+            },
+            {
+              "chunk_id": "chunk_0430f496c12f",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Seasonality",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_200df10e44e5",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "zh_private_price_001",
+          "input_query": "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？",
+          "retrieval_queries": [
+            "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？"
+          ],
+          "query_changed": false,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8308,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.244,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6a627e280919",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Hotel Level",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "runtime_rule_query": {
+      "path_name": "runtime_rule_query",
+      "description": "The frozen question is wrapped as a synthetic cleaned lead, passed through RuleFeatureExtractor and the production LeadFeatures query builder, then sent to retrieval.",
+      "metrics": {
+        "source": {
+          "top_1_hits": 15,
+          "top_1_total": 18,
+          "top_1_hit_rate_percent": 83.33,
+          "top_3_hits": 15,
+          "top_3_total": 18,
+          "top_3_hit_rate_percent": 83.33
+        },
+        "direct": {
+          "top_1_hits": 7,
+          "top_1_total": 18,
+          "top_1_hit_rate_percent": 38.89,
+          "top_3_hits": 12,
+          "top_3_total": 18,
+          "top_3_hit_rate_percent": 66.67
+        },
+        "ranking": {
+          "mean_reciprocal_rank_at_3": 0.4907,
+          "mean_ndcg_at_3": 0.4053,
+          "mean_facet_recall_at_3": 0.6389,
+          "mean_unjudged_rate_at_3": 0.537
+        }
+      },
+      "latency": {
+        "timer": "time.perf_counter",
+        "query_latency_scope": "Each case is measured after both indexes are built; it includes deterministic rule feature extraction, feature-only query building, and one retrieval call. Each retrieval call includes BM25, keyword-vector dense retrieval, and RRF. It excludes file loading, index building, application startup, feature model loading, and JSON report serialization.",
+        "query_count": 18,
+        "mean_query_ms": 0.341,
+        "p95_query_ms": 2.085,
+        "max_query_ms": 2.085
+      },
+      "cases": [
+        {
+          "query_id": "pricing_private_001",
+          "input_query": "How much does a private customized tour usually cost?",
+          "retrieval_queries": [
+            "individual traveler | private custom tour | pricing quotation cost"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 2.085,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "pricing_group_001",
+          "input_query": "How much would a private tour cost for 20 people?",
+          "retrieval_queries": [
+            "individual traveler | group size 20 people | private custom tour | pricing quotation cost"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8839,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.329,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6a627e280919",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Hotel Level",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "payment_policy_001",
+          "input_query": "When do clients need to pay the deposit and final balance?",
+          "retrieval_queries": [
+            "traveler | general travel product information"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.7039,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.251,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            },
+            {
+              "chunk_id": "chunk_275d951a1103",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Sales Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "tibet_permit_001",
+          "input_query": "Do foreign travelers need a permit to visit Tibet?",
+          "retrieval_queries": [
+            "individual traveler | destinations Tibet"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.2961,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.237,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_6ab97a033ba9",
+              "source_title": "Tibet Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_f9ad56deb3b3",
+              "source_title": "Tibet Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibet_permit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "yunnan_family_001",
+          "input_query": "Is Yunnan good for families with children?",
+          "retrieval_queries": [
+            "individual traveler | destinations Yunnan"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.0,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 1.0,
+          "query_latency_ms": 0.221,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0430f496c12f",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_200df10e44e5",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_aa8a2ca102f0",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Travel Style",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "western_sichuan_private_001",
+          "input_query": "What kind of private travel experience can we arrange in Western Sichuan?",
+          "retrieval_queries": [
+            "individual traveler | destinations Sichuan Western Sichuan"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.2346,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.235,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_476d27002b65",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_39bee831099d",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_73b44c0df7c7",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Travel Style",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "tibet_culture_001",
+          "input_query": "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+          "retrieval_queries": [
+            "individual traveler | destinations Tibet"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.2346,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.211,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_6ab97a033ba9",
+              "source_title": "Tibet Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_f9ad56deb3b3",
+              "source_title": "Tibet Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_cultural_experience"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "trip_duration_001",
+          "input_query": "How many days do travelers usually need for a Yunnan family trip?",
+          "retrieval_queries": [
+            "individual traveler | destinations Yunnan"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": false,
+          "source_top_3_hit": false,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.0,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 1.0,
+          "query_latency_ms": 0.209,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0430f496c12f",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_200df10e44e5",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_aa8a2ca102f0",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Travel Style",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "fuzzy_family_pace_001",
+          "input_query": "We want a trip that is not too rushed and works well for children.",
+          "retrieval_queries": [
+            "traveler | general travel product information"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": false,
+          "source_top_3_hit": false,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.0,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 1.0,
+          "query_latency_ms": 0.196,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_275d951a1103",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Sales Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "fuzzy_culture_depth_001",
+          "input_query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+          "retrieval_queries": [
+            "individual traveler | destinations Tibet"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.271,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.28,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_6ab97a033ba9",
+              "source_title": "Tibet Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_f9ad56deb3b3",
+              "source_title": "Tibet Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture_depth"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "multi_family_price_001",
+          "input_query": "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+          "retrieval_queries": [
+            "individual traveler | destinations Yunnan | pricing quotation cost"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.7654,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.337,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_002f31150e91",
+              "source_title": "Yunnan Family Tour",
+              "section": "Pricing Notes",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit",
+                "quote_drivers"
+              ]
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "quote_drivers"
+              ]
+            },
+            {
+              "chunk_id": "chunk_0430f496c12f",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Seasonality",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "multi_private_group_price_001",
+          "input_query": "We have around 20 people and want a private customized trip. What factors affect the price?",
+          "retrieval_queries": [
+            "individual traveler | group size 20 people | private custom tour | pricing quotation cost"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.251,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6a627e280919",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Hotel Level",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "payment_before_arrival_001",
+          "input_query": "Do clients need to pay everything before they arrive in China?",
+          "retrieval_queries": [
+            "individual traveler | destinations China"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": false,
+          "source_top_3_hit": false,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.0,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 1.0,
+          "query_latency_ms": 0.159,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_987a9f896849",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Region Overview",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_503cf462045a",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "payment_deposit_balance_002",
+          "input_query": "Can the client pay a deposit first and settle the remaining balance later?",
+          "retrieval_queries": [
+            "traveler | general travel product information"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.7039,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.194,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            },
+            {
+              "chunk_id": "chunk_275d951a1103",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Sales Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "region_tibetan_culture_not_lhasa_001",
+          "input_query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+          "retrieval_queries": [
+            "individual traveler | destinations Tibet"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.1006,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.192,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_6ab97a033ba9",
+              "source_title": "Tibet Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_f9ad56deb3b3",
+              "source_title": "Tibet Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "region_western_sichuan_private_002",
+          "input_query": "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?",
+          "retrieval_queries": [
+            "individual traveler | destinations Sichuan Western Sichuan"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.2346,
+          "facet_recall_at_3": 0.5,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.287,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_476d27002b65",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_39bee831099d",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_73b44c0df7c7",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Travel Style",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "flexible_private_travel"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "zh_yunnan_family_001",
+          "input_query": "云南适合带小朋友去吗？我们不想行程太赶。",
+          "retrieval_queries": [
+            "individual traveler | destinations Yunnan"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.0,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 1.0,
+          "query_latency_ms": 0.219,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0430f496c12f",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Seasonality",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_200df10e44e5",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_aa8a2ca102f0",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Travel Style",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "zh_private_price_001",
+          "input_query": "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？",
+          "retrieval_queries": [
+            "individual traveler | private custom tour | pricing quotation cost"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8659,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.245,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "runtime_fused_query": {
+      "path_name": "runtime_fused_query",
+      "description": "The frozen question is sanitized, expanded with a deterministic RetrievalIntent, retrieved as two independent queries, and fused with RRF.",
+      "metrics": {
+        "source": {
+          "top_1_hits": 17,
+          "top_1_total": 18,
+          "top_1_hit_rate_percent": 94.44,
+          "top_3_hits": 18,
+          "top_3_total": 18,
+          "top_3_hit_rate_percent": 100.0
+        },
+        "direct": {
+          "top_1_hits": 11,
+          "top_1_total": 18,
+          "top_1_hit_rate_percent": 61.11,
+          "top_3_hits": 17,
+          "top_3_total": 18,
+          "top_3_hit_rate_percent": 94.44
+        },
+        "ranking": {
+          "mean_reciprocal_rank_at_3": 0.7593,
+          "mean_ndcg_at_3": 0.6194,
+          "mean_facet_recall_at_3": 0.8889,
+          "mean_unjudged_rate_at_3": 0.2778
+        }
+      },
+      "latency": {
+        "timer": "time.perf_counter",
+        "query_latency_scope": "Each case is measured after both indexes are built; it includes contact-data sanitization, deterministic rule feature extraction, RetrievalIntent construction, two retrieval calls, and query-level RRF. Each retrieval call includes BM25, keyword-vector dense retrieval, and RRF. It excludes file loading, index building, application startup, feature model loading, and JSON report serialization.",
+        "query_count": 18,
+        "mean_query_ms": 0.621,
+        "p95_query_ms": 1.186,
+        "max_query_ms": 1.186
+      },
+      "cases": [
+        {
+          "query_id": "pricing_private_001",
+          "input_query": "How much does a private customized tour usually cost?",
+          "retrieval_queries": [
+            "How much does a private customized tour usually cost?",
+            "individual traveler | pricing quotation cost factors | private custom tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.552,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "pricing_basis"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "pricing_group_001",
+          "input_query": "How much would a private tour cost for 20 people?",
+          "retrieval_queries": [
+            "How much would a private tour cost for 20 people?",
+            "individual traveler | group size 20 people | pricing quotation cost factors | private custom tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.55,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_6956be29c035",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Group Size",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "group_price"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "payment_policy_001",
+          "input_query": "When do clients need to pay the deposit and final balance?",
+          "retrieval_queries": [
+            "When do clients need to pay the deposit and final balance?",
+            "traveler | payment policy deposit final balance"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.4693,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.538,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            },
+            {
+              "chunk_id": "chunk_7dfb1c7c56dc",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Risk Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "tibet_permit_001",
+          "input_query": "Do foreign travelers need a permit to visit Tibet?",
+          "retrieval_queries": [
+            "Do foreign travelers need a permit to visit Tibet?",
+            "individual traveler | destinations Tibet | travel permit entry requirements foreign travelers"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.7039,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.468,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibet_permit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6ab97a033ba9",
+              "source_title": "Tibet Destination Overview",
+              "section": "Seasonality",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibet_permit"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "yunnan_family_001",
+          "input_query": "Is Yunnan good for families with children?",
+          "retrieval_queries": [
+            "Is Yunnan good for families with children?",
+            "individual traveler | destinations Yunnan | family children suitable tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": false,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.0,
+          "ndcg_at_3": 0.2323,
+          "facet_recall_at_3": 0.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.598,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_002f31150e91",
+              "source_title": "Yunnan Family Tour",
+              "section": "Pricing Notes",
+              "rank": 1,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_f9049bbbcdb1",
+              "source_title": "Yunnan Family Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "western_sichuan_private_001",
+          "input_query": "What kind of private travel experience can we arrange in Western Sichuan?",
+          "retrieval_queries": [
+            "What kind of private travel experience can we arrange in Western Sichuan?",
+            "individual traveler | destinations Sichuan Western Sichuan | private custom tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.7318,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.57,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_9af799833430",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Typical Duration",
+              "rank": 1,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            },
+            {
+              "chunk_id": "chunk_c9e8d0d19364",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Suitable For",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            },
+            {
+              "chunk_id": "chunk_9bf5678be357",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "western_sichuan_private_experience"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "tibet_culture_001",
+          "input_query": "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+          "retrieval_queries": [
+            "I want a meaningful cultural journey in Tibetan areas. What should I look at?",
+            "individual traveler | destinations Tibet | cultural journey local experiences"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.2346,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.505,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0645e536739a",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Best Season",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_76637fb2f2a9",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1965ab8b688d",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Suitable For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_cultural_experience"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "trip_duration_001",
+          "input_query": "How many days do travelers usually need for a Yunnan family trip?",
+          "retrieval_queries": [
+            "How many days do travelers usually need for a Yunnan family trip?",
+            "individual traveler | destinations Yunnan | family children suitable tour | typical trip duration number of days"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 1.0,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.708,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "trip_duration"
+              ]
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_275d951a1103",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Sales Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "fuzzy_family_pace_001",
+          "input_query": "We want a trip that is not too rushed and works well for children.",
+          "retrieval_queries": [
+            "We want a trip that is not too rushed and works well for children.",
+            "traveler | family children suitable tour | flexible pacing not rushed"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.4972,
+          "facet_recall_at_3": 0.5,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.605,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_3ccc6d609841",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Sales Follow-up Notes",
+              "rank": 1,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit"
+              ]
+            },
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "relaxed_pace"
+              ]
+            },
+            {
+              "chunk_id": "chunk_f9049bbbcdb1",
+              "source_title": "Yunnan Family Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "fuzzy_culture_depth_001",
+          "input_query": "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+          "retrieval_queries": [
+            "We are looking for a deeper Tibetan cultural journey rather than a standard sightseeing route in Tibet.",
+            "individual traveler | destinations Tibet | cultural journey local experiences"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.3333,
+          "ndcg_at_3": 0.4175,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.645,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0645e536739a",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Best Season",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_3e2c139cda1e",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Key Experiences",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture_depth"
+              ]
+            },
+            {
+              "chunk_id": "chunk_bd0b00d49082",
+              "source_title": "Tibet Destination Overview",
+              "section": "Best For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture_depth"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "multi_family_price_001",
+          "input_query": "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+          "retrieval_queries": [
+            "We are a family interested in Yunnan, but we also want to understand what affects the final quote.",
+            "individual traveler | destinations Yunnan | pricing quotation cost factors | family children suitable tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.5698,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 1.186,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_002f31150e91",
+              "source_title": "Yunnan Family Tour",
+              "section": "Pricing Notes",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit",
+                "quote_drivers"
+              ]
+            },
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_f9049bbbcdb1",
+              "source_title": "Yunnan Family Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "family_fit"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "multi_private_group_price_001",
+          "input_query": "We have around 20 people and want a private customized trip. What factors affect the price?",
+          "retrieval_queries": [
+            "We have around 20 people and want a private customized trip. What factors affect the price?",
+            "individual traveler | group size 20 people | pricing quotation cost factors | private custom tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8659,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.74,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_d69747b5ec63",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Seasonal Factors",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 3,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "payment_before_arrival_001",
+          "input_query": "Do clients need to pay everything before they arrive in China?",
+          "retrieval_queries": [
+            "Do clients need to pay everything before they arrive in China?",
+            "individual traveler | destinations China | payment policy deposit final balance"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": false,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.2961,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.484,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_76637fb2f2a9",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Sales Follow-up Notes",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": true,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7eca38e94502",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Common Questions",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_timing"
+              ]
+            },
+            {
+              "chunk_id": "chunk_e7e523f7ca46",
+              "source_title": "Tibet Destination Overview",
+              "section": "Sales Follow-up Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": false,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "payment_deposit_balance_002",
+          "input_query": "Can the client pay a deposit first and settle the remaining balance later?",
+          "retrieval_queries": [
+            "Can the client pay a deposit first and settle the remaining balance later?",
+            "traveler | payment policy deposit final balance"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.4693,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.567,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_2993a362487c",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Short Answers",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "payment_schedule"
+              ]
+            },
+            {
+              "chunk_id": "chunk_7dfb1c7c56dc",
+              "source_title": "Travel Permit and Payment FAQ",
+              "section": "Risk Notes",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "region_tibetan_culture_not_lhasa_001",
+          "input_query": "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+          "retrieval_queries": [
+            "Which Tibet cultural tour product is suitable if we want Tibetan culture but not only a standard Lhasa sightseeing route?",
+            "individual traveler | destinations Tibet | cultural journey local experiences"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": false,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 0.5,
+          "ndcg_at_3": 0.5307,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.3333,
+          "query_latency_ms": 0.537,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_0645e536739a",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Best Season",
+              "rank": 1,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_7a1518bdcf84",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Typical Duration",
+              "rank": 2,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "beyond_lhasa"
+              ]
+            },
+            {
+              "chunk_id": "chunk_1965ab8b688d",
+              "source_title": "Tibet Cultural Tour",
+              "section": "Suitable For",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "tibetan_culture"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "region_western_sichuan_private_002",
+          "input_query": "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?",
+          "retrieval_queries": [
+            "Can you arrange a private journey in Western Sichuan with local experiences and flexible pacing?",
+            "individual traveler | destinations Sichuan Western Sichuan | cultural journey local experiences | flexible pacing not rushed | private custom tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8308,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.503,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_c9e8d0d19364",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Suitable For",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "local_experiences",
+                "flexible_private_travel"
+              ]
+            },
+            {
+              "chunk_id": "chunk_9af799833430",
+              "source_title": "Western Sichuan Private Tour",
+              "section": "Typical Duration",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "flexible_private_travel"
+              ]
+            },
+            {
+              "chunk_id": "chunk_73b44c0df7c7",
+              "source_title": "Western Sichuan Destination Overview",
+              "section": "Travel Style",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "flexible_private_travel"
+              ]
+            }
+          ]
+        },
+        {
+          "query_id": "zh_yunnan_family_001",
+          "input_query": "云南适合带小朋友去吗？我们不想行程太赶。",
+          "retrieval_queries": [
+            "云南适合带小朋友去吗？我们不想行程太赶。",
+            "individual traveler | destinations Yunnan | family children suitable tour | flexible pacing not rushed"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.4693,
+          "facet_recall_at_3": 0.5,
+          "unjudged_rate_at_3": 0.6667,
+          "query_latency_ms": 0.756,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_113ba161c312",
+              "source_title": "Yunnan Family Tour",
+              "section": "Typical Duration",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "relaxed_pace"
+              ]
+            },
+            {
+              "chunk_id": "chunk_0430f496c12f",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Seasonality",
+              "rank": 2,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            },
+            {
+              "chunk_id": "chunk_200df10e44e5",
+              "source_title": "Yunnan Destination Overview",
+              "section": "Operational Notes",
+              "rank": 3,
+              "relevance_grade": 0,
+              "judged": false,
+              "relevant_match": false,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": []
+            }
+          ]
+        },
+        {
+          "query_id": "zh_private_price_001",
+          "input_query": "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？",
+          "retrieval_queries": [
+            "我们有二十个人想做私人定制行程，价格主要受哪些因素影响？",
+            "individual traveler | pricing quotation cost factors | private custom tour"
+          ],
+          "query_changed": true,
+          "direct_top_1_hit": true,
+          "direct_top_3_hit": true,
+          "source_top_1_hit": true,
+          "source_top_3_hit": true,
+          "reciprocal_rank_at_3": 1.0,
+          "ndcg_at_3": 0.8308,
+          "facet_recall_at_3": 1.0,
+          "unjudged_rate_at_3": 0.0,
+          "query_latency_ms": 0.676,
+          "retrieved_sources": [
+            {
+              "chunk_id": "chunk_1993bf646ea3",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Pricing Variables",
+              "rank": 1,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "group_size",
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_88e6a3c65309",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Quotation Notes",
+              "rank": 2,
+              "relevance_grade": 2,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": false,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            },
+            {
+              "chunk_id": "chunk_6a627e280919",
+              "source_title": "Private Tour Pricing Rules",
+              "section": "Hotel Level",
+              "rank": 3,
+              "relevance_grade": 3,
+              "judged": true,
+              "relevant_match": true,
+              "direct_match": true,
+              "source_match": true,
+              "covers_facets": [
+                "price_factors"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "metric": "grade_3_direct_answer_hit",
+    "runtime_minus_raw_top_1_hits": -6,
+    "runtime_minus_raw_top_3_hits": -5,
+    "fused_minus_raw_top_1_hits": -2,
+    "fused_minus_raw_top_3_hits": 0,
+    "fused_minus_feature_only_top_1_hits": 4,
+    "fused_minus_feature_only_top_3_hits": 5,
+    "interpretation": "These deltas compare direct input, lossy feature-only rewriting, and sanitized original plus deterministic RetrievalIntent query fusion. A hit now requires a paired title/section grade-3 judgment. This is not a live-LLM evaluation."
+  },
+  "bge_evaluation": {
+    "status": "historical_not_rerun",
+    "current_metrics": null,
+    "note": "No BGE service was started for this evaluation. No historical BGE number is presented as a current result."
+  },
+  "limitations": [
+    "KeywordEmbeddingProvider is deterministic and is not a semantic model.",
+    "The manually curated 18-query dataset does not represent real customer traffic.",
+    "Unjudged results are treated as grade 0 until the label pool is expanded.",
+    "Runtime-rule evaluation uses synthetic valid leads with an empty company name.",
+    "LiveFeatureExtractor and a real LLM are not evaluated in this report.",
+    "The original-query sanitizer removes obvious contact data but is not a full PII detector.",
+    "Retrieval quality does not affect LeadDecision."
+  ]
+}

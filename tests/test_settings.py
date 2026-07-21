@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from lead_cleaner.config import AppMode, LLMProvider, Settings
+from lead_cleaner.config import AppMode, LLMProvider, RagBackend, Settings
 
 
 @pytest.mark.parametrize(
@@ -132,3 +132,60 @@ def test_demo_fixture_path_can_be_configured_from_environment(monkeypatch) -> No
     )
 
     assert settings.demo_feature_fixtures_path == Path("custom/demo-fixtures.json")
+
+
+def test_rag_defaults_to_offline_keyword_rrf() -> None:
+    settings = Settings(_env_file=None)
+
+    assert settings.rag_backend == RagBackend.KEYWORD_RRF
+    assert settings.rag_required is False
+    assert settings.rag_top_k == 3
+    assert settings.rag_candidate_top_k == 5
+    assert settings.knowledge_chunks_path == Path("data/knowledge_snapshot/knowledge_chunks.json")
+    assert settings.bge_api_base_url == "http://127.0.0.1:8001/v1"
+
+
+def test_required_rag_cannot_be_disabled() -> None:
+    with pytest.raises(
+        ValidationError,
+        match="RAG_REQUIRED=true cannot be used with RAG_BACKEND=disabled",
+    ):
+        Settings(
+            _env_file=None,
+            rag_backend=RagBackend.DISABLED,
+            rag_required=True,
+        )
+
+
+def test_bge_backend_requires_explicit_network_permission() -> None:
+    with pytest.raises(
+        ValidationError,
+        match="RAG_BACKEND=bge_rrf requires ALLOW_NETWORK=true",
+    ):
+        Settings(
+            _env_file=None,
+            rag_backend=RagBackend.BGE_RRF,
+            allow_network=False,
+        )
+
+
+def test_rag_candidate_count_must_cover_top_k() -> None:
+    with pytest.raises(
+        ValidationError,
+        match="RAG_CANDIDATE_TOP_K must be greater than or equal to RAG_TOP_K",
+    ):
+        Settings(
+            _env_file=None,
+            rag_top_k=3,
+            rag_candidate_top_k=2,
+        )
+
+
+def test_rag_paths_and_backend_can_be_configured_from_environment(monkeypatch) -> None:
+    monkeypatch.setenv("RAG_BACKEND", "disabled")
+    monkeypatch.setenv("KNOWLEDGE_CHUNKS_PATH", "custom/chunks.json")
+
+    settings = Settings(_env_file=None)
+
+    assert settings.rag_backend == RagBackend.DISABLED
+    assert settings.knowledge_chunks_path == Path("custom/chunks.json")
