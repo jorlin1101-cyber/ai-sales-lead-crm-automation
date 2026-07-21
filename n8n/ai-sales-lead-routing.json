@@ -1,0 +1,337 @@
+{
+  "name": "AI Sales Lead Routing - Sanitized Portfolio Demo",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d0f55c82-8f44-4e17-b8f6-1a3dfd4ddb14",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-1120, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  { json: { external_lead_id: 'sample-lead-001', name: 'Demo High Lead', email: 'high@example.com', company_name: 'Example Travel Agency', message: 'Please quote a private Chengdu tour for 20 travelers in September.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'sample-lead-002', name: 'Demo Medium Lead', email: 'medium@example.com', company_name: '', message: 'I am considering a private Chengdu trip next year.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'sample-lead-003', name: 'Demo Low Lead', email: 'low@example.com', company_name: '', message: 'Please send general travel information.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'sample-invalid-001', name: 'Demo Invalid Lead', email: 'invalid-email', company_name: '', message: 'Please send information.', source: 'n8n-demo' } }\n];"
+      },
+      "id": "26bd5794-4983-4ef8-b774-a143d16f1f54",
+      "name": "Generate Safe Sample Leads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-900, 0]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const input = { ...$json };\nif (input.company !== undefined && input.company_name === undefined) {\n  input.company_name = input.company;\n}\ndelete input.company;\nreturn { json: input };"
+      },
+      "id": "3986cc64-f3bd-454b-9409-b984323c4cdd",
+      "name": "Normalize API Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-680, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.AI_SALES_API_URL || 'http://host.docker.internal:8000') + '/process-lead' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "077f154a-a0cb-4e16-8326-123649dd33c4",
+      "name": "Call FastAPI Process Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-450, 0]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const statusCode = Number($json.statusCode ?? 0);\nconst body = $json.body ?? {};\nconst requestId = $json.headers?.['x-request-id'] ?? body.detail?.request_id ?? null;\nlet routeKey = 'api_error';\nif (statusCode >= 200 && statusCode < 300) {\n  if (body.validation_result?.is_valid !== true) {\n    routeKey = 'invalid';\n  } else {\n    const level = body.analysis_result?.decision?.intent_level;\n    if (level === 'High') routeKey = 'high';\n    else if (level === 'Medium') routeKey = 'medium';\n    else if (level === 'Low') routeKey = 'low';\n  }\n}\nreturn { json: { route_key: routeKey, request_id: requestId, transport_status: statusCode, result: body } };"
+      },
+      "id": "5027acae-8c12-4b5f-89fa-e9e5619f13a7",
+      "name": "Classify API Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-220, 0]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0ab453f0-8fb7-4a08-b8c0-4bf155c77da4",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "high",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "High"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "29d08f71-f221-40c0-aada-53a9395a323f",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "medium",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Medium"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f807f9fd-18f5-40c8-88d4-1c57b30cb7c7",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "low",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Low"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "65b9c9d8-d4b8-47fd-957e-276f082f0dbb",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "invalid",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Invalid"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "683f5811-6c50-4f92-a1ec-4ec038ab0af3",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "api_error",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "API Error"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6bdd8137-7149-4a6c-9256-ef04b133267e",
+      "name": "Route Outcome",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [20, 0]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const body = $json.result;\nconst analysis = body.analysis_result;\nreturn { json: { route: 'high', request_id: $json.request_id, lead_id: body.cleaned_lead.lead_id, external_lead_id: body.cleaned_lead.external_lead_id, email: body.cleaned_lead.email, company_name: body.cleaned_lead.company_name, is_valid: true, error_codes: [], intent_level: analysis.decision.intent_level, lead_score: analysis.decision.lead_score, disposition: analysis.decision.disposition, policy_version: analysis.decision.policy_version, analysis_method: analysis.metadata.analysis_method, sources: body.sources, crm_status: 'To Review', priority: 'High', next_step: 'Review immediately and prepare a personalized follow-up.' } };"
+      },
+      "id": "02cc6ff9-8f62-48a4-a7bd-7ade4a6f1341",
+      "name": "Prepare High Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, -320]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const body = $json.result;\nconst analysis = body.analysis_result;\nreturn { json: { route: 'medium', request_id: $json.request_id, lead_id: body.cleaned_lead.lead_id, external_lead_id: body.cleaned_lead.external_lead_id, email: body.cleaned_lead.email, company_name: body.cleaned_lead.company_name, is_valid: true, error_codes: [], intent_level: analysis.decision.intent_level, lead_score: analysis.decision.lead_score, disposition: analysis.decision.disposition, policy_version: analysis.decision.policy_version, analysis_method: analysis.metadata.analysis_method, sources: body.sources, crm_status: 'To Review', priority: 'Medium', next_step: 'Review and collect missing travel details.' } };"
+      },
+      "id": "b80cc3c6-6e12-4fe5-8744-ce85425dbcaf",
+      "name": "Prepare Medium Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, -160]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const body = $json.result;\nconst analysis = body.analysis_result;\nreturn { json: { route: 'low', request_id: $json.request_id, lead_id: body.cleaned_lead.lead_id, external_lead_id: body.cleaned_lead.external_lead_id, email: body.cleaned_lead.email, company_name: body.cleaned_lead.company_name, is_valid: true, error_codes: [], intent_level: analysis.decision.intent_level, lead_score: analysis.decision.lead_score, disposition: analysis.decision.disposition, policy_version: analysis.decision.policy_version, analysis_method: analysis.metadata.analysis_method, sources: body.sources, crm_status: 'Low Priority', priority: 'Low', next_step: 'Keep in CRM and follow up later if appropriate.' } };"
+      },
+      "id": "2bccf4ce-d9bf-4a41-a18a-0e89fe93477c",
+      "name": "Prepare Low Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 0]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const body = $json.result;\nreturn { json: { route: 'invalid', request_id: $json.request_id, lead_id: body.cleaned_lead.lead_id, external_lead_id: body.cleaned_lead.external_lead_id, email: body.cleaned_lead.email, company_name: body.cleaned_lead.company_name, is_valid: false, error_codes: body.validation_result.error_codes, intent_level: null, lead_score: null, disposition: null, policy_version: null, analysis_method: null, sources: [], crm_status: 'Invalid', priority: null, next_step: 'Correct invalid lead data before further processing.' } };"
+      },
+      "id": "ed559305-52ed-4286-8e19-20cf70b3735b",
+      "name": "Prepare Invalid Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 160]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const detail = $json.result?.detail ?? {};\nreturn { json: { route: 'api_error', request_id: $json.request_id ?? detail.request_id ?? null, lead_id: null, external_lead_id: null, email: null, company_name: null, is_valid: null, error_codes: [detail.code ?? 'transport_error'], intent_level: null, lead_score: null, disposition: null, policy_version: null, analysis_method: null, sources: [], crm_status: 'Processing Error', priority: null, next_step: 'Inspect API logs using the request ID.' } };"
+      },
+      "id": "e1e44d4c-5952-4a4f-81e5-98234e68f9ec",
+      "name": "Prepare API Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 320]
+    },
+    {
+      "parameters": {},
+      "id": "9fdd73ce-bb36-4f64-b3ff-d46ab4263e47",
+      "name": "Unified CRM Payload",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [600, 0]
+    },
+    {
+      "parameters": {},
+      "id": "4bd67523-c5d6-41b1-a095-51013e90a654",
+      "name": "CRM Connector Placeholder",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [850, -100]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return { json: { request_id: $json.request_id, lead_id: $json.lead_id, route: $json.route, step: 'routing_completed', status: $json.route === 'api_error' ? 'error' : 'ready_for_crm', policy_version: $json.policy_version } };"
+      },
+      "id": "1aece5bc-5600-4765-a352-98517fb8dd6b",
+      "name": "Prepare Safe Processing Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 100]
+    },
+    {
+      "parameters": {},
+      "id": "c5dacbb4-b342-4bc9-9d3e-20482052cc45",
+      "name": "Processing Log Connector Placeholder",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1090, 100]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Generate Safe Sample Leads", "type": "main", "index": 0 }]]
+    },
+    "Generate Safe Sample Leads": {
+      "main": [[{ "node": "Normalize API Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize API Input": {
+      "main": [[{ "node": "Call FastAPI Process Lead", "type": "main", "index": 0 }]]
+    },
+    "Call FastAPI Process Lead": {
+      "main": [[{ "node": "Classify API Result", "type": "main", "index": 0 }]]
+    },
+    "Classify API Result": {
+      "main": [[{ "node": "Route Outcome", "type": "main", "index": 0 }]]
+    },
+    "Route Outcome": {
+      "main": [
+        [{ "node": "Prepare High Lead", "type": "main", "index": 0 }],
+        [{ "node": "Prepare Medium Lead", "type": "main", "index": 0 }],
+        [{ "node": "Prepare Low Lead", "type": "main", "index": 0 }],
+        [{ "node": "Prepare Invalid Lead", "type": "main", "index": 0 }],
+        [{ "node": "Prepare API Error", "type": "main", "index": 0 }]
+      ]
+    },
+    "Prepare High Lead": {
+      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+    },
+    "Prepare Medium Lead": {
+      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+    },
+    "Prepare Low Lead": {
+      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+    },
+    "Prepare Invalid Lead": {
+      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+    },
+    "Prepare API Error": {
+      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+    },
+    "Unified CRM Payload": {
+      "main": [
+        [
+          { "node": "CRM Connector Placeholder", "type": "main", "index": 0 },
+          { "node": "Prepare Safe Processing Log", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Prepare Safe Processing Log": {
+      "main": [[{ "node": "Processing Log Connector Placeholder", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ebd6a5a8-c1c0-4ba8-aac8-87f67eb91fbb",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

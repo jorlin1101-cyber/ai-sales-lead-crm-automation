@@ -8,6 +8,16 @@ n8n 负责外部工作流编排。它接收或生成 lead 输入，调用 FastAP
 
 核心业务逻辑不放在 n8n 里，而是放在 FastAPI service 层。
 
+项目提供可安全导入的公开工作流骨架：
+
+```text
+n8n/ai-sales-lead-routing.json
+```
+
+该 JSON 不包含 credential、Notion database ID、生产 URL 或真实客户数据。导入后需要在
+`CRM Connector Placeholder` 和 `Processing Log Connector Placeholder` 位置配置自己的
+Notion 或其他 CRM 连接器。
+
 ---
 
 ## 系统边界
@@ -42,12 +52,13 @@ n8n 负责工作流编排：
 ```text
 lead 输入
 → 向 FastAPI 发送 HTTP 请求
+→ API Success / API Error 分流
 → valid / invalid 分流
 → High / Medium / Low 分流
 → 字段准备
-→ 合并分支
-→ 写入 Notion Leads CRM
-→ 写入 Processing Log
+→ 统一 CRM payload
+→ CRM Connector Placeholder
+→ 安全 Processing Log payload
 ```
 
 n8n 不应该重复实现 Python 里的业务逻辑。它应该消费 FastAPI 返回的结构化结果，并协调外部系统。
@@ -60,14 +71,17 @@ n8n 不应该重复实现 Python 里的业务逻辑。它应该消费 FastAPI �
 
 ```text
 Manual Trigger / Generate Test Leads
+→ Normalize API Input
 → HTTP Request to FastAPI /process-lead
+→ Classify API Result
+→ Transport Success / API Error
 → IF validation_result.is_valid
 → Switch analysis_result.decision.intent_level
-→ Prepare High / Medium / Low / Invalid Lead
-→ Merge All Leads
-→ Create Notion Lead
-→ Prepare Processing Log
-→ Create Processing Log
+→ Prepare High / Medium / Low / Invalid / API Error
+→ Unified CRM Payload
+→ CRM Connector Placeholder
+→ Prepare Safe Processing Log
+→ Processing Log Connector Placeholder
 ```
 
 ---
@@ -110,11 +124,18 @@ analysis_result
 sources
 ```
 
-对于 valid lead，`analysis_result` 包含 lead 分析结果。
+对于 valid lead，`analysis_result` 包含 lead 分析结果。响应头包含：
+
+```text
+X-Request-ID
+```
+
+n8n 应保存这个 ID，用于 API Error 分支和日志关联。
 
 对于 invalid lead，`analysis_result` 为 `null`。
 
-Day 2 阶段 `sources` 固定为空数组；Day 5 接入 RAG 后才会返回 1～3 个脱敏来源。
+Day 5 已接入 RAG；成功检索时 `sources` 返回 1～3 个脱敏来源。来源只包含
+`chunk_id`、`source_title`、`section` 和 `rank`。
 
 ### HTTP Request 之前的输入 adapter
 
@@ -154,6 +175,15 @@ analysis_result = null
 ```
 
 在校验分流之前直接访问 `analysis_result.decision.intent_level` 是不安全的。
+
+HTTP 422、500 和 503 不属于 Invalid。它们是 Transport Error，必须先进入 API Error
+分支。API Error 读取稳定字段：
+
+```text
+detail.code
+detail.message
+detail.request_id
+```
 
 ---
 
@@ -284,6 +314,27 @@ next_step = Fix missing or invalid lead data before further processing.
 
 Invalid leads 仍然会写入 Leads CRM，这样可以追踪数据质量问题。
 
+## API Error 分支
+
+API Error 表示请求结构错误或后端服务故障，例如：
+
+```text
+request_validation_error
+authentication_error
+configuration_error
+rag_unavailable
+internal_error
+```
+
+该分支不得把 Transport Error 伪装成 Domain Invalid。它输出：
+
+```text
+crm_status = Processing Error
+request_id = API 返回的 request ID
+error_codes = [detail.code]
+next_step = Inspect API logs using the request ID.
+```
+
 ---
 
 ## 6. Prepare 节点
@@ -336,6 +387,7 @@ next_step
 每个 Prepare 节点应该输出：
 
 ```text
+request_id
 lead_id
 external_lead_id
 name
@@ -374,50 +426,35 @@ sources = []
 
 ---
 
-## 7. Merge 节点
+## 7. 统一 CRM Payload
 
-四个 Prepare 分支之后，工作流会合并所有标准化 lead items。
+High、Medium、Low、Invalid 和 API Error 五个分支最终进入同一个统一 CRM payload 节点。
 
-Merge 结构如下：
-
-```text
-Prepare High Lead + Prepare Medium Lead
-→ Merge High Medium
-
-Merge High Medium + Prepare Low Lead
-→ Merge Valid Leads
-
-Merge Valid Leads + Prepare Invalid Lead
-→ Merge All Leads
-```
-
-Merge 模式为：
+公开工作流把五个 Prepare 节点都连接到 `Unified CRM Payload`。这个 No Operation 节点只统一
+下游入口，不修改数据：
 
 ```text
-Append
-```
-
-预期输出：
-
-```text
-Merge High Medium: 2 items
-Merge Valid Leads: 3 items
-Merge All Leads: 4 items
+Prepare High Lead ──────┐
+Prepare Medium Lead ────┤
+Prepare Low Lead ───────┤
+Prepare Invalid Lead ───┼→ Unified CRM Payload
+Prepare API Error ──────┘
 ```
 
 ---
 
 ## 为什么要在 Notion 前合并
 
-工作流在合并所有分支后，只使用一个最终的 Notion Create Lead 节点。
+工作流在统一所有分支后，只保留一个 CRM 连接器位置。
 
-这样可以避免四个重复的 Notion 节点：
+这样可以避免五个重复的 CRM 节点：
 
 ```text
 High → Notion
 Medium → Notion
 Low → Notion
 Invalid → Notion
+API Error → Notion
 ```
 
 使用单一 Notion 节点有三个好处：
@@ -432,9 +469,12 @@ Invalid → Notion
 
 ---
 
-## 8. Create Notion Lead
+## 8. CRM Connector Placeholder
 
-Create Notion Lead 节点把标准化 lead 记录写入：
+公开工作流不内置 Notion credential 或 database ID。导入后可将占位节点替换成 Notion
+Create Database Page 或其他 CRM 节点。映射时消费统一 payload，不得重新计算评分。
+
+私有配置可以把标准化 lead 记录写入：
 
 ```text
 AI Sales Leads CRM
@@ -470,75 +510,62 @@ next_step
 
 ## 9. Prepare Processing Log
 
-当一条 lead 成功写入 Notion Leads CRM 后，工作流会准备一条 processing log 记录。
-
-Log 是在 CRM 写入之后创建的，而不是之前。
-
-原因：
+公开工作流当前准备的是 `routing_completed` 日志，它只表示路由和 payload 准备完成，不冒充
+CRM 写入成功：
 
 ```text
-success log 只能在 Notion Lead 记录真实创建成功之后再生成。
+routing_completed != notion_lead_created
 ```
 
 Log 字段包括：
 
 ```text
-log_id
+request_id
 lead_id
+route
 step
 status
-message
-analysis_method
-created_at
+policy_version
 ```
 
-示例：
-
-```text
-step = notion_lead_created
-status = success
-message = Lead successfully written to Notion CRM.
-```
+用户接入真实 CRM 后，只有在 CRM 节点真实成功之后，才能追加
+`notion_lead_created / success` 日志。
 
 ---
 
-## 10. Create Processing Log
+## 10. Processing Log Connector Placeholder
 
-Create Processing Log 节点把记录写入：
+公开工作流只准备脱敏 processing log。导入后可将占位节点替换为 Notion、数据库或日志
+服务。Processing Log 不包含完整 email 和 message。
 
 ```text
 AI Sales Processing Log
 ```
 
-测试执行的预期结果：
-
-```text
-创建 4 条 processing log 记录
-```
-
-每条 processing log 记录都应该关联被处理的 `lead_id`。
+每条非 Transport Error 日志关联 `lead_id`；API Error 使用 `request_id` 进行追踪。
 
 ---
 
-## 当前验证结果
+## 当前公开资产的验证范围
 
-当前已验证的工作流结果：
+自动化测试会验证：
 
 ```text
-HTTP Request: 4 items
-Merge All Leads: 4 items
-Create Notion Lead: 4 items
-Prepare Processing Log: 4 items
-Create Processing Log: 4 items
+JSON 可解析
+节点 ID 和名称唯一
+High / Medium / Low / Invalid / API Error 五个分支存在
+HTTP Request 调用 /process-lead
+不包含 credentials、database ID、真实邮箱或本机路径
+n8n 不复制 PolicyV1 评分规则
 ```
 
-完整 LLM 工作流也已验证：
+公开 JSON 的目标是安全导入和展示路由结构。真实 Notion 写入需要使用者在自己的 n8n
+环境中配置凭据后单独验收，不能把私有环境运行结果冒充为公开离线测试结果。
+
+本地导入前设置：
 
 ```text
-valid leads analysis_method = llm_features 或 rule_features
-invalid lead 单独处理
-Notion Leads CRM 写入通过
-Processing Log 写入通过
+AI_SALES_API_URL=http://host.docker.internal:8000
 ```
 
 ---

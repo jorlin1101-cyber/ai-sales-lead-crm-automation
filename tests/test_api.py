@@ -175,7 +175,9 @@ def test_process_lead_unknown_company_field_returns_422(client):
 
     assert response.status_code == 422
 
-    errors = response.json()["detail"]
+    detail = response.json()["detail"]
+    assert detail["code"] == "request_validation_error"
+    errors = detail["errors"]
 
     assert any(
         error["type"] == "extra_forbidden" and error["loc"] == ["body", "company"]

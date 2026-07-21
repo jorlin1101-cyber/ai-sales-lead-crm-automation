@@ -1,5 +1,46 @@
 # API Contract
 
+## Day 6 request correlation and safe transport errors
+
+Every HTTP response includes an `X-Request-ID` header. A caller may supply a correlation ID
+containing 1–64 letters, digits, `.`, `_`, or `-`; unsafe or missing values are replaced with a
+server-generated UUID. This header does not change the successful `LeadProcessingResult` body.
+
+Transport errors use one safe envelope:
+
+```json
+{
+  "detail": {
+    "code": "request_validation_error",
+    "message": "The request body does not match the API contract.",
+    "request_id": "n8n-run-001",
+    "errors": [
+      {
+        "type": "missing",
+        "loc": ["body", "email"],
+        "msg": "Field required"
+      }
+    ]
+  }
+}
+```
+
+The optional `errors` array is present only for HTTP 422 request validation. It intentionally
+omits Pydantic's raw `input` and `ctx` fields, so a malformed request cannot echo a complete
+email, message, token, or other submitted value. Provider and internal exceptions expose only a
+stable code, safe message, and request ID.
+
+| Failure | HTTP status | Public code |
+|---|---:|---|
+| Request structure or extra field | 422 | `request_validation_error` |
+| Provider authentication | 503 | `authentication_error` |
+| Provider configuration | 503 | `configuration_error` |
+| Required RAG unavailable | 503 | `rag_unavailable` |
+| Unexpected server failure | 500 | `internal_error` |
+
+Domain-invalid leads remain HTTP 200 with `validation_result.is_valid=false`; they are not
+Transport Errors.
+
 ## Day 5 grounded sources and recommendation boundary
 
 RAG runs only after validation, feature extraction, security detection, and `PolicyV1`. It may add sanitized `sources` and update recommendation provenance, but it cannot change `LeadDecision`.
@@ -194,14 +235,14 @@ Unknown fields are forbidden. For example, `company` is rejected with HTTP 422. 
 
 | Input case | HTTP status | Result |
 |---|---:|---|
-| Missing `email` | 422 | Request-structure error |
+| Missing `email` | 422 | `request_validation_error` |
 | `email=""` | 200 | Invalid with `empty_email` |
 | Malformed email | 200 | Invalid with `invalid_email_format` |
-| Missing `message` | 422 | Request-structure error |
-| `message=""` | 422 | Request-structure error |
+| Missing `message` | 422 | `request_validation_error` |
+| `message=""` | 422 | `request_validation_error` |
 | `message="   "` | 200 | Invalid with `empty_message_after_cleaning` |
-| Unknown field such as `company` | 422 | `extra_forbidden` |
-| Message longer than 5000 characters | 422 | Request-structure error |
+| Unknown field such as `company` | 422 | `request_validation_error` with nested `extra_forbidden` |
+| Message longer than 5000 characters | 422 | `request_validation_error` |
 
 HTTP 422 means the request does not satisfy the API structure. HTTP 200 with `is_valid=false` means the request structure is acceptable, but the lead contains business-invalid data that may still need to be recorded.
 

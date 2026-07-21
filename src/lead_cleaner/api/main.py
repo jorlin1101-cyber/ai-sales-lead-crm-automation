@@ -1,15 +1,25 @@
-from collections.abc import AsyncIterator
+import logging
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
+from time import perf_counter
 from typing import Annotated, cast
 
-from fastapi import Depends, FastAPI, Request, status
-from fastapi.responses import JSONResponse
+from fastapi import Depends, FastAPI, Request
+from starlette.responses import Response
 
+from lead_cleaner.api.error_handlers import register_error_handlers
+from lead_cleaner.api.request_context import (
+    REQUEST_ID_HEADER,
+    get_request_id,
+    reset_request_id,
+    resolve_request_id,
+    set_request_id,
+)
 from lead_cleaner.config import Settings
+from lead_cleaner.observability import log_event
 from lead_cleaner.rag.retriever import (
     CloseableRagRetriever,
     RagRetriever,
-    RagUnavailableError,
 )
 from lead_cleaner.rag.retriever_factory import create_rag_retriever
 from lead_cleaner.schemas.lead import LeadProcessingResult, RawLeadInput
@@ -18,11 +28,6 @@ from lead_cleaner.services.feature_extractor import (
     FeatureExtractor,
 )
 from lead_cleaner.services.feature_extractor_factory import create_feature_extractor
-from lead_cleaner.services.llm_errors import (
-    LLMAuthenticationError,
-    LLMClientError,
-    LLMConfigurationError,
-)
 from lead_cleaner.services.processor import process_lead
 
 
@@ -55,46 +60,49 @@ def create_app(*, settings: Settings | None = None) -> FastAPI:
         version="0.1.0",
         lifespan=lifespan,
     )
+    register_error_handlers(api)
 
-    @api.exception_handler(LLMClientError)
-    async def handle_llm_client_error(
-        _request: Request,
-        error: LLMClientError,
-    ) -> JSONResponse:
-        if isinstance(error, LLMAuthenticationError):
-            status_code = status.HTTP_503_SERVICE_UNAVAILABLE
-            message = "The live AI provider could not authenticate."
-        elif isinstance(error, LLMConfigurationError):
-            status_code = status.HTTP_503_SERVICE_UNAVAILABLE
-            message = "The live AI provider is not configured correctly."
+    @api.middleware("http")
+    async def add_request_context(
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
+    ) -> Response:
+        request_id = resolve_request_id(request.headers.get(REQUEST_ID_HEADER))
+        request.state.request_id = request_id
+        token = set_request_id(request_id)
+        started = perf_counter()
+        log_event(
+            "request_started",
+            request_id=request_id,
+            method=request.method,
+            path=request.url.path,
+        )
+        try:
+            response = await call_next(request)
+        except Exception as error:
+            log_event(
+                "request_failed",
+                level=logging.ERROR,
+                request_id=request_id,
+                method=request.method,
+                path=request.url.path,
+                error_type=type(error).__name__,
+            )
+            raise
         else:
-            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-            message = "The live AI provider failed unexpectedly."
-
-        return JSONResponse(
-            status_code=status_code,
-            content={
-                "detail": {
-                    "code": error.error_code,
-                    "message": message,
-                }
-            },
-        )
-
-    @api.exception_handler(RagUnavailableError)
-    async def handle_rag_unavailable_error(
-        _request: Request,
-        _error: RagUnavailableError,
-    ) -> JSONResponse:
-        return JSONResponse(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            content={
-                "detail": {
-                    "code": "rag_unavailable",
-                    "message": "The required knowledge retrieval service is unavailable.",
-                }
-            },
-        )
+            response.headers[REQUEST_ID_HEADER] = request_id
+            log_event(
+                "request_completed",
+                level=(logging.INFO if response.status_code < 400 else logging.WARNING),
+                request_id=request_id,
+                method=request.method,
+                path=request.url.path,
+                status_code=response.status_code,
+                duration_ms=round((perf_counter() - started) * 1000, 3),
+            )
+            return response
+        finally:
+            reset_request_id(token)
 
     def get_feature_extractor(request: Request) -> FeatureExtractor:
         return cast(FeatureExtractor, request.app.state.feature_extractor)
@@ -118,11 +126,44 @@ def create_app(*, settings: Settings | None = None) -> FastAPI:
             Depends(get_rag_retriever),
         ],
     ) -> LeadProcessingResult:
-        return process_lead(
+        result = process_lead(
             raw_lead,
             feature_extractor=feature_extractor,
             rag_retriever=rag_retriever,
         )
+        analysis = result.analysis_result
+        log_event(
+            "lead_processing_completed",
+            request_id=get_request_id(),
+            validation_status=("valid" if result.validation_result.is_valid else "invalid"),
+            source_count=len(result.sources),
+            execution_mode=(analysis.metadata.execution_mode if analysis else None),
+            analysis_method=(analysis.metadata.analysis_method if analysis else None),
+            fallback_reason=(analysis.metadata.fallback_reason if analysis else None),
+            intent_level=(analysis.decision.intent_level if analysis else None),
+            disposition=(analysis.decision.disposition if analysis else None),
+            policy_version=(analysis.decision.policy_version if analysis else None),
+            retrieval_method=(analysis.metadata.retrieval_method if analysis else None),
+            recommendation_method=(analysis.metadata.recommendation_method if analysis else None),
+        )
+        if analysis and analysis.metadata.fallback_reason:
+            log_event(
+                "feature_fallback_used",
+                level=logging.WARNING,
+                request_id=get_request_id(),
+                execution_mode=analysis.metadata.execution_mode,
+                analysis_method=analysis.metadata.analysis_method,
+                fallback_reason=analysis.metadata.fallback_reason,
+            )
+        if analysis and analysis.metadata.retrieval_method == "unavailable":
+            log_event(
+                "rag_degraded",
+                level=logging.WARNING,
+                request_id=get_request_id(),
+                retrieval_method=analysis.metadata.retrieval_method,
+                recommendation_method=analysis.metadata.recommendation_method,
+            )
+        return result
 
     return api
 
