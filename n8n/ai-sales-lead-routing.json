@@ -11,7 +11,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return [\n  { json: { external_lead_id: 'sample-lead-001', name: 'Demo High Lead', email: 'high@example.com', company_name: 'Example Travel Agency', message: 'Please quote a private Chengdu tour for 20 travelers in September.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'sample-lead-002', name: 'Demo Medium Lead', email: 'medium@example.com', company_name: '', message: 'I am considering a private Chengdu trip next year.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'sample-lead-003', name: 'Demo Low Lead', email: 'low@example.com', company_name: '', message: 'Please send general travel information.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'sample-invalid-001', name: 'Demo Invalid Lead', email: 'invalid-email', company_name: '', message: 'Please send information.', source: 'n8n-demo' } }\n];"
+        "jsCode": "return [\n  { json: { external_lead_id: 'n8n-demo-high-001', name: 'Demo High Lead', email: 'high@example.com', company_name: 'Example Travel Agency', message: 'Please quote a private Chengdu tour for 20 travelers in September.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'n8n-demo-medium-001', name: 'Demo Medium Lead', email: 'medium@example.com', company_name: '', message: 'I am considering a private Chengdu trip next year.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'n8n-demo-low-001', name: 'Demo Low Lead', email: 'low@example.com', company_name: '', message: 'Please send general travel information.', source: 'n8n-demo' } },\n  { json: { external_lead_id: 'n8n-demo-invalid-001', name: 'Demo Invalid Lead', email: 'invalid-email', company_name: '', message: 'Please send information.', source: 'n8n-demo' } }\n];"
       },
       "id": "26bd5794-4983-4ef8-b774-a143d16f1f54",
       "name": "Generate Safe Sample Leads",
@@ -33,7 +33,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ ($env.AI_SALES_API_URL || 'http://host.docker.internal:8000') + '/process-lead' }}",
+        "url": "http://127.0.0.1:8000/process-lead",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json) }}",
@@ -50,7 +50,8 @@
       "name": "Call FastAPI Process Lead",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [-450, 0]
+      "position": [-450, 0],
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {

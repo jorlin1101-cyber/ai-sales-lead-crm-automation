@@ -562,11 +562,20 @@ n8n 不复制 PolicyV1 评分规则
 公开 JSON 的目标是安全导入和展示路由结构。真实 Notion 写入需要使用者在自己的 n8n
 环境中配置凭据后单独验收，不能把私有环境运行结果冒充为公开离线测试结果。
 
-本地导入前设置：
+公开工作流默认按“n8n 与 FastAPI 都直接运行在同一台电脑上”的方式调用 FastAPI：
 
 ```text
-AI_SALES_API_URL=http://host.docker.internal:8000
+http://127.0.0.1:8000/process-lead
 ```
+
+如果 n8n 运行在 Docker 中、FastAPI 直接运行在 Windows 主机上，请把 URL 改为：
+
+```text
+http://host.docker.internal:8000/process-lead
+```
+
+如果 FastAPI 部署在其他主机，也请在 n8n 的 `Call FastAPI Process Lead` 节点中修改 URL。
+工作流不读取 `$env`，避免在启用了环境变量访问保护的 n8n 实例中导入后报错。
 
 ---
 

@@ -12,6 +12,12 @@ BRANCH_NODES = [
     "Prepare Invalid Lead",
     "Prepare API Error",
 ]
+DEMO_LEAD_IDS = [
+    "n8n-demo-high-001",
+    "n8n-demo-medium-001",
+    "n8n-demo-low-001",
+    "n8n-demo-invalid-001",
+]
 
 
 def _all_keys(value: Any):
@@ -51,8 +57,8 @@ def test_n8n_workflow_calls_the_contract_without_embedding_credentials() -> None
     url = http_node["parameters"]["url"]
 
     assert http_node["parameters"]["method"] == "POST"
-    assert "AI_SALES_API_URL" in url
-    assert "/process-lead" in url
+    assert url == "http://127.0.0.1:8000/process-lead"
+    assert http_node["onError"] == "continueRegularOutput"
     assert set(workflow["connections"]).issubset(node_names)
     assert all(
         target["node"] in node_names
@@ -78,3 +84,16 @@ def test_n8n_export_contains_only_safe_demo_data_and_no_policy_copy() -> None:
     assert "order_value" not in text
     assert "information_completeness" not in text
     assert "Inspect API logs using the request ID." in text
+
+
+def test_n8n_demo_lead_ids_are_canonical_and_unique() -> None:
+    workflow = json.loads(WORKFLOW_PATH.read_text(encoding="utf-8"))
+    sample_node = next(
+        node for node in workflow["nodes"] if node["name"] == "Generate Safe Sample Leads"
+    )
+    sample_code = sample_node["parameters"]["jsCode"]
+    lead_ids = re.findall(r"external_lead_id:\s*'([^']+)'", sample_code)
+
+    assert lead_ids == DEMO_LEAD_IDS
+    assert len(lead_ids) == len(set(lead_ids))
+    assert all(lead_id == lead_id.strip() for lead_id in lead_ids)

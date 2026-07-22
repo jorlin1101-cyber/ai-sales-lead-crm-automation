@@ -43,5 +43,50 @@
       "destinations": [],
       "language": "en"
     }
+  },
+  {
+    "external_lead_id": "n8n-demo-high-001",
+    "features": {
+      "customer_kind": "agency",
+      "group_size": 20,
+      "mentions_specific_dates": true,
+      "asks_for_price": true,
+      "asks_for_availability": false,
+      "requests_private_or_custom_service": true,
+      "requests_partnership": false,
+      "contains_spam_or_promotion": false,
+      "destinations": ["Chengdu"],
+      "language": "en"
+    }
+  },
+  {
+    "external_lead_id": "n8n-demo-medium-001",
+    "features": {
+      "customer_kind": "individual",
+      "group_size": null,
+      "mentions_specific_dates": true,
+      "asks_for_price": false,
+      "asks_for_availability": false,
+      "requests_private_or_custom_service": true,
+      "requests_partnership": false,
+      "contains_spam_or_promotion": false,
+      "destinations": ["Chengdu"],
+      "language": "en"
+    }
+  },
+  {
+    "external_lead_id": "n8n-demo-low-001",
+    "features": {
+      "customer_kind": "unknown",
+      "group_size": null,
+      "mentions_specific_dates": false,
+      "asks_for_price": false,
+      "asks_for_availability": false,
+      "requests_private_or_custom_service": false,
+      "requests_partnership": false,
+      "contains_spam_or_promotion": false,
+      "destinations": [],
+      "language": "en"
+    }
   }
 ]
