@@ -1,3 +1,5 @@
+import pytest
+
 from lead_cleaner.config import AppMode
 from lead_cleaner.schemas.lead import CleanedLead
 from lead_cleaner.services.feature_extractor import FeatureExtractor
@@ -56,6 +58,32 @@ def test_extracts_minimal_chinese_rules():
     assert features.requests_private_or_custom_service is True
     assert features.destinations == ["Western Sichuan"]
     assert features.language == "zh"
+
+
+def test_detects_mixed_chinese_and_english_message():
+    lead = make_cleaned_lead("我们计划预订 private Chengdu tour，请提供报价。")
+
+    features = extract_rule_features(lead)
+
+    assert features.language == "mixed"
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "We expect at least 20 people.",
+        "We expect between 10 and 20 travelers.",
+        "预计至少20人参加。",
+        "预计200 人以上参加。",
+        "预计10到20人参加。",
+        "大约20位客人。",
+    ],
+)
+def test_non_exact_group_size_is_not_reported_as_exact(message: str):
+    features = extract_rule_features(make_cleaned_lead(message))
+
+    assert features.group_size is None
+    assert features.conflict_codes == []
 
 
 def test_infers_individual_only_when_consumer_travel_evidence_exists():

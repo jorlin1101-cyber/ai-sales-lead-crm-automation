@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520" role="img" aria-labelledby="title desc">
+  <title id="title">Offline CLI demo preview</title>
+  <desc id="desc">A terminal preview showing available lead scenarios and a high-value lead decision.</desc>
+  <rect width="1100" height="520" rx="18" fill="#0d1117"/>
+  <rect width="1100" height="54" rx="18" fill="#161b22"/>
+  <rect y="36" width="1100" height="18" fill="#161b22"/>
+  <circle cx="30" cy="27" r="8" fill="#ff5f56"/>
+  <circle cx="56" cy="27" r="8" fill="#ffbd2e"/>
+  <circle cx="82" cy="27" r="8" fill="#27c93f"/>
+  <text x="550" y="34" fill="#8b949e" font-family="Consolas, monospace" font-size="17" text-anchor="middle">AI Sales Lead — Offline Interview CLI</text>
+  <g font-family="Consolas, monospace" font-size="20">
+    <text x="34" y="92" fill="#7ee787">$ python -m scripts.demo_cli list</text>
+    <text x="34" y="126" fill="#c9d1d9">Available demo scenarios:</text>
+    <text x="54" y="158" fill="#58a6ff">high</text>
+    <text x="180" y="158" fill="#8b949e">High-value agency lead</text>
+    <text x="54" y="188" fill="#58a6ff">medium</text>
+    <text x="180" y="188" fill="#8b949e">Medium-intent individual lead</text>
+    <text x="54" y="218" fill="#58a6ff">low / invalid / injection / spam / model-failure</text>
+    <text x="34" y="268" fill="#7ee787">$ python -m scripts.demo_cli process --scenario high</text>
+    <text x="34" y="308" fill="#8b949e">Selected output:</text>
+    <text x="34" y="340" fill="#c9d1d9">"validation_result": {"is_valid": true, ...}</text>
+    <text x="34" y="372" fill="#79c0ff">"analysis_result"</text>
+    <text x="220" y="372" fill="#c9d1d9">: {</text>
+    <text x="58" y="404" fill="#79c0ff">"decision"</text>
+    <text x="180" y="404" fill="#c9d1d9">: {"lead_type": "B2B", "intent_level": "High",</text>
+    <text x="82" y="436" fill="#79c0ff">"lead_score"</text>
+    <text x="230" y="436" fill="#c9d1d9">:</text>
+    <text x="250" y="436" fill="#d2a8ff">100</text>
+    <text x="295" y="436" fill="#c9d1d9">, "policy_version": "policy-v1"}</text>
+    <text x="34" y="468" fill="#c9d1d9">}</text>
+  </g>
+</svg>

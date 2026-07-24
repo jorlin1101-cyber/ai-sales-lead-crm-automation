@@ -39,7 +39,6 @@ def test_fallback_errors_expose_stable_reason(
 
     assert error.error_code == expected_code
     assert error.fallback_reason == expected_reason
-    assert error.can_fallback is True
 
 
 @pytest.mark.parametrize(
@@ -57,7 +56,6 @@ def test_non_fallback_errors_are_not_silently_downgraded(
 
     assert error.error_code == expected_code
     assert error.fallback_reason is None
-    assert error.can_fallback is False
 
 
 def test_error_message_is_preserved() -> None:

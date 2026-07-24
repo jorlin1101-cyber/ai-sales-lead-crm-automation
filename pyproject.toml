@@ -23,7 +23,7 @@ dependencies = [
 dev = [
     "pytest",
     "pytest-cov",
-    "ruff",
+    "ruff==0.15.22",
     "mypy",
     "types-PyYAML",
     "pytest-socket",

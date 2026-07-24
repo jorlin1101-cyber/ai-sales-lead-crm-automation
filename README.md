@@ -1,437 +1,295 @@
-# AI Sales Lead Cleaner API
+# AI Sales Lead CRM Automation
 
-AI Sales Lead Cleaner API 是一个用于 AI Sales 自动化流程的 Lead 清洗、校验、评分 API 服务。
+[中文](README.md) · [English](README.en.md)
 
-系统接收外部 lead JSON，完成字段标准化、业务校验、规则评分，并返回结构化处理结果。该服务可以被 n8n、CRM、前端页面或其他业务系统通过 HTTP API 调用。
+[![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-518%20passed-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
----
+一个可测试、可解释、可离线演示的销售线索处理服务：它把外部 lead 清洗成严格契约，
+提取受限业务特征，使用确定性策略评分，通过混合 RAG 提供有来源的跟进建议，再交给
+n8n 路由到 CRM。
 
-## 1. Problem
+![Offline CLI demo](docs/assets/cli-demo.svg)
 
-在销售自动化流程中，来自表单、n8n、CSV 或外部 API 的 lead 数据通常存在以下问题：
+## 目录
 
-- 字段格式不统一
-- email 大小写和空格混乱
-- source 缺失
-- 无效 lead 可能进入 CRM
-- lead 意向和价值难以快速判断
-- 在 n8n 中直接写复杂业务逻辑不方便测试和维护
+- [为什么做这个项目](#为什么做这个项目)
+- [技术栈](#技术栈)
+- [核心能力](#核心能力)
+- [系统架构](#系统架构)
+- [项目结构](#项目结构)
+- [快速开始](#快速开始)
+- [离线面试 CLI](#离线面试-cli)
+- [API 示例](#api-示例)
+- [运行模式](#运行模式)
+- [RAG 与评测](#rag-与评测)
+- [n8n 工作流](#n8n-工作流)
+- [质量门禁](#质量门禁)
+- [Roadmap](#roadmap)
+- [文档、贡献与许可](#文档贡献与许可)
 
-本项目将核心 lead 处理逻辑放在 Python / FastAPI 服务中，使清洗、校验、评分流程更加稳定、可测试、可复用。
+## 为什么做这个项目
 
----
+网站表单、CSV 和自动化工作流中的销售线索经常字段不一致、质量不稳定，也可能包含
+垃圾推广或 Prompt Injection。让 LLM 直接决定分数又会造成结果漂移和审计困难。
 
-## 2. Features
+本项目把职责拆开：
 
-当前已完成功能：
+- FastAPI + Pydantic 管理输入和输出契约；
+- LLM 或规则只提取受限事实，不直接决定分数；
+- `PolicyV1` 负责稳定、可追溯的评分和处置；
+- RAG 只为建议提供知识依据，不能修改销售决策；
+- n8n 只负责调用、分流和连接下游 CRM。
 
-- 使用 Pydantic 定义输入和输出数据契约
-- 清洗 lead 字段：
-  - 去除前后空格
-  - email 小写化
-  - source 默认值处理
-  - 生成 lead_id
-- 校验 lead 是否有效：
-  - empty_email
-  - invalid_email_format
-  - empty_message
-  - valid
-- 对有效 lead 进行规则评分
-- 对无效 lead 跳过评分
-- 支持 B2B 与高价值 B2C lead 分类
-- 返回统一的 LeadProcessingResult
-- 提供 FastAPI 接口
-- 支持 Swagger UI 调试
-- 使用 pytest 覆盖 schema、service、processor 和 API 测试
+## 技术栈
 
----
+| Layer | Stack |
+| --- | --- |
+| API & contracts | FastAPI, Pydantic v2, pydantic-settings |
+| Feature extraction | deterministic rules, OpenAI Structured Outputs |
+| Decision engine | versioned `PolicyV1` with auditable score breakdown |
+| RAG | BM25, BGE-M3 / local keyword dense retrieval, RRF |
+| Automation | n8n five-way routing |
+| Quality | pytest, pytest-socket, Ruff, Mypy, coverage |
+| Delivery | GitHub Actions, editable Python package |
 
-## 3. Tech Stack
+## 核心能力
 
-- Python 3.14
-- FastAPI
-- Pydantic
-- pytest
-- Uvicorn
-- httpx / FastAPI TestClient
+- 严格的 `RawLeadInput → CleanedLead → LeadProcessingResult` 数据契约；
+- 区分 HTTP Transport Error 和 HTTP 200 Domain-invalid Lead；
+- `demo`、`rule_only`、`live` 三种可验证运行模式；
+- LLM 失败时只对批准的错误执行显式规则 fallback；
+- 垃圾推广、Prompt Injection 和信息冲突进入确定性安全策略；
+- 100 分制 `PolicyV1`，每一分都有 component 和 reason code；
+- Keyword RRF 与 BGE-M3 RRF 两种混合检索后端；
+- API 只返回脱敏 Top 3 来源；
+- request ID、安全结构化日志、网络隔离测试和离线 CI；
+- 可导入的 n8n High / Medium / Low / Invalid / API Error 五路工作流。
 
----
+## 系统架构
 
-## 4. Project Structure
-
-```text
-ai-sales-lead-crm-automation/
-├── src/
-│   └── lead_cleaner/
-│       ├── api/
-│       │   ├── __init__.py
-│       │   └── main.py
-│       ├── schemas/
-│       │   ├── __init__.py
-│       │   └── lead.py
-│       └── services/
-│           ├── __init__.py
-│           ├── cleaning.py
-│           ├── validation.py
-│           ├── rule_feature_extractor.py
-│           ├── security_signal_detector.py
-│           ├── policy_v1.py
-│           ├── lead_analyzer.py
-│           └── processor.py
-├── tests/
-│   ├── test_api.py
-│   ├── test_cleaning.py
-│   ├── test_processor.py
-│   ├── test_schema_lead.py
-│   ├── test_policy_v1.py
-│   ├── test_rule_feature_extractor.py
-│   ├── test_security_signal_detector.py
-│   └── test_validation.py
-├── docs/
-│   ├── lead-analysis-strategy.md
-│   └── scoring-rules.md
-├── requirements.txt
-├── pyproject.toml
-└── README.md
+```mermaid
+flowchart LR
+    A[Website / CSV / n8n] --> B[FastAPI + Pydantic]
+    B --> C[Cleaning & domain validation]
+    C -->|invalid| J[Domain-invalid result]
+    C -->|valid| D[Feature extractor]
+    D --> E[Security signals]
+    E --> F[PolicyV1 decision]
+    F --> G[Hybrid RAG]
+    G --> H[Grounded recommendation]
+    H --> I[n8n five-way routing]
+    I --> K[CRM / processing log]
 ```
 
----
-
-## 5. Core Data Flow
+最重要的边界：
 
 ```text
-RawLeadInput
-→ clean_lead()
-→ CleanedLead
-→ validate_lead()
-→ LeadValidationResult
-→ LeadFeatures + SecuritySignals
-→ PolicyV1
-→ LeadDecision
-→ process_lead()
-→ LeadProcessingResult
+Lead features + security signals -> PolicyV1 freezes LeadDecision
+RAG runs afterwards -> RAG cannot change score, intent, or disposition
 ```
 
-说明：
-
-- `RawLeadInput`：外部输入数据契约
-- `CleanedLead`：清洗后的 lead 数据
-- `LeadValidationResult`：业务校验结果
-- `LeadFeatures`：模型或规则提取的业务事实，以及服务端补充的确定性字段
-- `SecuritySignals`：确定性安全复核信号
-- `LeadDecision`：PolicyV1 产生的分类、分数、breakdown 和 disposition
-- `LeadProcessingResult`：完整处理流程返回结果
-
-无效 lead 不会进入评分流程：
+## 项目结构
 
 ```text
-invalid email
-→ validation_result.is_valid = false
-→ analysis_result = null
+.
+├── src/lead_cleaner/
+│   ├── api/                 # FastAPI、错误映射、request ID
+│   ├── rag/                 # BM25、dense retrieval、RRF
+│   ├── schemas/             # Pydantic 公共契约
+│   └── services/            # 清洗、特征提取、PolicyV1、fallback
+├── scripts/                 # CLI、评测和离线 smoke
+├── tests/                   # 单元、集成、安全与网络策略测试
+├── data/                    # 脱敏 demo、知识快照、RAG 标签
+├── n8n/                     # 可导入的脱敏工作流
+├── reports/                 # 冻结评测证据
+├── docs/                    # 当前技术文档
+├── .github/workflows/       # 离线质量门禁
+└── pyproject.toml
 ```
 
----
+## 快速开始
 
-## 6. Setup
+要求 Python 3.12+。CI 的正式基线是 Python 3.12；项目也已在本地 Python 3.14
+环境完成验收。
 
-### 6.1 Create virtual environment
-
-Windows PowerShell:
+```bash
+git clone https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation.git
+cd ai-sales-lead-crm-automation
+```
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
+# Windows
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-### 6.2 Install dependencies
+```bash
+# macOS / Linux
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+
+两种系统激活虚拟环境后，继续运行：
 
 ```powershell
-python -m pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
 ```
 
----
+默认配置是离线安全的：
 
-## 7. Run Tests
+```text
+APP_MODE=demo
+ALLOW_NETWORK=false
+RAG_BACKEND=keyword_rrf
+```
 
-Run all tests:
+启动 API：
 
 ```powershell
-python -m pytest
+python -m uvicorn lead_cleaner.api.main:app --host 127.0.0.1 --port 8000
 ```
 
-当前测试覆盖：
+打开：
 
-- Pydantic schema validation
-- Lead cleaning logic
-- Lead validation logic
-- Rule-based scoring logic
-- End-to-end lead processing
-- FastAPI API behavior
+- Health: <http://127.0.0.1:8000/health>
+- Swagger: <http://127.0.0.1:8000/docs>
 
-当前测试状态：
+## 离线面试 CLI
 
-```text
-======================== warnings summary =========================
-.venv\Lib\site-packages\fastapi\testclient.py:1
-  D:\Python project\ai-sales-lead-crm-automation\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
-    from starlette.testclient import TestClient as TestClient  # noqa
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================== 67 passed, 1 warning in 0.46s ==================
-```
-
----
-
-## 8. Run API Server
-
-Start FastAPI server:
+CLI 不需要 API Key、外部网络或正在运行的 FastAPI。
 
 ```powershell
-$env:PYTHONPATH="src"
-uvicorn lead_cleaner.api.main:app --reload
+python -m scripts.demo_cli list
+python -m scripts.demo_cli process --scenario high
+python -m scripts.demo_cli process --scenario injection
+python -m scripts.demo_cli process --scenario model-failure
+python -m scripts.demo_cli rag --query "What affects a private tour quotation?"
 ```
 
-Open API docs:
+可用场景：
 
 ```text
-http://127.0.0.1:8000/docs
+high | medium | low | invalid | injection | spam | model-failure
 ```
 
----
+`model-failure` 使用本地模拟 timeout，专门展示显式 fallback，不会真的调用模型。
 
-## 9. API Usage
+## API 示例
 
-### 9.1 Health Check
+```powershell
+$body = @{
+    external_lead_id = "demo-high-001"
+    name = "Demo High Lead"
+    email = "high@example.com"
+    company_name = "Example Travel Agency"
+    message = "Please quote a private Chengdu tour for 20 travelers in September."
+    source = "README"
+} | ConvertTo-Json
 
-```http
-GET /health
+Invoke-RestMethod `
+    -Method Post `
+    -Uri "http://127.0.0.1:8000/process-lead" `
+    -ContentType "application/json" `
+    -Body $body
 ```
 
-Response:
+响应包含 `cleaned_lead`、`validation_result`、`analysis_result` 和最多 3 条
+脱敏 `sources`。完整响应与错误结构见：
 
-```json
-{
-  "status": "ok"
-}
-```
+- [Current API contract](docs/api-contract.md)
+- [Full request and response example](docs/api-example.md)
 
----
+## 运行模式
 
-### 9.2 Process Lead
+| `APP_MODE` | Feature source | External network |
+| --- | --- | ---: |
+| `demo` | versioned local fixtures | No |
+| `rule_only` | deterministic `RuleFeatureExtractor` | No |
+| `live` | OpenAI feature extraction with approved fallback | Yes |
 
-```http
-POST /process-lead
-```
+live 模式要求显式设置 `ALLOW_NETWORK=true`、provider key 和 model。模型只返回
+`ExtractedLeadFeatures`；最终分数仍由 `PolicyV1` 计算。
 
-Request body:
+## RAG 与评测
 
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "company_name": "Spain Travel Agency",
-  "message": "We want a quotation for a 20 people private tour to China in September.",
-  "source": "Website"
-}
-```
+| `RAG_BACKEND` | Implementation | Network |
+| --- | --- | ---: |
+| `disabled` | no retrieval | No |
+| `keyword_rrf` | BM25 + local keyword dense + RRF | No |
+| `bge_rrf` | BM25 + BGE-M3 dense + RRF | Yes |
 
-Response example:
+冻结评测配置：47 个知识块、18 条人工标注问题、BM25 + BGE-M3 稠密检索 + RRF 融合、
+top_k=3、共 103 对标题/章节标注。
 
-```json
-{
-  "cleaned_lead": {
-    "lead_id": "...",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "company_name": "Spain Travel Agency",
-    "message": "We want a quotation for a 20 people private tour to China in September.",
-    "source": "Website"
-  },
-  "validation_result": {
-    "is_valid": true,
-    "error_reason": "valid"
-  },
-  "score_result": {
-    "lead_type": "B2B",
-    "lead_subtype": "Agency",
-    "intent_level": "High",
-    "lead_score": 100
-  }
-}
-```
+`Raw + RetrievalIntent fusion` 在该配置下获得：
 
-注意：`lead_score` 以实际规则计算结果为准。如果本地返回不是 100，请按实际结果修改 README 示例。
+- Direct Top 1：18/18
+- Direct Top 3：18/18
+- MRR@3：1.0000
 
----
+这些数字来自一次保存的 BGE-M3 排名，不代表离线 CLI 每次运行都会调用 BGE。
+完整指标和边界见 [RAG evaluation](docs/rag-evaluation.md)。
 
-## 10. Validation Behavior
+## n8n 工作流
 
-### Case 1: Business validation failed
-
-如果请求体结构合法，但 email 格式业务上无效：
-
-```json
-{
-  "name": "Bad Lead",
-  "email": "invalid-email",
-  "company_name": "Example Corp",
-  "message": "I am interested in your product.",
-  "source": "Website"
-}
-```
-
-API 返回 HTTP 200，但业务校验失败：
-
-```json
-{
-  "validation_result": {
-    "is_valid": false,
-    "error_reason": "invalid_email_format"
-  },
-  "score_result": null
-}
-```
-
-### Case 2: Request body validation failed
-
-如果请求体缺少必填字段 `email`：
-
-```json
-{
-  "name": "No Email",
-  "company_name": "Example Corp",
-  "message": "I am interested in your product.",
-  "source": "Website"
-}
-```
-
-FastAPI 会在进入业务逻辑前返回：
+导入 [n8n/ai-sales-lead-routing.json](n8n/ai-sales-lead-routing.json) 后，可以演示：
 
 ```text
-422 Unprocessable Entity
+High | Medium | Low | Invalid | API Error
 ```
 
-区别：
+公开工作流不含凭据；CRM 和 Processing Log 节点是占位连接器。FastAPI 在 Windows
+主机、n8n 在 Docker 时，应把 API 地址改为
+`http://host.docker.internal:8000/process-lead`。
 
-```text
-422 = 请求体不符合 RawLeadInput 数据契约
-200 + is_valid=false = 请求体结构合法，但业务校验失败
+详细说明见 [n8n workflow](docs/n8n-workflow.md)。
+
+## 质量门禁
+
+最近一次完整本地验收：
+
+| Check | Result |
+| --- | ---: |
+| pytest | 518 passed |
+| coverage | 95% |
+| Ruff lint | passed |
+| Ruff format | 132 files formatted |
+| Mypy | passed |
+| external socket policy | blocked by default |
+
+与 GitHub Actions 一致的本地命令：
+
+```powershell
+python -m ruff check .
+python -m ruff format --check .
+python -m mypy src
+python -m pytest -q
+python scripts/ci_offline_smoke.py
 ```
 
----
+CI 不读取 provider key，并默认禁止外部 socket。
 
-## 11. Deterministic PolicyV1
+## Roadmap
 
-最终评分只由服务端 `PolicyV1` 产生，不由 LLM 直接填写。评分维度包括：
+- 用 Docker Compose 打包 FastAPI、n8n 和可选本地 BGE 服务；
+- 接入真实 CRM / Processing Log connector，并补充幂等写入；
+- 将 policy 和 tenant 配置解耦，支持多租户版本化规则；
+- 扩大 RAG 标注集，加入 hard negatives 和持续回归评测；
+- 建立策略版本 A/B 测试、人工复核反馈和校准报表；
+- 增加生产级 tracing、metrics、告警和敏感字段治理；
+- 在真实业务数据上定义 SLO、容量与灾难恢复方案。
 
-```text
-customer_fit（最高 30）
-+ intent_strength（最高 30）
-+ order_value_proxy（最高 25）
-+ information_completeness（最高 15）
-= lead_score
-```
+Roadmap 是后续计划，不代表这些能力已经上线。
 
-`score_breakdown` 会保存每个维度的得分和原因码，并由 Pydantic 保证分项之和等于最终分数。Spam override、manual review、qualified 和 nurture 的优先级也由同一个 PolicyV1 决定。
+## 文档、贡献与许可
 
-当前可识别的 lead 类型包括：
+- [Documentation index](docs/README.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [MIT License](LICENSE)
 
-```text
-B2B:
-- Agency
-- Operator
-- School
-- Corporate
-- Influencer
-
-B2C:
-- LargeGroup
-- PrivateCustom
-- LuxuryHighBudget
-- FIT
-
-Unknown:
-- Unknown
-```
-
-`intent_level` 根据最终分数映射：
-
-```text
-75–100 → High
-45–74  → Medium
-0–44   → Low
-```
-
-旧版独立评分入口已经删除，项目只保留 `LeadFeatures → PolicyV1 → LeadDecision` 这一条评分路径。
-
----
-
-## 12. Lead Analysis Strategy
-
-系统当前采用：
-
-```text
-LLM / rule feature extraction
-→ SecuritySignals
-→ PolicyV1
-→ LeadDecision
-```
-
-- LLM 只提取受限业务特征，不返回分数、intent 或 disposition。
-- LLM 不可用或输出不合法时，回退到规则特征提取。
-- 两条提取路径共用同一个 PolicyV1。
-- 模型输出必须经过严格 Pydantic 校验。
-- 客户文本和模型都不能填写服务端 provenance。
-- 中英文可疑注入进入人工复核，不能把分数改成客户指定的值。
-
----
-
-## 13. Current Limitations
-
-当前版本限制：
-
-- PolicyV1 权重和阈值仍是工程业务假设，尚未用真实转化数据校准
-- 规则特征提取对复杂语义的能力有限
-- live provider 的运行模式和配置工厂尚待 Day 4 收口
-- 暂未接入数据库
-- 暂未加入 API 鉴权
-- 暂未加入 Docker 部署
-- RAG 尚未接入 `/process-lead` 主流程
-
----
-
-## 14. Roadmap
-
-下一步计划：
-
-- 完成 `demo / live / rule_only` 三种显式运行模式
-- 完成 provider factory、timeout 和分类 fallback reason
-- 将 RAG 和 recommendation 接入主流程，但不允许修改 LeadDecision
-- 更新 n8n 适配器读取嵌套分析契约
-- 加入 PostgreSQL 数据持久化
-- 加入 Docker Compose 部署
-- 使用匿名真实转化数据校准 PolicyV1
-
----
-
-## 15. Interview Summary
-
-这个项目的核心设计是：
-
-- 用 Pydantic 固定数据契约
-- 用 service 层承载核心业务逻辑
-- 用 processor.py 串联单条 lead 的完整处理流程
-- 用 FastAPI 暴露 HTTP API
-- 用 pytest 保证 schema、service、processor 和 API 行为稳定
-- LLM 只负责提取受限业务事实
-- PolicyV1 独立产生可解释、可回归的最终决策
-- 模型失败时改用规则特征，但评分策略不变
-- 安全信号和 provenance 均由服务端生成
-
-面试中可以这样概括：
-
-```text
-我把 lead 清洗、校验、特征提取和决策逻辑从 n8n 中抽离到 Python / FastAPI 服务。
-LLM 只能提取受限业务事实，最终分数、intent 和 disposition 全部由版本化的 PolicyV1 计算。
-模型失败时系统改用规则特征提取，但仍经过同一个 PolicyV1，因此响应结构和决策规则保持稳定。
-```
+历史设计和阶段复盘已归档到 `docs/archive/`，不会作为当前契约引用。

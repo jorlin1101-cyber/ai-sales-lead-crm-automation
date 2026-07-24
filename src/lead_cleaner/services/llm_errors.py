@@ -21,10 +21,6 @@ class LLMClientError(Exception):
     error_code: LLMErrorCode = "internal_error"
     fallback_reason: FallbackReason | None = None
 
-    @property
-    def can_fallback(self) -> bool:
-        return self.fallback_reason is not None
-
 
 class LLMFallbackError(LLMClientError):
     """Base class for runtime failures that may use deterministic rules."""

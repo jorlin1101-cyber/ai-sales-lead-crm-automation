@@ -92,6 +92,14 @@ def test_extracted_lead_features_accepts_only_extractor_owned_facts():
     assert "company_name_present" not in extracted.model_fields_set
 
 
+def test_extracted_lead_features_rejects_unknown_language_code():
+    with pytest.raises(ValidationError):
+        ExtractedLeadFeatures(
+            customer_kind="agency",
+            language="english",
+        )
+
+
 @pytest.mark.parametrize(
     ("field_name", "field_value"),
     [

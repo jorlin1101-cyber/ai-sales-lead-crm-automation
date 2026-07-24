@@ -45,7 +45,7 @@
 | `followup_email_draft`| Current Analysis       | `analysis_result.followup_email_draft`  | 只作为邮件草稿供人工审核，不自动发送                              | No       |
 | `analysis_method`     | Python / System        | `analysis_result.metadata.analysis_method`       | 当前为 `llm_features` 或 `rule_features`                           | No       |
 | `fallback_reason`     | Python / System        | `analysis_result.metadata.fallback_reason`       | 未降级时为空；降级时保存服务端原因码                               | No       |
-| `sources`             | API / RAG              | `sources`                               | 保存来源数组；Day 2 固定为空，Day 5 接入脱敏 Top 1～3 来源        | No       |
+| `sources`             | API / RAG              | `sources`                               | 保存脱敏 Top 1～3 来源；domain-invalid 或未检索时为空             | No       |
 | `ai_analysis_status`  | n8n / System           | API processing result                   | valid 分析成功后为 `Completed`；invalid 为 `Skipped`              | Yes      |
 | `crm_status`          | n8n / System           | CRM write result                        | 根据 CRM 写入结果设置状态                                         | Yes      |
 | `notification_status` | n8n / System           | notification result                     | 根据通知结果设置为 `Sent`、`Failed` 或 `Not Required`             | No       |

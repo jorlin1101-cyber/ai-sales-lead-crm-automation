@@ -13,7 +13,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from lead_cleaner.schemas.policy import CustomerKind, Destination
+from lead_cleaner.schemas.policy import CustomerKind, Destination, FeatureLanguage
 
 
 RetrievalTopic = Literal[
@@ -39,7 +39,7 @@ class RetrievalIntent(BaseModel):
     destinations: list[Destination] = Field(default_factory=list, max_length=10)
     group_size: int | None = Field(default=None, ge=1, le=10000)
     topic_codes: list[RetrievalTopic] = Field(default_factory=list, max_length=10)
-    language: str = Field(default="unknown", min_length=2, max_length=30)
+    language: FeatureLanguage = "unknown"
 
 
 class RawNotionPage(BaseModel):

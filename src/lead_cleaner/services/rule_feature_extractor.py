@@ -2,7 +2,7 @@ import re
 
 from lead_cleaner.config import AppMode
 from lead_cleaner.schemas.lead import CleanedLead
-from lead_cleaner.schemas.policy import CustomerKind, LeadFeatures
+from lead_cleaner.schemas.policy import CustomerKind, FeatureLanguage, LeadFeatures
 from lead_cleaner.services.feature_extractor import (
     FallbackReason,
     FeatureExtractionOutcome,
@@ -172,6 +172,37 @@ GROUP_SIZE_PATTERNS = (
     re.compile(r"(\d{1,4})\s*(?:人|位)(?:游客|客人|学生)?"),
 )
 
+NON_EXACT_GROUP_SIZE_PATTERNS = (
+    re.compile(
+        r"\bbetween\s+\d{1,4}\s+and\s+\d{1,4}\s*"
+        r"(?:people|persons|pax|travellers?|travelers?|guests?|clients?|students?)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\b\d{1,4}\s*(?:-|–|—|to)\s*\d{1,4}\s*"
+        r"(?:people|persons|pax|travellers?|travelers?|guests?|clients?|students?)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\b(?:about|around|approximately|at\s+least|more\s+than|over|up\s+to|"
+        r"less\s+than|under)\s+\d{1,4}\s*"
+        r"(?:people|persons|pax|travellers?|travelers?|guests?|clients?|students?)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"(?:约|大约|至少|超过|不超过|少于|多于)\s*\d{1,4}\s*"
+        r"(?:人|位)(?:游客|客人|学生)?"
+    ),
+    re.compile(
+        r"\d{1,4}\s*(?:人|位)(?:游客|客人|学生)?\s*"
+        r"(?:以上|以下|左右|上下)"
+    ),
+    re.compile(
+        r"\d{1,4}\s*(?:-|–|—|到|至)\s*\d{1,4}\s*"
+        r"(?:人|位)(?:游客|客人|学生)?"
+    ),
+)
+
 DATE_PATTERNS = (
     re.compile(
         r"\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\b",
@@ -195,6 +226,9 @@ def contains_any(text: str, keywords: tuple[str, ...]) -> bool:
 
 
 def extract_group_size(message: str) -> tuple[int | None, list[str]]:
+    if any(pattern.search(message) is not None for pattern in NON_EXACT_GROUP_SIZE_PATTERNS):
+        return None, []
+
     matches: set[int] = set()
     for pattern in GROUP_SIZE_PATTERNS:
         matches.update(int(value) for value in pattern.findall(message))
@@ -247,10 +281,15 @@ def detect_destinations(text: str) -> list[str]:
     ]
 
 
-def detect_language(message: str) -> str:
-    if re.search(r"[\u3400-\u9fff]", message):
+def detect_language(message: str) -> FeatureLanguage:
+    contains_chinese = re.search(r"[\u3400-\u9fff]", message) is not None
+    contains_english = re.search(r"[a-z]", message, re.IGNORECASE) is not None
+
+    if contains_chinese and contains_english:
+        return "mixed"
+    if contains_chinese:
         return "zh"
-    if re.search(r"[a-z]", message, re.IGNORECASE):
+    if contains_english:
         return "en"
     return "unknown"
 
