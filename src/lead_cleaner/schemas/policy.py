@@ -33,6 +33,8 @@ DecisionIntentLevel = Literal["High", "Medium", "Low"]
 
 Disposition = Literal["qualified", "nurture", "spam", "manual_review"]
 
+FeatureLanguage = Literal["en", "zh", "mixed", "unknown"]
+
 ScoreComponentName = Literal[
     "spam_override",
     "customer_fit",
@@ -59,7 +61,7 @@ class ExtractedLeadFeatures(BaseModel):
     requests_partnership: bool = False
     contains_spam_or_promotion: bool = False
     destinations: list[Destination] = Field(default_factory=list, max_length=10)
-    language: str = Field(default="unknown", min_length=2, max_length=30)
+    language: FeatureLanguage = "unknown"
 
 
 class LeadFeatures(ExtractedLeadFeatures):
