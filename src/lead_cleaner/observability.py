@@ -27,6 +27,7 @@ _SAFE_FIELDS = frozenset(
         "source_count",
         "retrieval_method",
         "recommendation_method",
+        "cited_source_count",
         "error_code",
         "error_type",
     }

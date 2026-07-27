@@ -36,6 +36,11 @@ class FailIfCalledRagRetriever:
         raise AssertionError("This lead must skip RAG")
 
 
+class FailIfCalledRecommendationGenerator:
+    def generate(self, *, cleaned_lead, analysis_result, chunks):
+        raise AssertionError("This lead must skip recommendation generation")
+
+
 def test_process_lead_valid_lead_uses_safe_rule_only_default():
     raw_lead = RawLeadInput(
         name="John Doe",
@@ -102,6 +107,7 @@ def test_process_lead_invalid_lead_skips_feature_extraction():
         raw_lead,
         feature_extractor=FailIfCalledFeatureExtractor(),
         rag_retriever=FailIfCalledRagRetriever(),
+        recommendation_generator=FailIfCalledRecommendationGenerator(),
     )
 
     assert result.cleaned_lead.email == "invalid-email"

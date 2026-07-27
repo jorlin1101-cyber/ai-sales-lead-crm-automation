@@ -1,5 +1,6 @@
 import httpx
 import pytest
+from types import SimpleNamespace
 from openai import (
     APIConnectionError,
     APITimeoutError,
@@ -19,6 +20,8 @@ from lead_cleaner.services.llm_errors import (
     LLMInvalidJSONError,
     LLMProviderUnavailableError,
     LLMRateLimitError,
+    LLMRefusalError,
+    LLMResponseIncompleteError,
     LLMSchemaValidationError,
     LLMTimeoutError,
 )
@@ -218,6 +221,34 @@ def test_extract_rejects_empty_structured_output():
     client = OpenAIFeatureClient(client=fake_sdk_client, model="test-model")
 
     with pytest.raises(LLMInvalidJSONError):
+        client.extract("system prompt", "user prompt")
+
+
+def test_extract_rejects_incomplete_response():
+    response = FakeResponse(None)
+    response.status = "incomplete"
+    response.incomplete_details = SimpleNamespace(reason="max_output_tokens")
+    response.output = []
+    fake_sdk_client = FakeOpenAI(response=response)
+    client = OpenAIFeatureClient(client=fake_sdk_client, model="test-model")
+
+    with pytest.raises(LLMResponseIncompleteError, match="max_output_tokens"):
+        client.extract("system prompt", "user prompt")
+
+
+def test_extract_rejects_refusal_nested_in_message_content():
+    response = FakeResponse(None)
+    response.status = "completed"
+    response.output = [
+        SimpleNamespace(
+            type="message",
+            content=[SimpleNamespace(type="refusal", refusal="Cannot comply")],
+        )
+    ]
+    fake_sdk_client = FakeOpenAI(response=response)
+    client = OpenAIFeatureClient(client=fake_sdk_client, model="test-model")
+
+    with pytest.raises(LLMRefusalError):
         client.extract("system prompt", "user prompt")
 
 

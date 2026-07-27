@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-518%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-577%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -27,6 +27,7 @@ n8n 路由到 CRM。
 - [API 示例](#api-示例)
 - [运行模式](#运行模式)
 - [RAG 与评测](#rag-与评测)
+- [可选的有依据 LLM 推荐](#可选的有依据-llm-推荐)
 - [n8n 工作流](#n8n-工作流)
 - [质量门禁](#质量门禁)
 - [Roadmap](#roadmap)
@@ -66,6 +67,7 @@ n8n 路由到 CRM。
 - 垃圾推广、Prompt Injection 和信息冲突进入确定性安全策略；
 - 100 分制 `PolicyV1`，每一分都有 component 和 reason code；
 - Keyword RRF 与 BGE-M3 RRF 两种混合检索后端；
+- 可选的中英文 LLM 推荐生成，引用只能来自本次检索到的 Top 3；
 - API 只返回脱敏 Top 3 来源；
 - request ID、安全结构化日志、网络隔离测试和离线 CI；
 - 可导入的 n8n High / Medium / Low / Invalid / API Error 五路工作流。
@@ -81,7 +83,7 @@ flowchart LR
     D --> E[Security signals]
     E --> F[PolicyV1 decision]
     F --> G[Hybrid RAG]
-    G --> H[Grounded recommendation]
+    G --> H[Template / optional LLM grounded recommendation]
     H --> I[n8n five-way routing]
     I --> K[CRM / processing log]
 ```
@@ -292,6 +294,31 @@ top_k=3、共 103 对标题/章节标注。
 这些数字来自一次保存的 BGE-M3 排名，不代表离线 CLI 每次运行都会调用 BGE。
 完整指标和边界见 [RAG evaluation](docs/rag-evaluation.md)。
 
+## 可选的有依据 LLM 推荐
+
+默认情况下，系统继续使用确定性模板，不会额外调用模型生成邮件：
+
+```text
+GROUNDED_RECOMMENDATION_ENABLED=false
+RECOMMENDATION_MAX_OUTPUT_TOKENS=1024
+```
+
+启用后，模型也不能评分或改变 `PolicyV1` 的决定。只有同时满足以下条件才会调用：
+
+- `APP_MODE=live`、`ALLOW_NETWORK=true`、`LLM_PROVIDER=openai`；
+- lead 已被判定为 `qualified`，且不需要人工复核；
+- 没有 lead injection 或 knowledge injection 信号；
+- `keyword_rrf` 或 `bge_rrf` 成功返回至少一个真实知识片段。
+
+系统使用等价的中英文 System Prompt 和 OpenAI Structured Outputs，要求模型只根据当前
+lead、已冻结的策略结果和本次检索证据写建议。模型返回的 1–3 个 `cited_chunk_ids`
+还必须通过 Top 3 引用白名单校验。超时、限流、拒绝、截断、结构错误或虚构引用都会
+安全回落到原有 `generic_template`。
+
+这项能力只生成供人工审核的草稿，不发送邮件、不调用 CRM，也不修改 score、intent 或
+disposition。公开 API 字段保持不变。完整设计、配置和评测边界见
+[Grounded recommendation](docs/grounded-recommendation.md)。
+
 ## n8n 工作流
 
 导入 [n8n/ai-sales-lead-routing.json](n8n/ai-sales-lead-routing.json) 后，可以演示：
@@ -312,10 +339,10 @@ High | Medium | Low | Invalid | API Error
 
 | Check | Result |
 | --- | ---: |
-| pytest | 518 passed |
+| pytest | 577 passed |
 | coverage | 95% |
 | Ruff lint | passed |
-| Ruff format | 132 files formatted |
+| Ruff format | 145 files formatted |
 | Mypy | passed |
 | external socket policy | blocked by default |
 

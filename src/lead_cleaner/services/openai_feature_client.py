@@ -23,6 +23,9 @@ from lead_cleaner.services.llm_errors import (
     LLMSchemaValidationError,
     LLMTimeoutError,
 )
+from lead_cleaner.services.openai_response_guard import (
+    ensure_complete_structured_response,
+)
 
 
 class OpenAIFeatureClient:
@@ -91,6 +94,11 @@ class OpenAIFeatureClient:
             ) from error
         except Exception as error:
             raise LLMClientError("Unexpected OpenAI client failure.") from error
+
+        ensure_complete_structured_response(
+            response,
+            operation="OpenAI feature extraction",
+        )
 
         parsed_result = response.output_parsed
         if parsed_result is None:

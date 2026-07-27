@@ -90,10 +90,12 @@ def test_log_payload_redacts_unknown_fields_and_secret_shaped_safe_values() -> N
     payload = build_log_payload(
         "request_completed",
         request_id="safe-request-id",
+        cited_source_count=2,
         email=PRIVATE_EMAIL,
         path="/process-lead?token=private-secret-value",
     )
 
     assert payload["request_id"] == "safe-request-id"
+    assert payload["cited_source_count"] == 2
     assert payload["email"] == "[REDACTED]"
     assert payload["path"] == "[REDACTED]"

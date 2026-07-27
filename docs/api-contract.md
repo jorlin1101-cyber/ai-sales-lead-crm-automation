@@ -64,6 +64,17 @@ HTTP 200 的顶层结构固定为：
 - `lead_summary`、`recommended_action`、`followup_email_draft`；
 - `metadata`：执行模式、分析方法、检索方法和 fallback 来源。
 
+`metadata.recommendation_method` 只能是：
+
+```text
+llm_grounded | demo_template | generic_template | skipped
+```
+
+`llm_grounded` 只表示建议通过了结构化输出、引用白名单和安全门槛，不表示邮件已经发送。
+该能力默认关闭，只对 qualified 且无需人工复核、有真实检索来源、无注入信号的线索启用。
+任何推荐生成错误都会回落为 `generic_template`，不会修改 `decision`。
+完整边界见 [Grounded recommendation](grounded-recommendation.md)。
+
 其中两个容易误解的特征遵循以下契约：
 
 - `features.language` 只能是 `en`、`zh`、`mixed` 或 `unknown`；

@@ -56,6 +56,9 @@ class Settings(BaseSettings):
     bge_embedding_model: str = "BAAI/bge-m3"
     bge_timeout_seconds: float = Field(default=60.0, gt=0)
 
+    grounded_recommendation_enabled: bool = False
+    recommendation_max_output_tokens: int = Field(default=1024, ge=256, le=2048)
+
     @model_validator(mode="after")
     def validate_configuration(self) -> Self:
         if self.app_mode == AppMode.LIVE:
@@ -92,6 +95,19 @@ class Settings(BaseSettings):
 
         if self.rag_candidate_top_k < self.rag_top_k:
             raise ValueError("RAG_CANDIDATE_TOP_K must be greater than or equal to RAG_TOP_K")
+
+        if self.grounded_recommendation_enabled:
+            if self.app_mode != AppMode.LIVE:
+                raise ValueError("GROUNDED_RECOMMENDATION_ENABLED=true requires APP_MODE=live")
+
+            if not self.allow_network:
+                raise ValueError("GROUNDED_RECOMMENDATION_ENABLED=true requires ALLOW_NETWORK=true")
+
+            if self.llm_provider != LLMProvider.OPENAI:
+                raise ValueError("Grounded recommendation currently requires LLM_PROVIDER=openai")
+
+            if self.rag_backend == RagBackend.DISABLED:
+                raise ValueError("Grounded recommendation requires a non-disabled RAG_BACKEND")
 
         return self
 

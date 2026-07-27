@@ -4,6 +4,7 @@ from lead_cleaner.services.cleaning import clean_lead
 from lead_cleaner.services.feature_extractor import FeatureExtractor
 from lead_cleaner.services.lead_analyzer import analyze_lead
 from lead_cleaner.services.rag_grounding import ground_analysis_with_rag
+from lead_cleaner.services.recommendation_generator import RecommendationGenerator
 from lead_cleaner.services.validation import validate_lead
 
 
@@ -11,6 +12,7 @@ def process_lead(
     raw_lead: RawLeadInput,
     feature_extractor: FeatureExtractor | None = None,
     rag_retriever: RagRetriever | None = None,
+    recommendation_generator: RecommendationGenerator | None = None,
 ) -> LeadProcessingResult:
     cleaned_lead = clean_lead(raw_lead)
     validation_result = validate_lead(cleaned_lead)
@@ -30,6 +32,7 @@ def process_lead(
         analysis_result,
         cleaned_lead,
         rag_retriever=rag_retriever,
+        recommendation_generator=recommendation_generator,
     )
 
     return LeadProcessingResult(

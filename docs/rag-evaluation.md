@@ -79,3 +79,10 @@ Direct Hit 要求命中人工标注为 grade 3 的 `title + section` 对，不�
 信号，而不是完全替换原文。
 
 评测集规模仍然较小。任何生产结论都需要更多业务问题、负样本和持续人工标注支持。
+
+## Recommendation Boundary
+
+检索完成后，系统可以选择性地让 LLM 根据已冻结的 `LeadDecision` 和本次 Top 3 证据生成
+建议，但该能力默认关闭，不属于上述检索指标。它不能反向修改评分，失败时回落为确定性
+模板。推荐生成的安全边界和独立 12 条人工评测集见
+[Grounded recommendation](grounded-recommendation.md)。

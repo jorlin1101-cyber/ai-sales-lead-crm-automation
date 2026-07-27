@@ -4,6 +4,12 @@ from lead_cleaner.schemas.policy import LeadFeatures, SecuritySignals
 from lead_cleaner.services.feature_extractor import FeatureExtractionOutcome
 from lead_cleaner.services.lead_analyzer import build_policy_analysis
 from lead_cleaner.services.recommendation_builder import build_recommendation
+from lead_cleaner.services.recommendation_builder import (
+    build_llm_grounded_recommendation,
+)
+from lead_cleaner.services.recommendation_generator import (
+    GroundedRecommendationDraft,
+)
 
 
 def make_analysis(
@@ -80,3 +86,17 @@ def test_spam_skips_recommendation() -> None:
 
     assert recommendation.recommendation_method == "skipped"
     assert "Do not send" in recommendation.recommended_action
+
+
+def test_validated_draft_maps_to_existing_public_recommendation_fields() -> None:
+    recommendation = build_llm_grounded_recommendation(
+        GroundedRecommendationDraft(
+            recommended_action="Confirm dates before preparing a quotation.",
+            followup_email_draft="Thank you. Could you confirm your preferred dates?",
+            cited_chunk_ids=["chunk-1"],
+        )
+    )
+
+    assert recommendation.recommendation_method == "llm_grounded"
+    assert recommendation.recommended_action.startswith("Confirm dates")
+    assert recommendation.followup_email_draft.startswith("Thank you")
