@@ -55,3 +55,42 @@ jobs:
           RAG_BACKEND: keyword_rrf
           RAG_REQUIRED: "true"
         run: python scripts/ci_offline_smoke.py
+
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: quality
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Build Docker image
+        run: docker build --tag ai-sales-lead-crm-automation:ci .
+
+      - name: Run Docker smoke test
+        run: |
+          docker run --detach \
+            --name ai-sales-lead-crm-automation-ci \
+            --publish 127.0.0.1:18000:8000 \
+            --env APP_MODE=demo \
+            --env ALLOW_NETWORK=false \
+            ai-sales-lead-crm-automation:ci
+
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:18000/health > /dev/null; then
+              docker exec ai-sales-lead-crm-automation-ci \
+                sh -c 'test "$(id -u)" -ne 0'
+              exit 0
+            fi
+
+            sleep 1
+          done
+
+          docker logs ai-sales-lead-crm-automation-ci
+          exit 1
+
+      - name: Remove smoke-test container
+        if: always()
+        run: docker rm --force ai-sales-lead-crm-automation-ci || true

@@ -1,0 +1,46 @@
+# Git and editor files
+.git
+.github
+.vscode
+.idea
+
+# Local environment variables
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv
+venv
+__pycache__
+**/__pycache__
+*.py[cod]
+.pytest_cache
+.pytest_tmp
+.mypy_cache
+.ruff_cache
+.coverage
+.coverage.*
+htmlcov
+
+# Development files not needed by the API container
+tests
+docs
+reports
+exports
+n8n
+scripts
+prompts
+config
+*.log
+
+# Only allow the two runtime data files into the build context
+data/*
+!data/demo/
+!data/knowledge_snapshot/
+
+data/demo/*
+!data/demo/lead_feature_fixtures.json
+
+data/knowledge_snapshot/*
+!data/knowledge_snapshot/knowledge_chunks.json
