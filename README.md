@@ -22,6 +22,7 @@ n8n 路由到 CRM。
 - [系统架构](#系统架构)
 - [项目结构](#项目结构)
 - [快速开始](#快速开始)
+- [Docker 一键部署](#docker-一键部署)
 - [离线面试 CLI](#离线面试-cli)
 - [API 示例](#api-示例)
 - [运行模式](#运行模式)
@@ -159,6 +160,62 @@ python -m uvicorn lead_cleaner.api.main:app --host 127.0.0.1 --port 8000
 - Health: <http://127.0.0.1:8000/health>
 - Swagger: <http://127.0.0.1:8000/docs>
 
+## Docker 一键部署
+
+要求已安装并启动 Docker Desktop。首次部署时，先创建本地环境变量文件：
+
+```powershell
+# Windows
+Copy-Item .env.example .env
+```
+
+```bash
+# macOS / Linux
+cp .env.example .env
+```
+
+构建并后台启动 FastAPI：
+
+```powershell
+docker compose up --build -d
+```
+
+检查容器状态和健康接口：
+
+```powershell
+docker compose ps
+Invoke-RestMethod http://127.0.0.1:8000/health
+```
+
+macOS / Linux 可以使用：
+
+```bash
+docker compose ps
+curl http://127.0.0.1:8000/health
+```
+
+默认访问地址：
+
+- Health：<http://127.0.0.1:8000/health>
+- Swagger：<http://127.0.0.1:8000/docs>
+
+如果宿主机的 8000 端口已被占用，可以在 `.env` 中修改：
+
+```text
+API_PORT=8080
+```
+
+此时访问地址相应变为 `http://127.0.0.1:8080`，容器内部仍然监听 8000 端口。
+
+查看日志或停止服务：
+
+```powershell
+docker compose logs --tail 100 api
+docker compose down
+```
+
+当前 Compose 配置只部署 FastAPI 服务；n8n 和可选 BGE 服务仍需单独运行。
+
 ## 离线面试 CLI
 
 CLI 不需要 API Key、外部网络或正在运行的 FastAPI。
@@ -276,7 +333,7 @@ CI 不读取 provider key，并默认禁止外部 socket。
 
 ## Roadmap
 
-- 用 Docker Compose 打包 FastAPI、n8n 和可选本地 BGE 服务；
+- 将当前 FastAPI 容器部署扩展为包含 n8n 和可选本地 BGE 服务的完整 Compose 栈；
 - 接入真实 CRM / Processing Log connector，并补充幂等写入；
 - 将 policy 和 tenant 配置解耦，支持多租户版本化规则；
 - 扩大 RAG 标注集，加入 hard negatives 和持续回归评测；

@@ -1,0 +1,18 @@
+name: ai-sales-lead-crm-automation
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: ai-sales-lead-crm-automation:local
+
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+
+    env_file:
+      - .env
+
+    restart: unless-stopped
+    init: true

@@ -22,6 +22,7 @@ retrieves grounded knowledge, and hands stable results to n8n for CRM routing.
 - [Architecture](#architecture)
 - [Repository layout](#repository-layout)
 - [Quick start](#quick-start)
+- [Docker deployment](#docker-deployment)
 - [Offline interview CLI](#offline-interview-cli)
 - [API example](#api-example)
 - [Execution modes](#execution-modes)
@@ -159,6 +160,65 @@ python -m uvicorn lead_cleaner.api.main:app --host 127.0.0.1 --port 8000
 - Health: <http://127.0.0.1:8000/health>
 - Swagger: <http://127.0.0.1:8000/docs>
 
+## Docker deployment
+
+Docker Desktop must be installed and running. For the first deployment, create a local
+environment file:
+
+```powershell
+# Windows
+Copy-Item .env.example .env
+```
+
+```bash
+# macOS / Linux
+cp .env.example .env
+```
+
+Build and start FastAPI in the background:
+
+```powershell
+docker compose up --build -d
+```
+
+Check the container and health endpoint:
+
+```powershell
+docker compose ps
+Invoke-RestMethod http://127.0.0.1:8000/health
+```
+
+On macOS or Linux, use:
+
+```bash
+docker compose ps
+curl http://127.0.0.1:8000/health
+```
+
+Default endpoints:
+
+- Health: <http://127.0.0.1:8000/health>
+- Swagger: <http://127.0.0.1:8000/docs>
+
+If host port 8000 is already in use, change the local `.env` file:
+
+```text
+API_PORT=8080
+```
+
+The endpoints then use `http://127.0.0.1:8080`; the container still listens on port 8000
+internally.
+
+View logs or stop the service:
+
+```powershell
+docker compose logs --tail 100 api
+docker compose down
+```
+
+The current Compose configuration deploys FastAPI only. n8n and the optional BGE service must
+still be run separately.
+
 ## Offline interview CLI
 
 The CLI requires no provider key, external network, or running API process.
@@ -282,7 +342,8 @@ CI does not read provider keys and blocks external sockets by default.
 
 ## Roadmap
 
-- Package FastAPI, n8n, and an optional local BGE service with Docker Compose.
+- Expand the current FastAPI container deployment into a complete Compose stack with n8n and an
+  optional local BGE service.
 - Add real CRM and Processing Log connectors with idempotent writes.
 - Separate tenant configuration from versioned policy configuration.
 - Expand the RAG labels with hard negatives and continuous regression evaluation.
