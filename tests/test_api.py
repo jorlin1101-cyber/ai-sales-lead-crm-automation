@@ -1,3 +1,6 @@
+import tomllib
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -27,6 +30,16 @@ def test_health_check(client):
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+def test_openapi_version_matches_project_version(client):
+    project_root = Path(__file__).resolve().parents[1]
+    project_config = tomllib.loads((project_root / "pyproject.toml").read_text(encoding="utf-8"))
+
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+    assert response.json()["info"]["version"] == project_config["project"]["version"]
 
 
 def test_process_lead_valid_lead(client, monkeypatch):
