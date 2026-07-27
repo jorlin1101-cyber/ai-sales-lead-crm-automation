@@ -346,6 +346,7 @@ Roadmap 是后续计划，不代表这些能力已经上线。
 ## 文档、贡献与许可
 
 - [Documentation index](docs/README.md)
+- [Changelog](CHANGELOG.md)
 - [Contributing guide](CONTRIBUTING.md)
 - [MIT License](LICENSE)
 

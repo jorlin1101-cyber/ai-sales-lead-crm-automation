@@ -356,6 +356,7 @@ The roadmap describes planned work, not deployed capabilities.
 ## Documentation, contributing, and license
 
 - [Documentation index](docs/README.md)
+- [Changelog](CHANGELOG.md)
 - [Contributing guide](CONTRIBUTING.md)
 - [MIT License](LICENSE)
 
