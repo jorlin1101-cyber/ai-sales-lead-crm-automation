@@ -29,6 +29,13 @@ from lead_cleaner.services.feature_extractor import (
 )
 from lead_cleaner.services.feature_extractor_factory import create_feature_extractor
 from lead_cleaner.services.processor import process_lead
+from lead_cleaner.services.recommendation_generator import (
+    CloseableRecommendationGenerator,
+    RecommendationGenerator,
+)
+from lead_cleaner.services.recommendation_generator_factory import (
+    create_recommendation_generator,
+)
 
 
 def create_app(*, settings: Settings | None = None) -> FastAPI:
@@ -39,16 +46,25 @@ def create_app(*, settings: Settings | None = None) -> FastAPI:
         resolved_settings = settings or Settings()
         feature_extractor = create_feature_extractor(resolved_settings)
         rag_retriever: RagRetriever | None = None
+        recommendation_generator: RecommendationGenerator | None = None
 
         try:
             rag_retriever = create_rag_retriever(resolved_settings)
+            recommendation_generator = create_recommendation_generator(resolved_settings)
 
             app.state.settings = resolved_settings
             app.state.feature_extractor = feature_extractor
             app.state.rag_retriever = rag_retriever
+            app.state.recommendation_generator = recommendation_generator
 
             yield
         finally:
+            if isinstance(
+                recommendation_generator,
+                CloseableRecommendationGenerator,
+            ):
+                recommendation_generator.close()
+
             if isinstance(rag_retriever, CloseableRagRetriever):
                 rag_retriever.close()
 
@@ -57,7 +73,7 @@ def create_app(*, settings: Settings | None = None) -> FastAPI:
 
     api = FastAPI(
         title="AI Sales Lead Cleaner API",
-        version="0.2.0",
+        version="0.3.0",
         lifespan=lifespan,
     )
     register_error_handlers(api)
@@ -110,6 +126,14 @@ def create_app(*, settings: Settings | None = None) -> FastAPI:
     def get_rag_retriever(request: Request) -> RagRetriever:
         return cast(RagRetriever, request.app.state.rag_retriever)
 
+    def get_recommendation_generator(
+        request: Request,
+    ) -> RecommendationGenerator | None:
+        return cast(
+            RecommendationGenerator | None,
+            request.app.state.recommendation_generator,
+        )
+
     @api.get("/health")
     def health_check() -> dict[str, str]:
         return {"status": "ok"}
@@ -125,11 +149,16 @@ def create_app(*, settings: Settings | None = None) -> FastAPI:
             RagRetriever,
             Depends(get_rag_retriever),
         ],
+        recommendation_generator: Annotated[
+            RecommendationGenerator | None,
+            Depends(get_recommendation_generator),
+        ],
     ) -> LeadProcessingResult:
         result = process_lead(
             raw_lead,
             feature_extractor=feature_extractor,
             rag_retriever=rag_retriever,
+            recommendation_generator=recommendation_generator,
         )
         analysis = result.analysis_result
         log_event(

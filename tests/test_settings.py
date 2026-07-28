@@ -143,6 +143,8 @@ def test_rag_defaults_to_offline_keyword_rrf() -> None:
     assert settings.rag_candidate_top_k == 5
     assert settings.knowledge_chunks_path == Path("data/knowledge_snapshot/knowledge_chunks.json")
     assert settings.bge_api_base_url == "http://127.0.0.1:8001/v1"
+    assert settings.grounded_recommendation_enabled is False
+    assert settings.recommendation_max_output_tokens == 1024
 
 
 def test_required_rag_cannot_be_disabled() -> None:
@@ -189,3 +191,79 @@ def test_rag_paths_and_backend_can_be_configured_from_environment(monkeypatch) -
 
     assert settings.rag_backend == RagBackend.DISABLED
     assert settings.knowledge_chunks_path == Path("custom/chunks.json")
+
+
+def test_grounded_recommendation_accepts_complete_live_openai_configuration() -> None:
+    settings = Settings(
+        _env_file=None,
+        app_mode=AppMode.LIVE,
+        allow_network=True,
+        llm_provider=LLMProvider.OPENAI,
+        openai_api_key="test-key",
+        openai_model="test-model",
+        grounded_recommendation_enabled=True,
+        recommendation_max_output_tokens=1200,
+    )
+
+    assert settings.grounded_recommendation_enabled is True
+    assert settings.recommendation_max_output_tokens == 1200
+
+
+def test_grounded_recommendation_requires_live_mode() -> None:
+    with pytest.raises(ValidationError, match="requires APP_MODE=live"):
+        Settings(
+            _env_file=None,
+            app_mode=AppMode.RULE_ONLY,
+            allow_network=True,
+            grounded_recommendation_enabled=True,
+        )
+
+
+def test_grounded_recommendation_requires_openai_provider() -> None:
+    with pytest.raises(ValidationError, match="requires LLM_PROVIDER=openai"):
+        Settings(
+            _env_file=None,
+            app_mode=AppMode.LIVE,
+            allow_network=True,
+            llm_provider=LLMProvider.DEEPSEEK,
+            deepseek_api_key="test-key",
+            deepseek_model="test-model",
+            grounded_recommendation_enabled=True,
+        )
+
+
+def test_grounded_recommendation_requires_enabled_rag() -> None:
+    with pytest.raises(ValidationError, match="non-disabled RAG_BACKEND"):
+        Settings(
+            _env_file=None,
+            app_mode=AppMode.LIVE,
+            allow_network=True,
+            llm_provider=LLMProvider.OPENAI,
+            openai_api_key="test-key",
+            openai_model="test-model",
+            rag_backend=RagBackend.DISABLED,
+            grounded_recommendation_enabled=True,
+        )
+
+
+@pytest.mark.parametrize("max_output_tokens", [255, 2049])
+def test_recommendation_token_limit_is_bounded(max_output_tokens: int) -> None:
+    with pytest.raises(ValidationError):
+        Settings(
+            _env_file=None,
+            recommendation_max_output_tokens=max_output_tokens,
+        )
+
+
+def test_recommendation_settings_can_be_loaded_from_environment(monkeypatch) -> None:
+    monkeypatch.setenv("APP_MODE", "live")
+    monkeypatch.setenv("ALLOW_NETWORK", "true")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_MODEL", "test-model")
+    monkeypatch.setenv("GROUNDED_RECOMMENDATION_ENABLED", "true")
+    monkeypatch.setenv("RECOMMENDATION_MAX_OUTPUT_TOKENS", "1400")
+
+    settings = Settings(_env_file=None)
+
+    assert settings.grounded_recommendation_enabled is True
+    assert settings.recommendation_max_output_tokens == 1400

@@ -13,6 +13,7 @@
 | [CRM schema](crm-schema.md) | Leads 与 Processing Log 结构 |
 | [RAG design](rag-design.md) | 混合检索设计背景 |
 | [RAG evaluation](rag-evaluation.md) | 当前冻结评测和证据边界 |
+| [Grounded recommendation](grounded-recommendation.md) | 可选 LLM 建议、引用校验和安全回落边界 |
 | [n8n workflow](n8n-workflow.md) | 五路路由和连接器边界 |
 | [Day 6 acceptance](day6-acceptance.md) | 核心场景验收矩阵 |
 

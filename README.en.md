@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-518%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-577%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -27,6 +27,7 @@ retrieves grounded knowledge, and hands stable results to n8n for CRM routing.
 - [API example](#api-example)
 - [Execution modes](#execution-modes)
 - [RAG and evaluation](#rag-and-evaluation)
+- [Optional grounded LLM recommendation](#optional-grounded-llm-recommendation)
 - [n8n workflow](#n8n-workflow)
 - [Quality gate](#quality-gate)
 - [Five-minute interview walkthrough](#five-minute-interview-walkthrough)
@@ -68,6 +69,7 @@ This project separates responsibilities:
 - Deterministic spam, prompt-injection, and conflict handling.
 - Auditable 100-point `PolicyV1` with component-level reason codes.
 - Keyword RRF and BGE-M3 RRF hybrid retrieval backends.
+- Optional bilingual LLM recommendations whose citations must belong to the retrieved Top 3.
 - Sanitized Top 3 sources in the public API.
 - Request correlation, safe structured logs, network-isolated tests, and offline CI.
 - Importable n8n High / Medium / Low / Invalid / API Error workflow.
@@ -83,7 +85,7 @@ flowchart LR
     D --> E[Security signals]
     E --> F[PolicyV1 decision]
     F --> G[Hybrid RAG]
-    G --> H[Grounded recommendation]
+    G --> H[Template / optional LLM grounded recommendation]
     H --> I[n8n five-way routing]
     I --> K[CRM / processing log]
 ```
@@ -284,11 +286,46 @@ Live mode requires `ALLOW_NETWORK=true`, a provider key, and a model name. The m
 | `keyword_rrf` | BM25 + local keyword dense + RRF | No |
 | `bge_rrf` | BM25 + BGE-M3 dense + RRF | Yes |
 
-Across the frozen set of 18 manually curated queries, `Raw + RetrievalIntent fusion` achieved
-`Top 1 = 18/18`, `Top 3 = 18/18`, and `MRR@3 = 1.0000`. These metrics come from a saved BGE-M3
-ranking run; they do not mean the offline CLI executes BGE on every invocation.
+The frozen configuration contains 47 knowledge chunks, 18 manually curated queries,
+BM25 + BGE-M3 dense retrieval + RRF, `top_k=3`, and 103 paired title/section judgments.
+
+Under this configuration, `Raw + RetrievalIntent fusion` achieved:
+
+- Direct Top 1: 18/18
+- Direct Top 3: 18/18
+- MRR@3: 1.0000
+
+These metrics come from a saved BGE-M3 ranking run; they do not mean the offline CLI executes
+BGE on every invocation.
 
 See [RAG evaluation](docs/rag-evaluation.md) for the full metrics and evidence boundary.
+
+## Optional grounded LLM recommendation
+
+By default, the service keeps using deterministic templates and makes no additional model call:
+
+```text
+GROUNDED_RECOMMENDATION_ENABLED=false
+RECOMMENDATION_MAX_OUTPUT_TOKENS=1024
+```
+
+When enabled, the model still cannot score a lead or alter `PolicyV1`. Generation runs only when:
+
+- `APP_MODE=live`, `ALLOW_NETWORK=true`, and `LLM_PROVIDER=openai`;
+- the lead is `qualified` and does not require review;
+- neither lead nor knowledge injection is suspected;
+- `keyword_rrf` or `bge_rrf` returns at least one real knowledge chunk.
+
+Equivalent English and Simplified Chinese system prompts use OpenAI Structured Outputs to draft
+from the lead, frozen policy result, and retrieved evidence only. The returned one to three
+`cited_chunk_ids` must pass an exact Top 3 citation whitelist. Timeouts, rate limits, refusals,
+incomplete output, schema errors, and invented citations safely fall back to the existing
+`generic_template`.
+
+This feature creates a human-reviewed draft only. It does not send email, call a CRM, or change
+the score, intent, or disposition. The public API fields remain unchanged. See
+[Grounded recommendation](docs/grounded-recommendation.md) for the full design, configuration,
+and evaluation boundary.
 
 ## n8n workflow
 
@@ -310,10 +347,10 @@ Latest complete local acceptance:
 
 | Check | Result |
 | --- | ---: |
-| pytest | 518 passed |
+| pytest | 577 passed |
 | coverage | 95% |
 | Ruff lint | passed |
-| Ruff format | 132 files formatted |
+| Ruff format | 145 files formatted |
 | Mypy | passed |
 | external socket policy | blocked by default |
 
@@ -337,7 +374,7 @@ CI does not read provider keys and blocks external sockets by default.
 2:40-3:20  Run `model-failure`, show timeout fallback
 3:20-4:00  Run `rag`, show local Top 3
 4:00-4:35  Show n8n five-way routing
-4:35-5:00  Show CI, 518 tests, 95% coverage, and known limitations
+4:35-5:00  Show CI, 577 tests, 95% coverage, and known limitations
 ```
 
 ## Roadmap

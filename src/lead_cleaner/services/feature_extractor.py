@@ -14,6 +14,8 @@ FallbackReason = Literal[
     "provider_unavailable",
     "invalid_json",
     "schema_validation_error",
+    "incomplete_response",
+    "refusal",
     "demo_fixture_not_found",
 ]
 

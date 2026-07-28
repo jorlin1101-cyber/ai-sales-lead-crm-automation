@@ -11,6 +11,8 @@ LLMErrorCode = Literal[
     "provider_unavailable",
     "invalid_json",
     "schema_validation_error",
+    "incomplete_response",
+    "refusal",
     "internal_error",
 ]
 
@@ -49,6 +51,16 @@ class LLMInvalidJSONError(LLMFallbackError):
 class LLMSchemaValidationError(LLMFallbackError):
     error_code: LLMErrorCode = "schema_validation_error"
     fallback_reason: FallbackReason = "schema_validation_error"
+
+
+class LLMResponseIncompleteError(LLMFallbackError):
+    error_code: LLMErrorCode = "incomplete_response"
+    fallback_reason: FallbackReason = "incomplete_response"
+
+
+class LLMRefusalError(LLMFallbackError):
+    error_code: LLMErrorCode = "refusal"
+    fallback_reason: FallbackReason = "refusal"
 
 
 class LLMAuthenticationError(LLMClientError):

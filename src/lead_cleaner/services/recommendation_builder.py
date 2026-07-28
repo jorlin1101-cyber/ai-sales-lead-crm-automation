@@ -6,6 +6,9 @@ from lead_cleaner.schemas.ai_output import (
     RetrievalMethod,
 )
 from lead_cleaner.schemas.lead import KnowledgeSource
+from lead_cleaner.services.recommendation_generator import (
+    GroundedRecommendationDraft,
+)
 
 
 class RecommendationOutcome(BaseModel):
@@ -14,6 +17,18 @@ class RecommendationOutcome(BaseModel):
     recommended_action: str = Field(min_length=1)
     followup_email_draft: str = ""
     recommendation_method: RecommendationMethod
+
+
+def build_llm_grounded_recommendation(
+    draft: GroundedRecommendationDraft,
+) -> RecommendationOutcome:
+    """Convert a validated internal draft into the existing public fields."""
+
+    return RecommendationOutcome(
+        recommended_action=draft.recommended_action,
+        followup_email_draft=draft.followup_email_draft,
+        recommendation_method="llm_grounded",
+    )
 
 
 def build_recommendation(
