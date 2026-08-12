@@ -23,7 +23,7 @@ n8n 路由到 CRM。
 - [项目结构](#项目结构)
 - [快速开始](#快速开始)
 - [Docker 一键部署](#docker-一键部署)
-- [离线面试 CLI](#离线面试-cli)
+- [离线 CLI](#离线-cli)
 - [API 示例](#api-示例)
 - [运行模式](#运行模式)
 - [RAG 与评测](#rag-与评测)
@@ -218,7 +218,7 @@ docker compose down
 
 当前 Compose 配置只部署 FastAPI 服务；n8n 和可选 BGE 服务仍需单独运行。
 
-## 离线面试 CLI
+## 离线 CLI
 
 CLI 不需要 API Key、外部网络或正在运行的 FastAPI。
 
