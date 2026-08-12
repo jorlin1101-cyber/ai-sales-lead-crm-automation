@@ -40,6 +40,9 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = [
     "--basetemp=.pytest_tmp",
+    "--cov=lead_cleaner",
+    "--cov-report=term-missing",
+    "--cov-fail-under=95",
     "--disable-socket",
     "--allow-unix-socket",
     "--allow-hosts=127.0.0.1,::1",

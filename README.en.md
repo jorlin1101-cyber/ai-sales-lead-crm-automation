@@ -23,14 +23,14 @@ retrieves grounded knowledge, and hands stable results to n8n for CRM routing.
 - [Repository layout](#repository-layout)
 - [Quick start](#quick-start)
 - [Docker deployment](#docker-deployment)
-- [Offline interview CLI](#offline-interview-cli)
+- [Offline CLI](#offline-cli)
 - [API example](#api-example)
 - [Execution modes](#execution-modes)
 - [RAG and evaluation](#rag-and-evaluation)
 - [Optional grounded LLM recommendation](#optional-grounded-llm-recommendation)
 - [n8n workflow](#n8n-workflow)
 - [Quality gate](#quality-gate)
-- [Five-minute interview walkthrough](#five-minute-interview-walkthrough)
+- [Five-minute demo walkthrough](#five-minute-demo-walkthrough)
 - [Roadmap](#roadmap)
 - [Documentation, contributing, and license](#documentation-contributing-and-license)
 
@@ -221,7 +221,7 @@ docker compose down
 The current Compose configuration deploys FastAPI only. n8n and the optional BGE service must
 still be run separately.
 
-## Offline interview CLI
+## Offline CLI
 
 The CLI requires no provider key, external network, or running API process.
 
@@ -364,7 +364,7 @@ python scripts/ci_offline_smoke.py
 
 CI does not read provider keys and blocks external sockets by default.
 
-## Five-minute interview walkthrough
+## Five-minute demo walkthrough
 
 ```text
 0:00-0:40  Explain the problem, LLM boundary, and PolicyV1
@@ -396,6 +396,3 @@ The roadmap describes planned work, not deployed capabilities.
 - [Changelog](CHANGELOG.md)
 - [Contributing guide](CONTRIBUTING.md)
 - [MIT License](LICENSE)
-
-Superseded design notes and development reviews are kept under `docs/archive/` and are not
-used as the current contract.

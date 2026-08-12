@@ -134,7 +134,7 @@ n8n 应保存这个 ID，用于 API Error 分支和日志关联。
 
 对于 invalid lead，`analysis_result` 为 `null`。
 
-Day 5 已接入 RAG；成功检索时 `sources` 返回 1～3 个脱敏来源。来源只包含
+当前版本已接入 RAG；成功检索时 `sources` 返回 1～3 个脱敏来源。来源只包含
 `chunk_id`、`source_title`、`section` 和 `rank`。
 
 ### HTTP Request 之前的输入 adapter

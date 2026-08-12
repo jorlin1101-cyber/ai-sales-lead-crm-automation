@@ -1,7 +1,6 @@
 # Current API Contract
 
-本文档只描述当前公开契约。历史版本保存在
-[`archive/legacy-design/`](archive/legacy-design/README.md)。
+本文档只描述当前公开契约；历史决策由 ADR 和 Git 提交记录追溯。
 
 ## Endpoints
 

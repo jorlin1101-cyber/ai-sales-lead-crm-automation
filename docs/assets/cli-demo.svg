@@ -7,7 +7,7 @@
   <circle cx="30" cy="27" r="8" fill="#ff5f56"/>
   <circle cx="56" cy="27" r="8" fill="#ffbd2e"/>
   <circle cx="82" cy="27" r="8" fill="#27c93f"/>
-  <text x="550" y="34" fill="#8b949e" font-family="Consolas, monospace" font-size="17" text-anchor="middle">AI Sales Lead — Offline Interview CLI</text>
+  <text x="550" y="34" fill="#8b949e" font-family="Consolas, monospace" font-size="17" text-anchor="middle">AI Sales Lead — Offline CLI</text>
   <g font-family="Consolas, monospace" font-size="20">
     <text x="34" y="92" fill="#7ee787">$ python -m scripts.demo_cli list</text>
     <text x="34" y="126" fill="#c9d1d9">Available demo scenarios:</text>

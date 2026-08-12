@@ -40,7 +40,7 @@
 | `followup_email_draft`| Long Text          |       No | AI                | 生成邮件草稿，必须人工审核且不自动发送  | Yes |
 | `analysis_method`     | Select             |       No | System            | `llm_features` 或 `rule_features`        | Yes |
 | `fallback_reason`     | Text               |       No | System            | 服务端记录的降级原因码                  | Yes |
-| `sources`             | Long Text / JSON   |       No | API / RAG         | Day 2 为空数组；Day 5 保存脱敏来源       | Yes |
+| `sources`             | Long Text / JSON   |       No | API / RAG         | 无检索结果时为空；成功时保存脱敏来源     | Yes |
 | `ai_analysis_status`  | Select             |      Yes | System            | 记录 AI 分析业务阶段                    | Yes |
 | `crm_status`          | Select             |      Yes | System / n8n      | 记录 CRM 页面创建状态                       | Yes |
 | `notification_status` | Select             |       Yes | System / n8n      | 记录是否已通知人工审核                  | Yes |

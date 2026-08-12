@@ -57,7 +57,7 @@ All notable changes to this project are documented in this file.
 
 ## [0.1.0] - 2026-07-24
 
-- Initial interview-ready release of the offline-safe AI sales lead cleaning, scoring, RAG,
+- Initial public release of the offline-safe AI sales lead cleaning, scoring, RAG,
   FastAPI, CLI, and n8n demonstration pipeline.
 
 [0.3.0]: https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/compare/v0.2.0...v0.3.0

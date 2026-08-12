@@ -40,7 +40,7 @@ python scripts/ci_offline_smoke.py
 
 - README 只保留项目入口和关键证据。
 - 当前契约放在 `docs/`。
-- 已废弃设计或阶段复盘放在 `docs/archive/`，并明确标记为 Archived。
+- 已废弃的设计不进入当前文档索引；必要背景通过 ADR 记录。
 - 修改公共字段时，同步更新 Schema、测试和 `docs/api-contract.md`。
 
 ## 提交信息

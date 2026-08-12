@@ -15,7 +15,7 @@
 | [RAG evaluation](rag-evaluation.md) | 当前冻结评测和证据边界 |
 | [Grounded recommendation](grounded-recommendation.md) | 可选 LLM 建议、引用校验和安全回落边界 |
 | [n8n workflow](n8n-workflow.md) | 五路路由和连接器边界 |
-| [Day 6 acceptance](day6-acceptance.md) | 核心场景验收矩阵 |
+| [Acceptance matrix](acceptance-matrix.md) | 核心场景与自动化证据矩阵 |
 
 ## Source of Truth
 
@@ -27,8 +27,3 @@
 4. `tests/`
 
 如果文档和代码不一致，应先修正文档和测试，再提交改动。
-
-## Archive
-
-开发日志和已废弃设计已移至 [archive](archive/README.md)。归档内容只用于理解演进过程，
-不能作为当前实现依据。

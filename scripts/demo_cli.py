@@ -155,9 +155,7 @@ def run_rag_query(query: str) -> RagRetrievalOutcome:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        description="Offline interview demo for the AI sales lead system."
-    )
+    parser = argparse.ArgumentParser(description="Offline demo for the AI sales lead system.")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("list", help="List available demo scenarios.")
 

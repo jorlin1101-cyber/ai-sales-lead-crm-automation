@@ -376,5 +376,3 @@ Roadmap 是后续计划，不代表这些能力已经上线。
 - [Changelog](CHANGELOG.md)
 - [Contributing guide](CONTRIBUTING.md)
 - [MIT License](LICENSE)
-
-历史设计和阶段复盘已归档到 `docs/archive/`，不会作为当前契约引用。

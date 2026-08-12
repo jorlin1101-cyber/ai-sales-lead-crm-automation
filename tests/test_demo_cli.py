@@ -27,7 +27,7 @@ def test_list_command_can_be_parsed() -> None:
     assert args.command == "list"
 
 
-def test_demo_scenarios_cover_required_interview_cases() -> None:
+def test_demo_scenarios_cover_required_cases() -> None:
     scenario_names = [scenario.name for scenario in SCENARIOS]
 
     assert scenario_names == EXPECTED_SCENARIO_NAMES
