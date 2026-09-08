@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(process.env.REVIEW_URL || 'http://127.0.0.1:8011/?review=product-sales');
-    await page.locator('#workspaceMode').filter({ hasText: 'Operator' }).waitFor();
+    await page.locator('#workspaceMode').filter({ hasText: process.env.REVIEW_PUBLIC_DEMO === 'true' ? /Demo|演示/i : 'Operator' }).waitFor();
     await page.selectOption('#conversationChannel', 'web_chat');
     await page.fill('#conversationSenderName', '产品推荐验证');
     async function send(message) {
@@ -35,6 +35,10 @@ const assert = require('node:assert/strict');
       assert.equal(second.llm_trace.generation, 'succeeded');
     }
     await page.locator('#conversationProducts').screenshot({ path: '../tmp/product-sales-desktop.png' });
+    if (process.env.REVIEW_SCREENSHOT) {
+      await page.locator('#conversationProducts').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: process.env.REVIEW_SCREENSHOT });
+    }
     await page.click('#languageToggle');
     assert.ok((await page.textContent('#conversationProducts')).includes('Recommended product'));
     await page.click('#languageToggle');
