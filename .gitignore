@@ -48,5 +48,8 @@ Desktop.ini
 # Local private knowledge data
 data/private/
 
+# Runtime conversation store
+data/runtime/
+
 # Real Notion page ID mapping
 data/knowledge_snapshot/notion_page_tree_ids.json

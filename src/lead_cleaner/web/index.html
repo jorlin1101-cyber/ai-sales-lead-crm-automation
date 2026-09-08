@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="AI Sales Lead Decision & CRM Automation sales workspace" />
+    <title>LeadFlow — AI Sales Lead Workspace</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="LeadFlow home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>
+          <strong>LeadFlow</strong>
+          <small data-i18n="brandSub">Sales Decision Workspace</small>
+        </span>
+      </a>
+      <nav class="top-actions" aria-label="Page controls">
+        <span class="system-pill"><span class="live-dot"></span><span data-i18n="systemReady">系统就绪</span></span>
+        <button class="language-button" id="languageToggle" type="button" aria-label="Switch language">EN</button>
+        <a class="ghost-button" href="/docs" target="_blank" rel="noreferrer" data-i18n="apiDocs">接口文档</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span></span><span data-i18n="eyebrow">从原始咨询到可执行销售动作</span></div>
+        <div class="hero-grid">
+          <div>
+            <h1 data-i18n="heroTitle">把每条销售线索，<br /><em>变成清晰的下一步。</em></h1>
+            <p data-i18n="heroCopy">自动清洗客户信息、判断意向、解释评分，并在人工确认后将完整记录写入 Notion CRM。</p>
+          </div>
+          <div class="hero-aside">
+            <span class="hero-number">01</span>
+            <p data-i18n="heroAside">不是黑盒式打分，而是一套销售团队看得懂、能复核、可继续跟进的决策流程。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Session metrics">
+        <article class="metric-card accent-card">
+          <span data-i18n="metricProcessed">本次已处理</span><strong id="metricProcessed">0</strong><small data-i18n="metricUnit">条线索</small>
+        </article>
+        <article class="metric-card">
+          <span data-i18n="metricHigh">高意向</span><strong id="metricHigh">0</strong><small data-i18n="metricHighSub">优先联系</small>
+        </article>
+        <article class="metric-card">
+          <span data-i18n="metricReview">待复核</span><strong id="metricReview">0</strong><small data-i18n="metricReviewSub">需要人工判断</small>
+        </article>
+        <article class="metric-card notion-metric">
+          <span data-i18n="metricCrm">Notion CRM</span><strong id="notionMetric">—</strong><small id="notionMetricText" data-i18n="checking">正在检查连接</small>
+        </article>
+      </section>
+
+      <section class="workspace-section">
+        <div class="section-heading">
+          <div><span class="section-index">01</span><h2 data-i18n="newLead">录入一条新线索</h2></div>
+          <p data-i18n="newLeadHint">填写客户留下的原始信息，系统会保留原文并给出可审计的判断。</p>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="lead-form panel" id="leadForm">
+            <div class="panel-topline"><span data-i18n="leadDetails">客户信息</span><span class="required-note" data-i18n="requiredNote">* 必填</span></div>
+            <div class="form-grid">
+              <label><span data-i18n="name">姓名</span><input id="name" name="name" autocomplete="name" placeholder="Lina Chen" /></label>
+              <label><span><span data-i18n="email">邮箱</span> *</span><input id="email" name="email" type="email" autocomplete="email" required placeholder="lina@example.com" /></label>
+              <label><span data-i18n="company">公司 / 机构</span><input id="company" name="company_name" autocomplete="organization" placeholder="Aurora Travel" /></label>
+              <label><span data-i18n="source">线索来源</span><select id="source" name="source"><option>Website</option><option>LinkedIn</option><option>Referral</option><option>Event</option><option>Email</option></select></label>
+              <label class="full-field"><span><span data-i18n="message">客户留言</span> *</span><textarea id="message" name="message" rows="7" required maxlength="5000" data-i18n-placeholder="messagePlaceholder" placeholder="粘贴客户的原始咨询内容…"></textarea><small><span id="messageCount">0</span> / 5000</small></label>
+            </div>
+            <div class="examples-row">
+              <span data-i18n="tryExample">试用示例</span>
+              <button type="button" class="example-chip" data-example="high" data-i18n="highValue">高价值团体</button>
+              <button type="button" class="example-chip" data-example="medium" data-i18n="mediumLead">一般咨询</button>
+              <button type="button" class="example-chip" data-example="spam" data-i18n="spamLead">推广信息</button>
+            </div>
+            <button class="primary-button" id="analyzeButton" type="submit"><span data-i18n="analyze">分析这条线索</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></button>
+            <p class="form-error" id="formError" role="alert"></p>
+          </form>
+
+          <aside class="process-panel panel">
+            <div class="panel-topline"><span data-i18n="workflow">处理流程</span><span id="workflowState" data-i18n="waiting">等待线索</span></div>
+            <ol class="workflow-list">
+              <li class="active" data-step="1"><b>1</b><div><strong data-i18n="stepClean">清洗与校验</strong><small data-i18n="stepCleanCopy">规范字段，识别无效邮箱和空内容</small></div><i></i></li>
+              <li data-step="2"><b>2</b><div><strong data-i18n="stepScore">意向判断</strong><small data-i18n="stepScoreCopy">提取业务信号并执行稳定评分规则</small></div><i></i></li>
+              <li data-step="3"><b>3</b><div><strong data-i18n="stepEvidence">建议与依据</strong><small data-i18n="stepEvidenceCopy">生成跟进动作并呈现知识来源</small></div><i></i></li>
+              <li data-step="4"><b>4</b><div><strong data-i18n="stepReview">人工确认</strong><small data-i18n="stepReviewCopy">由销售人员确认是否写入 CRM</small></div><i></i></li>
+              <li data-step="5"><b>5</b><div><strong data-i18n="stepCrm">写入 Notion</strong><small data-i18n="stepCrmCopy">创建可继续跟进的客户记录</small></div><i></i></li>
+            </ol>
+            <div class="trust-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-2.7 8-7 10-4.3-2-7-5.5-7-10V6l7-3zM9 12l2 2 4-4"/></svg><p><strong data-i18n="decisionBoundary">评分规则与生成式建议相互隔离</strong><span data-i18n="decisionBoundaryCopy">AI 负责提取与表达，不直接篡改最终业务分数。</span></p></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="conversation-section" id="conversationSection">
+        <div class="section-heading">
+          <div><span class="section-index">02</span><h2 data-i18n="conversationTitle">多轮会话演示</h2></div>
+          <p data-i18n="conversationHint">按真实渠道生成对应格式的回复，并在下一轮自动带入已确认的客户事实。</p>
+        </div>
+        <div class="conversation-layout">
+          <aside class="panel inbox-panel">
+            <h3 data-i18n="inboxTitle">会话收件箱</h3>
+            <button type="button" class="text-button" id="newConversation" data-i18n="newConversation">新建会话</button>
+            <button type="button" class="text-button" id="refreshConversations" data-i18n="refreshConversations">刷新列表</button>
+            <p id="workspaceMode" class="conversation-helper"></p><div id="conversationList"></div>
+            <details><summary data-i18n="operatorAccess">操作员访问</summary>
+              <input type="password" id="operatorToken" autocomplete="off" aria-label="Operator access token" />
+              <button type="button" class="text-button" id="setOperatorToken" data-i18n="connect">连接</button>
+            </details>
+          </aside>
+          <form class="conversation-form panel" id="conversationForm">
+            <div class="panel-topline"><span data-i18n="conversationInput">消息输入</span><span data-i18n="conversationP0">P0 演示</span></div>
+            <div class="conversation-fields">
+              <label><span data-i18n="channel">回复渠道</span><select id="conversationChannel"><option value="email">Email</option><option value="web_chat">Website chat</option><option value="social_dm">Social DM</option></select></label>
+              <label><span data-i18n="conversationIdLabel">会话编号</span><input id="conversationIdInput" maxlength="120" /></label>
+              <label><span data-i18n="senderName">客户姓名</span><input id="conversationSenderName" placeholder="Lina Chen" maxlength="100" /></label>
+              <label><span data-i18n="senderEmail">客户邮箱</span><input id="conversationSenderEmail" type="email" placeholder="lina@example.com" maxlength="320" /></label>
+              <label class="conversation-subject"><span data-i18n="subject">邮件主题</span><input id="conversationSubject" placeholder="川西定制行程咨询" maxlength="200" /></label>
+              <label class="conversation-message"><span data-i18n="conversationMessage">本轮消息</span><textarea id="conversationMessage" rows="5" maxlength="5000" required data-i18n-placeholder="conversationMessagePlaceholder" placeholder="例如：我们有 8 个人，想了解川西行程报价。"></textarea></label>
+            </div>
+            <p class="conversation-helper" data-i18n="conversationHelper">同一会话编号发送第二轮消息，即可观察上下文和已提取事实如何延续。</p>
+            <button class="primary-button" id="conversationSend" type="submit"><span data-i18n="sendConversation">发送本轮消息</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></button>
+            <p class="form-error" id="conversationError" role="alert"></p>
+          </form>
+          <article class="conversation-result panel" id="conversationResult" aria-live="polite">
+            <div class="conversation-empty" id="conversationEmpty"><span class="section-index">P0</span><strong data-i18n="conversationEmptyTitle">等待第一轮消息</strong><p data-i18n="conversationEmptyCopy">发送后，这里会展示会话状态、已确认事实、待补充信息和渠道化回复草稿。</p></div>
+            <div id="conversationOutput" class="hidden">
+              <div class="conversation-result-header"><div><span class="card-kicker" data-i18n="conversationStatus">会话状态</span><h3 id="conversationState"></h3></div><span class="turn-badge" id="conversationTurn"></span></div>
+              <div class="conversation-meta" id="conversationMeta"></div>
+              <section id="conversationProducts" class="product-recommendations hidden" aria-label="Recommended products"></section>
+              <p id="draftReviewState" role="status"></p>
+              <div class="draft-actions"><button type="button" data-review="save" data-i18n="saveDraft">保存修改</button><button type="button" data-review="approve" data-i18n="approveDraft">审核通过</button><button type="button" data-review="reject" data-i18n="rejectDraft">驳回</button></div>
+              <details><summary data-i18n="recordSentTitle">记录人工已发送（不会代发）</summary><input id="sendReceipt" maxlength="300" aria-label="External send receipt" placeholder="Message-ID / 回执编号" /><button type="button" data-review="record_sent" data-i18n="recordSent">记录回执</button></details>
+              <button type="button" class="text-button" id="syncConversation" data-i18n="syncReviewedConversation">同步已审核版本到 Notion</button>
+              <div class="conversation-columns"><div><h4 data-i18n="confirmedFacts">已确认事实</h4><div id="conversationFacts" class="conversation-facts"></div><h4 data-i18n="openQuestions">待补充信息</h4><div id="conversationQuestions" class="conversation-questions"></div></div><div><div class="card-title-row"><h4 data-i18n="channelDraft">渠道回复草稿</h4><button type="button" class="copy-button" id="copyConversationDraft" data-i18n="copy">复制</button></div><textarea id="conversationDraft" maxlength="5000"></textarea></div></div>
+              <div class="conversation-evidence-block"><div class="card-title-row"><h4 data-i18n="replyEvidence">回复参考依据</h4><span class="retrieval-badge" id="conversationRetrievalState"></span></div><div id="conversationEvidence" class="conversation-evidence"></div><details id="conversationRetrievalDetails"><summary data-i18n="retrievalDetails">查看本轮检索说明</summary><div id="conversationRetrievalMeta"></div></details></div>
+              <h4 data-i18n="conversationTimeline">会话时间线</h4><ol id="conversationTimeline" class="conversation-timeline"></ol>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="result-section hidden" id="resultSection" aria-live="polite">
+        <div class="section-heading">
+          <div><span class="section-index">03</span><h2 data-i18n="decisionResult">线索决策结果</h2></div>
+          <button type="button" class="text-button" id="resetButton" data-i18n="newAnalysis">开始新的分析</button>
+        </div>
+        <div id="invalidResult" class="invalid-result panel hidden"></div>
+        <div id="validResult" class="result-grid hidden">
+          <article class="score-card panel">
+            <div class="score-top"><span id="intentBadge" class="intent-badge">HIGH INTENT</span><span id="dispositionLabel"></span></div>
+            <div class="score-gauge" id="scoreGauge" style="--score: 0"><div><strong id="leadScore">0</strong><span>/ 100</span></div></div>
+            <h3 id="leadIdentity"></h3><p id="leadSummary"></p>
+            <p class="score-scope" data-i18n="scoreScope">该评分仅用于定制旅行销售线索排序，不代表客户价值、信用或最终成交结论。</p>
+            <div class="score-breakdown" id="scoreBreakdown"></div>
+          </article>
+
+          <div class="decision-column">
+            <article class="action-card panel">
+              <span class="card-kicker" data-i18n="recommendedAction">建议下一步</span>
+              <h3 id="recommendedAction"></h3>
+              <div id="reviewAlert" class="review-alert hidden"></div>
+            </article>
+            <article class="draft-card panel">
+              <div class="card-title-row"><span class="card-kicker" data-i18n="emailDraft">跟进邮件草稿</span><button type="button" class="copy-button" id="copyDraft" data-i18n="copy">复制</button></div>
+              <p class="draft-status" id="draftStatus" data-i18n="draftEditHint">可直接修改，写入 CRM 时将保存人工确认后的版本。</p>
+              <textarea id="emailDraft" maxlength="5000" aria-label="Follow-up email draft"></textarea>
+            </article>
+          </div>
+
+          <aside class="evidence-card panel">
+            <span class="card-kicker" data-i18n="evidence">判断依据</span>
+            <div class="fact-list" id="factList"></div>
+            <div class="source-list"><strong data-i18n="knowledgeSources">知识来源</strong><div id="sourceList"></div></div>
+            <details><summary data-i18n="auditDetails">查看审计信息</summary><div id="auditDetails"></div></details>
+          </aside>
+        </div>
+      </section>
+
+      <section class="crm-section hidden" id="crmSection">
+        <div class="section-heading">
+          <div><span class="section-index">04</span><h2 data-i18n="confirmCrm">确认并写入 CRM</h2></div>
+          <p data-i18n="confirmCrmHint">先由人员核对结果，再将完整记录写入 Notion，避免未经确认的数据进入客户库。</p>
+        </div>
+        <div class="crm-card panel">
+          <div class="notion-logo" aria-hidden="true">N</div>
+          <div class="crm-copy"><h3 data-i18n="notionTitle">保存到 Notion 销售线索库</h3><p id="notionStatusText" data-i18n="notionPending">正在检查 Notion 连接状态…</p></div>
+          <label class="reviewer-field"><span data-i18n="reviewer">确认人</span><input id="operatorName" value="Sales reviewer" maxlength="100" /></label>
+          <label class="confirm-check"><input id="confirmCheckbox" type="checkbox" /><span data-i18n="confirmCheck">我已核对结果，并确认该线索来源合法、允许用于业务跟进</span></label>
+          <button type="button" class="primary-button crm-button" id="syncButton" disabled><span data-i18n="writeNotion">写入 Notion CRM</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></button>
+          <div id="syncResult" class="sync-result hidden"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>LeadFlow / AI Sales Lead Decision & CRM Automation</span><span data-i18n="demoNotice">作品集演示 · 请勿输入真实敏感客户信息</span></footer>
+    <script src="/assets/app.js" defer></script>
+    <script src="/assets/workspace.js" defer></script>
+  </body>
+</html>

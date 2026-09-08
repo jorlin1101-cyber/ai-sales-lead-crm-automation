@@ -14,6 +14,7 @@ def test_required_docker_files_exist() -> None:
         "compose.yaml",
         ".dockerignore",
         ".env.example",
+        "deploy/docker-entrypoint.sh",
     )
 
     for file_name in required_files:
@@ -26,8 +27,13 @@ def test_dockerfile_has_safe_runtime_settings() -> None:
     assert "FROM python:3.12-slim" in dockerfile
     assert "USER app" in dockerfile
     assert "HEALTHCHECK" in dockerfile
-    assert '"lead_cleaner.api.main:app"' in dockerfile
+    assert 'CMD ["/bin/sh", "/app/deploy/docker-entrypoint.sh"]' in dockerfile
+    entrypoint = read_project_file("deploy/docker-entrypoint.sh")
+    assert "alembic upgrade head" in entrypoint
+    assert "uvicorn lead_cleaner.api.main:app" in entrypoint
     assert "COPY . ." not in dockerfile
+    assert "COPY data/knowledge_snapshot/translations.zh.json" in dockerfile
+    assert "chown app:app /app/data/runtime" in dockerfile
 
 
 def test_compose_has_expected_api_settings() -> None:
@@ -37,6 +43,8 @@ def test_compose_has_expected_api_settings() -> None:
     assert "env_file:" in compose
     assert "restart: unless-stopped" in compose
     assert "init: true" in compose
+    assert "postgres:16-alpine" in compose
+    assert "condition: service_healthy" in compose
 
 
 def test_dockerignore_excludes_private_and_development_files() -> None:
@@ -51,6 +59,7 @@ def test_dockerignore_excludes_private_and_development_files() -> None:
     assert "tests" in ignored_lines
     assert "docs" in ignored_lines
     assert "!.env.example" in ignored_lines
+    assert "!data/knowledge_snapshot/translations.zh.json" in ignored_lines
 
 
 def test_env_example_documents_docker_port() -> None:

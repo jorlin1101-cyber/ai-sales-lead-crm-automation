@@ -169,7 +169,7 @@ GROUP_SIZE_PATTERNS = (
         r"\b(\d{1,4})\s*(?:people|persons|pax|travellers?|travelers?|guests?|clients?|students?)\b",
         re.IGNORECASE,
     ),
-    re.compile(r"(\d{1,4})\s*(?:人|位)(?:游客|客人|学生)?"),
+    re.compile(r"(\d{1,4})\s*(?:个\s*)?(?:人|位)(?:游客|客人|学生)?"),
 )
 
 NON_EXACT_GROUP_SIZE_PATTERNS = (
@@ -190,16 +190,16 @@ NON_EXACT_GROUP_SIZE_PATTERNS = (
         re.IGNORECASE,
     ),
     re.compile(
-        r"(?:约|大约|至少|超过|不超过|少于|多于)\s*\d{1,4}\s*"
+        r"(?:约|大约|至少|超过|不超过|少于|多于)\s*\d{1,4}\s*(?:个\s*)?"
         r"(?:人|位)(?:游客|客人|学生)?"
     ),
     re.compile(
-        r"\d{1,4}\s*(?:人|位)(?:游客|客人|学生)?\s*"
+        r"\d{1,4}\s*(?:个\s*)?(?:人|位)(?:游客|客人|学生)?\s*"
         r"(?:以上|以下|左右|上下)"
     ),
     re.compile(
         r"\d{1,4}\s*(?:-|–|—|到|至)\s*\d{1,4}\s*"
-        r"(?:人|位)(?:游客|客人|学生)?"
+        r"(?:个\s*)?(?:人|位)(?:游客|客人|学生)?"
     ),
 )
 

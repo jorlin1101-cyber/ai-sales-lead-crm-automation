@@ -7,6 +7,7 @@ from lead_cleaner.api import main as api_main
 from lead_cleaner.api.main import create_app
 from lead_cleaner.config import AppMode, LLMProvider, RagBackend, Settings
 from lead_cleaner.rag.retriever import RagRetrievalOutcome
+from lead_cleaner.schemas.crm import NotionCrmStatus, NotionSyncResponse
 from lead_cleaner.schemas.lead import CleanedLead
 from lead_cleaner.schemas.policy import ExtractedLeadFeatures
 from lead_cleaner.services import feature_extractor_factory
@@ -17,7 +18,6 @@ from lead_cleaner.services.llm_errors import (
     LLMConfigurationError,
 )
 from lead_cleaner.services.rule_feature_extractor import RuleFeatureExtractor
-
 
 FIXTURE_PATH = Path("data/demo/lead_feature_fixtures.json")
 VALID_PAYLOAD = {
@@ -51,6 +51,50 @@ class TrackingRagRetriever:
     def retrieve(self, query: str) -> RagRetrievalOutcome:
         self.retrieve_calls += 1
         return RagRetrievalOutcome(retrieval_method="disabled")
+
+    def close(self) -> None:
+        self.close_calls += 1
+
+
+class TrackingNotionWriter:
+    data_source_id = "test-lifecycle-data-source"
+
+    def __init__(self) -> None:
+        self.status_calls = 0
+        self.write_calls = 0
+        self.close_calls = 0
+
+    def status(self) -> NotionCrmStatus:
+        self.status_calls += 1
+        return NotionCrmStatus(
+            configured=True,
+            connected=True,
+            data_source_title="Sales Leads",
+            message="connected",
+        )
+
+    def write(
+        self,
+        result,
+        *,
+        operator_name: str,
+        approved_followup_email: str | None = None,
+        update_existing: bool = False,
+        sync_version: str | None = None,
+    ) -> NotionSyncResponse:
+        from datetime import UTC, datetime
+
+        self.write_calls += 1
+        assert operator_name == "operator"
+        assert update_existing and sync_version
+        assert approved_followup_email == "Reviewed email draft"
+        return NotionSyncResponse(
+            status="created",
+            lead_id=result.cleaned_lead.lead_id,
+            page_id="page-001",
+            page_url="https://notion.so/page-001",
+            synced_at=datetime.now(UTC),
+        )
 
     def close(self) -> None:
         self.close_calls += 1
@@ -141,6 +185,44 @@ def test_application_creates_one_extractor_reuses_it_and_closes_it(monkeypatch):
     assert rag_retriever.close_calls == 1
 
 
+def test_application_exposes_connected_notion_writer_and_closes_it(monkeypatch, tmp_path):
+    writer = TrackingNotionWriter()
+    monkeypatch.setattr(api_main, "create_notion_crm_writer", lambda settings: writer)
+    settings = Settings(
+        _env_file=None,
+        app_mode=AppMode.RULE_ONLY,
+        allow_network=False,
+        rag_backend=RagBackend.DISABLED,
+        conversation_db_path=tmp_path / "lifecycle.sqlite3",
+    )
+
+    with TestClient(create_app(settings=settings)) as client:
+        status_response = client.get("/crm/notion/status")
+        analyzed = client.post("/process-lead", json=VALID_PAYLOAD)
+        assert analyzed.status_code == 200
+        sync_response = client.post(
+            "/crm/notion/leads",
+            json={
+                "raw_lead": VALID_PAYLOAD,
+                "analysis_id": analyzed.json()["analysis_id"],
+                "confirmed": True,
+                "source_authorized": True,
+                "operator_name": "Alice",
+                "approved_followup_email": "Reviewed email draft",
+            },
+        )
+
+        assert status_response.status_code == 200
+        assert status_response.json()["data_source_title"] == "Sales Leads"
+        assert sync_response.status_code == 200
+        assert sync_response.json()["page_id"] == "page-001"
+        assert writer.status_calls == 1
+        assert writer.write_calls == 1
+        assert writer.close_calls == 0
+
+    assert writer.close_calls == 1
+
+
 @pytest.mark.parametrize(
     ("app_mode", "expected_execution_mode"),
     [
@@ -219,12 +301,14 @@ def test_unsupported_live_provider_fails_during_application_startup():
         rag_backend=RagBackend.DISABLED,
     )
 
-    with pytest.raises(
-        LLMConfigurationError,
-        match="currently supports only LLM_PROVIDER=openai",
+    with (
+        pytest.raises(
+            LLMConfigurationError,
+            match="currently supports only LLM_PROVIDER=openai",
+        ),
+        TestClient(create_app(settings=settings)),
     ):
-        with TestClient(create_app(settings=settings)):
-            pass
+        pass
 
 
 @pytest.mark.parametrize(

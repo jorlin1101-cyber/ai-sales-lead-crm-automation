@@ -18,6 +18,7 @@ def make_analysis(
     customer_kind: str = "agency",
     spam: bool = False,
     injection: bool = False,
+    language: str = "en",
 ):
     outcome = FeatureExtractionOutcome(
         features=LeadFeatures(
@@ -25,6 +26,7 @@ def make_analysis(
             contains_spam_or_promotion=spam,
             company_name_present=True,
             cleaned_message_length=100,
+            language=language,
         ),
         execution_mode=execution_mode,
         analysis_method=("demo_fixture" if execution_mode == AppMode.DEMO else "rule_features"),
@@ -53,7 +55,8 @@ def test_demo_with_sources_uses_deterministic_grounded_template() -> None:
 
     assert recommendation.recommendation_method == "demo_template"
     assert "Pricing Rules — Pricing Variables" in recommendation.recommended_action
-    assert recommendation.followup_email_draft == ""
+    assert recommendation.followup_email_draft.startswith("Subject:")
+    assert "preferred travel dates" in recommendation.followup_email_draft
 
 
 def test_rule_only_with_sources_stays_generic() -> None:
@@ -65,6 +68,19 @@ def test_rule_only_with_sources_stays_generic() -> None:
 
     assert recommendation.recommendation_method == "generic_template"
     assert "Pricing Rules" not in recommendation.recommended_action
+    assert recommendation.followup_email_draft.startswith("Subject:")
+
+
+def test_chinese_demo_builds_localized_action_and_email_draft() -> None:
+    recommendation = build_recommendation(
+        make_analysis(execution_mode=AppMode.DEMO, language="zh"),
+        [make_source()],
+        "keyword_rrf",
+    )
+
+    assert recommendation.recommended_action.startswith("请结合")
+    assert recommendation.followup_email_draft.startswith("主题：")
+    assert "预计出行日期" in recommendation.followup_email_draft
 
 
 def test_injection_suspected_never_claims_llm_grounded_generation() -> None:
@@ -75,6 +91,7 @@ def test_injection_suspected_never_claims_llm_grounded_generation() -> None:
     )
 
     assert recommendation.recommendation_method != "llm_grounded"
+    assert recommendation.followup_email_draft == ""
 
 
 def test_spam_skips_recommendation() -> None:
@@ -86,6 +103,7 @@ def test_spam_skips_recommendation() -> None:
 
     assert recommendation.recommendation_method == "skipped"
     assert "Do not send" in recommendation.recommended_action
+    assert recommendation.followup_email_draft == ""
 
 
 def test_validated_draft_maps_to_existing_public_recommendation_fields() -> None:

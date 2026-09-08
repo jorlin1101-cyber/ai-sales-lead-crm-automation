@@ -11,6 +11,8 @@ BRANCH_NODES = [
     "Prepare Low Lead",
     "Prepare Invalid Lead",
     "Prepare API Error",
+    "Prepare Suppressed",
+    "Prepare Manual Review",
 ]
 DEMO_LEAD_IDS = [
     "n8n-demo-high-001",
@@ -30,7 +32,7 @@ def _all_keys(value: Any):
             yield from _all_keys(nested)
 
 
-def test_sanitized_n8n_workflow_has_five_explicit_routes() -> None:
+def test_sanitized_n8n_workflow_has_seven_explicit_routes() -> None:
     workflow = json.loads(WORKFLOW_PATH.read_text(encoding="utf-8"))
     nodes = workflow["nodes"]
     names = [node["name"] for node in nodes]
@@ -46,7 +48,17 @@ def test_sanitized_n8n_workflow_has_five_explicit_routes() -> None:
     route_node = next(node for node in nodes if node["name"] == "Route Outcome")
     route_rules = route_node["parameters"]["rules"]["values"]
     right_values = [rule["conditions"]["conditions"][0]["rightValue"] for rule in route_rules]
-    assert right_values == ["high", "medium", "low", "invalid", "api_error"]
+    assert right_values == [
+        "high",
+        "medium",
+        "low",
+        "invalid",
+        "api_error",
+        "suppressed",
+        "manual_review",
+    ]
+    for name in BRANCH_NODES[3:]:
+        assert workflow["connections"][name]["main"][0][0]["node"] == "Prepare Safe Processing Log"
 
 
 def test_n8n_workflow_calls_the_contract_without_embedding_credentials() -> None:

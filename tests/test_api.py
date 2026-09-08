@@ -32,6 +32,45 @@ def test_health_check(client):
     assert response.json() == {"status": "ok"}
 
 
+def test_frontend_is_served_at_root(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "LeadFlow" in response.text
+    assert "/assets/app.js" in response.text
+
+
+def test_notion_status_is_safe_when_not_configured(client):
+    response = client.get("/crm/notion/status")
+    assert response.status_code == 200
+    assert response.json() == {
+        "configured": False,
+        "connected": False,
+        "workspace_name": None,
+        "data_source_title": None,
+        "message": "Notion CRM 尚未配置，分析功能仍可正常演示。",
+    }
+
+
+def test_notion_write_is_rejected_when_not_configured(client):
+    response = client.post(
+        "/crm/notion/leads",
+        json={
+            "raw_lead": {
+                "name": "Lina Chen",
+                "email": "lina@example.com",
+                "company_name": "Aurora Travel",
+                "message": "We need a private tour quotation for 20 clients.",
+                "source": "Website",
+            },
+            "confirmed": True,
+            "source_authorized": True,
+            "operator_name": "Alice",
+        },
+    )
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "notion_crm_not_configured"
+
+
 def test_openapi_version_matches_project_version(client):
     project_root = Path(__file__).resolve().parents[1]
     project_config = tomllib.loads((project_root / "pyproject.toml").read_text(encoding="utf-8"))

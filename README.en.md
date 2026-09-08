@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-577%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-604%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -25,6 +25,7 @@ retrieves grounded knowledge, and hands stable results to n8n for CRM routing.
 - [Docker deployment](#docker-deployment)
 - [Offline CLI](#offline-cli)
 - [API example](#api-example)
+- [Multi-channel, multi-turn demo](#multi-channel-multi-turn-demo)
 - [Execution modes](#execution-modes)
 - [RAG and evaluation](#rag-and-evaluation)
 - [Optional grounded LLM recommendation](#optional-grounded-llm-recommendation)
@@ -162,6 +163,24 @@ python -m uvicorn lead_cleaner.api.main:app --host 127.0.0.1 --port 8000
 - Health: <http://127.0.0.1:8000/health>
 - Swagger: <http://127.0.0.1:8000/docs>
 
+## Multi-channel, multi-turn demo
+
+The web workspace includes a P0 conversation demo for Email, website chat, and social DM.
+Messages, versioned facts, retrieval runs, evidence hits, and reply drafts are persisted in
+PostgreSQL. Confirmed facts and recent messages rewrite the next turn's RAG query; acknowledgements
+skip retrieval, duplicate message IDs are idempotent, and conflicting facts escalate to human
+review. A versioned SQLite file remains available only for local and CI compatibility. Use
+`POST /conversations/messages` for inbound turns and the two `GET /conversations/...` routes
+for the summary and timeline. See [the implementation plan](docs/multi-turn-channel-reply-plan.md)
+for the state model and evaluation plan.
+
+Business turns are classified as product, itinerary, pricing, permit/payment, or information
+collection questions. The reply is composed from the retrieved chunk text and cites only evidence
+actually used in the draft. When the knowledge snapshot contains pricing rules but no rate card,
+the service explains the pricing variables and requests the missing quotation inputs instead of
+inventing a precise amount. The executable offline cases live in
+`data/evals/multi_turn_conversations.jsonl` and `tests/test_conversation_eval.py`.
+
 ## Docker deployment
 
 Docker Desktop must be installed and running. For the first deployment, create a local
@@ -177,7 +196,7 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-Build and start FastAPI in the background:
+Build and start FastAPI and PostgreSQL in the background:
 
 ```powershell
 docker compose up --build -d
@@ -218,8 +237,8 @@ docker compose logs --tail 100 api
 docker compose down
 ```
 
-The current Compose configuration deploys FastAPI only. n8n and the optional BGE service must
-still be run separately.
+The API container runs `alembic upgrade head` before startup. n8n and the optional BGE service
+must still be run separately.
 
 ## Offline CLI
 
@@ -347,7 +366,7 @@ Latest complete local acceptance:
 
 | Check | Result |
 | --- | ---: |
-| pytest | 577 passed |
+| pytest | 601 passed |
 | coverage | 95% |
 | Ruff lint | passed |
 | Ruff format | 145 files formatted |
@@ -374,14 +393,14 @@ CI does not read provider keys and blocks external sockets by default.
 2:40-3:20  Run `model-failure`, show timeout fallback
 3:20-4:00  Run `rag`, show local Top 3
 4:00-4:35  Show n8n five-way routing
-4:35-5:00  Show CI, 577 tests, 95% coverage, and known limitations
+4:35-5:00  Show CI, 601 tests, 95% coverage, and known limitations
 ```
 
 ## Roadmap
 
 - Expand the current FastAPI container deployment into a complete Compose stack with n8n and an
   optional local BGE service.
-- Add real CRM and Processing Log connectors with idempotent writes.
+- Add real CRM and Processing Log connectors behind the same idempotent write contract.
 - Separate tenant configuration from versioned policy configuration.
 - Expand the RAG labels with hard negatives and continuous regression evaluation.
 - Add policy A/B tests, human-review feedback, and calibration reports.

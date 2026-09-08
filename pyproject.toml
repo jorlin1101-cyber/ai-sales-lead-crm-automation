@@ -17,6 +17,9 @@ dependencies = [
     "openai",
     "httpx",
     "pyyaml",
+    "sqlalchemy>=2.0,<3",
+    "psycopg[binary]>=3.2,<4",
+    "alembic>=1.15,<2",
 ]
 
 [project.optional-dependencies]
@@ -35,6 +38,9 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+lead_cleaner = ["web/*.html", "web/*.css", "web/*.js"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
@@ -49,6 +55,9 @@ addopts = [
 ]
 filterwarnings = [
     "ignore:Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.:starlette.exceptions.StarletteDeprecationWarning",
+]
+markers = [
+    "postgres: integration tests that require TEST_POSTGRES_URL",
 ]
 
 [tool.ruff]

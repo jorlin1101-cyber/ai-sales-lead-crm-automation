@@ -1,0 +1,75 @@
+// Run against the isolated offline preview, never against a live CRM workspace.
+const {chromium} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
+const assert = require('node:assert/strict');
+(async () => {
+  const browser = await chromium.launch({headless:true,channel:process.env.REVIEW_BROWSER || 'chrome'});
+  const page = await browser.newPage({viewport:{width:1440,height:1000}});
+  const errors=[]; page.on('pageerror', e=>errors.push(e.message));
+  await page.goto(process.env.REVIEW_URL || 'http://127.0.0.1:8011/');
+  await page.locator('#workspaceMode').filter({hasText:'Operator'}).waitFor();
+  await page.selectOption('#conversationChannel','web_chat');
+  await page.fill('#conversationSenderName','Browser Review');
+  async function send(message,turn) {
+    await page.fill('#conversationMessage',message);
+    await page.click('#conversationSend');
+    await page.waitForFunction(n=>state.conversation.turn===n,turn);
+    await page.waitForFunction(()=>!document.querySelector('#conversationSend').disabled);
+    assert.ok((await page.inputValue('#conversationDraft')).length>10);
+  }
+  await send('我们有8个人，10月3日想去川西，请介绍行程和报价规则。',1);
+  await send('人数改成12个人，酒店选择四星。',2);
+  assert.ok((await page.textContent('#conversationFacts')).includes('12'));
+  // A failed timeline request must not hide the successful reply.
+  await page.route('**/timeline',route=>route.fulfill({status:503,body:'{"detail":"review timeline failure"}',contentType:'application/json'}));
+  await send('好的，谢谢。',3);
+  await page.unroute('**/timeline');
+  await page.reload();
+  await page.waitForFunction(()=>state.conversation.turn===3);
+  await page.fill('#conversationDraft','已核对本次需求，销售顾问将确认行程资源。');
+  await page.click('#languageToggle');
+  assert.equal(await page.inputValue('#conversationDraft'),'已核对本次需求，销售顾问将确认行程资源。');
+  await page.click('#languageToggle');
+  await page.click('[data-review="save"]');
+  await page.waitForFunction(()=>state.conversation.data.reply_draft.draft_version===2);
+  await page.click('[data-review="approve"]');
+  await page.waitForFunction(()=>state.conversation.data.reply_draft.status==='approved');
+  await page.locator('details').filter({has:page.locator('#sendReceipt')}).locator('summary').click();
+  await page.fill('#sendReceipt','offline-review-receipt');
+  await page.click('[data-review="record_sent"]');
+  await page.waitForFunction(()=>state.conversation.data.reply_draft.status==='sent');
+  assert.equal(await page.locator('#conversationDraft').isDisabled(),true);
+  await page.locator('#conversationSection').scrollIntoViewIfNeeded();
+  await page.screenshot({path:process.env.REVIEW_SCREENSHOT || '../tmp/leadflow-review-desktop.png',fullPage:true});
+  await page.click('#languageToggle');
+  await page.setViewportSize({width:390,height:844});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,'mobile horizontal overflow');
+  const overflow = await page.locator('.conversation-fields input,.conversation-fields select,.conversation-fields textarea').evaluateAll(nodes=>nodes.some(node=>node.getBoundingClientRect().right>node.closest('form').getBoundingClientRect().right));
+  assert.equal(overflow,false,'form controls overflow their panel');
+  // Simulate successful processing whose HTTP response was lost, then retry the same ID.
+  await page.click('#newConversation');
+  await page.selectOption('#conversationChannel','web_chat');
+  await page.route('**/conversations/messages',async route=>{ await route.fetch(); await route.abort('failed'); },{times:1});
+  await page.fill('#conversationMessage','我们想了解川西行程。');
+  await page.click('#conversationSend');
+  await page.waitForFunction(()=>!!sessionStorage.getItem('leadflow.pending') && !document.querySelector('#conversationSend').disabled);
+  const pendingId=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('leadflow.pending')).external_message_id);
+  await page.reload();
+  assert.equal(await page.inputValue('#conversationMessage'),'我们想了解川西行程。');
+  await page.click('#conversationSend');
+  await page.waitForFunction(()=>state.conversation.data?.idempotency_status==='duplicate');
+  assert.equal(await page.evaluate(()=>state.conversation.turn),1);
+  assert.ok(pendingId);
+  await page.click('#newConversation');
+  await page.selectOption('#conversationChannel','web_chat');
+  await send('我们有10个人，准备去川西，10月国庆出发，预算人均5000，有推荐吗',1);
+  await send('出发日期10月1日，一共去7天，酒店等级4星级',2);
+  await send('酒店等级都可以，需要车，导游语言汉语',3);
+  const preferences=await page.evaluate(()=>Object.fromEntries(state.conversation.data.confirmed_facts.map(f=>[f.key,f.value])));
+  assert.equal(preferences.guide_language,'中文');
+  assert.equal(preferences.hotel_tier,'不限（由顾问推荐）');
+  assert.ok(preferences.vehicle);
+  assert.equal((await page.inputValue('#conversationDraft')).includes('请再确认：'),false);
+  assert.deepEqual(errors,[]);
+  console.log('PASS: multi-turn, correction, failure recovery, draft review, mobile, and customer hotel/vehicle/guide regression');
+  await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

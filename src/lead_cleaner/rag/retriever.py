@@ -56,6 +56,13 @@ class CloseableRagRetriever(RagRetriever, Protocol):
 
 
 @runtime_checkable
+class ProductManualRetriever(RagRetriever, Protocol):
+    def product_manuals(self, region: str) -> list[RetrievedChunk]:
+        """Read product sections from the same configured knowledge snapshot."""
+        ...
+
+
+@runtime_checkable
 class CloseableEmbeddingProvider(EmbeddingProvider, Protocol):
     def close(self) -> None:
         """Release resources owned by the embedding provider."""
@@ -121,6 +128,31 @@ class HybridRagRetriever:
             chunks=chunks,
             retrieval_method=self._retrieval_method,
         )
+
+    def product_manuals(self, region: str) -> list[RetrievedChunk]:
+        return [
+            RetrievedChunk(
+                **chunk.model_dump(
+                    include={
+                        "chunk_id",
+                        "source_type",
+                        "notion_page_id",
+                        "source_title",
+                        "source_path",
+                        "doc_type",
+                        "region",
+                        "product_name",
+                        "section",
+                        "text",
+                    }
+                ),
+                score=1.0,
+                rank=index + 1,
+                retrieval_source="bm25",
+            )
+            for index, chunk in enumerate(self._bm25_index.chunks)
+            if chunk.doc_type == "product" and chunk.region == region and chunk.product_name
+        ]
 
     def close(self) -> None:
         if isinstance(self._embedding_provider, CloseableEmbeddingProvider):

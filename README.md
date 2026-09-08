@@ -4,13 +4,13 @@
 
 [![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-577%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-604%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 一个可测试、可解释、可离线演示的销售线索处理服务：它把外部 lead 清洗成严格契约，
 提取受限业务特征，使用确定性策略评分，通过混合 RAG 提供有来源的跟进建议，再交给
-n8n 路由到 CRM。
+n8n 路由到 CRM。项目同时提供可直接演示的销售工作台，支持人工确认后写入 Notion。
 
 ![Offline CLI demo](docs/assets/cli-demo.svg)
 
@@ -25,6 +25,8 @@ n8n 路由到 CRM。
 - [Docker 一键部署](#docker-一键部署)
 - [离线 CLI](#离线-cli)
 - [API 示例](#api-示例)
+- [销售工作台与 Notion CRM](#销售工作台与-notion-crm)
+- [多渠道、多轮会话演示](#多渠道多轮会话演示)
 - [运行模式](#运行模式)
 - [RAG 与评测](#rag-与评测)
 - [可选的有依据 LLM 推荐](#可选的有依据-llm-推荐)
@@ -159,8 +161,50 @@ python -m uvicorn lead_cleaner.api.main:app --host 127.0.0.1 --port 8000
 
 打开：
 
+- Sales workspace: <http://127.0.0.1:8000/>
 - Health: <http://127.0.0.1:8000/health>
 - Swagger: <http://127.0.0.1:8000/docs>
+
+## 销售工作台与 Notion CRM
+
+首页不是静态原型，而是直接调用真实 API 的业务界面：
+
+1. 销售人员录入或粘贴原始线索；
+2. 后端完成清洗、校验、特征提取、规则评分和建议生成；
+3. 页面展示评分拆解、复核提醒、建议、邮件草稿和知识来源；
+4. 销售人员确认结果；
+5. 销售人员编辑邮件草稿并确认来源合法；后端使用服务端凭据查询幂等键，再创建或复用 Notion 页面。
+
+Notion 令牌不会发送给浏览器，也不会出现在仓库或 n8n 导出中。具体数据库字段、
+集成授权和环境变量配置见 [Notion CRM 接入指南](docs/notion-crm.md)。未配置 Notion 时，
+线索分析和前端演示仍可正常使用，写入按钮会保持禁用。
+
+## 多渠道、多轮会话演示
+
+工作台同时提供 P0 多轮会话演示区。选择 Email、网站聊天或社交私信后发送消息，
+系统会按渠道生成对应格式的回复草稿，并将消息、事实版本、检索运行、证据命中与回复草稿
+持久化到 PostgreSQL。使用同一个会话编号发送下一轮消息时，会读取上一轮事实与近期消息，
+改写本轮 RAG 查询，并在页面同时展示回复、引用依据和完整时间线。
+
+业务消息会先识别产品介绍、行程、报价、证件/付款或信息收集意图，再定向检索产品资料和
+业务规则。最终草稿由实际命中的正文生成，并且只关联真正用于回答的证据编号。报价资料
+只有核价规则而没有固定价目时，系统会解释价格变量、继续收集日期和酒店等级等信息，
+不会编造一个看似精确的金额。
+
+`external_conversation_id` 用来串联同一客户会话，允许持续接收多轮消息；
+`external_message_id` 是每一条消息独立的幂等键。只有同一消息键的重复投递才会去重，
+如果同一消息键携带不同内容，接口会返回 `409 idempotency_key_reused`。历史事实发生变化时，
+系统会保留版本记录并将冲突转入人工复核。简单的“好的、谢谢”类确认消息会跳过 RAG，
+业务消息则使用当前消息、已确认事实和近期对话共同检索。
+
+未设置 `CONVERSATION_DATABASE_URL` 时，为便于本地单机演示和测试，程序会使用
+`data/runtime/conversations-v2.sqlite3`；部署环境以 PostgreSQL 为准。旧版原型数据库不会被覆盖。
+
+接口为 `POST /conversations/messages`、`GET /conversations/{conversation_id}` 和
+`GET /conversations/{conversation_id}/timeline`。完整字段、状态机和后续扩展见
+[多渠道、多轮销售回复执行方案](docs/multi-turn-channel-reply-plan.md)。
+脱敏离线评测集位于 `data/evals/multi_turn_conversations.jsonl`，自动验收见
+`tests/test_conversation_eval.py`。
 
 ## Docker 一键部署
 
@@ -176,10 +220,16 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-构建并后台启动 FastAPI：
+构建并后台启动 FastAPI 与 PostgreSQL：
 
 ```powershell
 docker compose up --build -d
+```
+
+容器启动时会先执行 `alembic upgrade head`，成功后才启动 API。日常升级数据库也可以执行：
+
+```powershell
+docker compose run --rm api alembic upgrade head
 ```
 
 检查容器状态和健康接口：
@@ -339,7 +389,7 @@ High | Medium | Low | Invalid | API Error
 
 | Check | Result |
 | --- | ---: |
-| pytest | 577 passed |
+| pytest | 604 passed |
 | coverage | 95% |
 | Ruff lint | passed |
 | Ruff format | 145 files formatted |
@@ -361,7 +411,7 @@ CI 不读取 provider key，并默认禁止外部 socket。
 ## Roadmap
 
 - 将当前 FastAPI 容器部署扩展为包含 n8n 和可选本地 BGE 服务的完整 Compose 栈；
-- 接入真实 CRM / Processing Log connector，并补充幂等写入；
+- 将 Notion 之外的真实 CRM / Processing Log connector 接入统一幂等写入协议；
 - 将 policy 和 tenant 配置解耦，支持多租户版本化规则；
 - 扩大 RAG 标注集，加入 hard negatives 和持续回归评测；
 - 建立策略版本 A/B 测试、人工复核反馈和校准报表；

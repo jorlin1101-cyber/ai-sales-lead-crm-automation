@@ -14,7 +14,11 @@
 | [RAG design](rag-design.md) | 混合检索设计背景 |
 | [RAG evaluation](rag-evaluation.md) | 当前冻结评测和证据边界 |
 | [Grounded recommendation](grounded-recommendation.md) | 可选 LLM 建议、引用校验和安全回落边界 |
-| [n8n workflow](n8n-workflow.md) | 五路路由和连接器边界 |
+| [Notion CRM](notion-crm.md) | 人工确认、幂等查询与 Notion 写入配置 |
+| [Production readiness](production-readiness.md) | 面向真实业务的上线边界与待办清单 |
+| [Multi-turn channel reply plan](multi-turn-channel-reply-plan.md) | 多渠道格式化回复与多轮上下文实施方案 |
+| [n8n workflow](n8n-workflow.md) | 七路路由、人工审核和连接器边界 |
+| [Workflow implementation review](workflow-implementation-review.md) | 2026-09-05 优化交付、逐项复核和未验证边界 |
 | [Acceptance matrix](acceptance-matrix.md) | 核心场景与自动化证据矩阵 |
 
 ## Source of Truth

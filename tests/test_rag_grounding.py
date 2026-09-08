@@ -229,7 +229,7 @@ def test_generation_failure_falls_back_to_generic_template(caplog) -> None:
         )
 
     assert grounded.metadata.recommendation_method == "generic_template"
-    assert grounded.followup_email_draft == ""
+    assert grounded.followup_email_draft.startswith("Subject:")
     assert [source.chunk_id for source in sources] == ["chunk-1"]
     assert "grounded_recommendation_fallback" in caplog.text
     assert '"error_code":"timeout"' in caplog.text

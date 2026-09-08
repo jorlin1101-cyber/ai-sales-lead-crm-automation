@@ -44,3 +44,4 @@ data/demo/*
 
 data/knowledge_snapshot/*
 !data/knowledge_snapshot/knowledge_chunks.json
+!data/knowledge_snapshot/translations.zh.json

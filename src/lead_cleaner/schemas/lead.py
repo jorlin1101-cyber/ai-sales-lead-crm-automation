@@ -54,6 +54,7 @@ class KnowledgeSource(BaseModel):
 
 
 class LeadProcessingResult(BaseModel):
+    analysis_id: str | None = None
     cleaned_lead: CleanedLead
     validation_result: LeadValidationResult
     analysis_result: LeadAnalysisResult | None = None

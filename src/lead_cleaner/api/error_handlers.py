@@ -16,6 +16,11 @@ from lead_cleaner.services.llm_errors import (
     LLMClientError,
     LLMConfigurationError,
 )
+from lead_cleaner.services.notion_crm import (
+    NotionCrmError,
+    NotionCrmNotConfiguredError,
+    NotionCrmUnavailableError,
+)
 
 
 def _error_response(
@@ -122,6 +127,35 @@ def register_error_handlers(api: FastAPI) -> None:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             code=error.error_code,
             message="The required knowledge retrieval service is unavailable.",
+        )
+
+    @api.exception_handler(NotionCrmError)
+    async def handle_notion_crm_error(
+        request: Request,
+        error: NotionCrmError,
+    ) -> JSONResponse:
+        if isinstance(error, NotionCrmNotConfiguredError):
+            status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+            message = "Notion CRM has not been configured."
+        elif isinstance(error, NotionCrmUnavailableError):
+            status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+            message = "Notion CRM is temporarily unavailable."
+        else:
+            status_code = status.HTTP_502_BAD_GATEWAY
+            message = "Notion CRM rejected the sync request."
+        log_event(
+            "transport_error",
+            level=logging.ERROR,
+            request_id=request_id_from_request(request),
+            error_code=error.error_code,
+            error_type=type(error).__name__,
+            status_code=status_code,
+        )
+        return _error_response(
+            request,
+            status_code=status_code,
+            code=error.error_code,
+            message=message,
         )
 
     @api.exception_handler(Exception)

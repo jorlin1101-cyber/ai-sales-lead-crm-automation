@@ -8,6 +8,35 @@ permissions:
   contents: read
 
 jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: leadflow_test
+          POSTGRES_PASSWORD: ci_test_only
+          POSTGRES_DB: leadflow_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U leadflow_test -d leadflow_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_POSTGRES_URL: postgresql+psycopg://leadflow_test:ci_test_only@127.0.0.1:5432/leadflow_test
+      CONVERSATION_DATABASE_URL: postgresql+psycopg://leadflow_test:ci_test_only@127.0.0.1:5432/leadflow_test
+      CONVERSATION_AUTO_CREATE_SCHEMA: "false"
+      ALLOW_NETWORK: "false"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m alembic upgrade head
+      - run: python -m pytest tests/test_conversation_postgres.py -q -o addopts='' --disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1
+
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15

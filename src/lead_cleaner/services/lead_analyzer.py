@@ -20,7 +20,14 @@ def build_analysis_result(
 ) -> LeadAnalysisResult:
     """Build the public result from one validated extraction outcome."""
 
-    if outcome.analysis_method == "llm_features":
+    use_chinese = outcome.features.language == "zh"
+    if outcome.analysis_method == "llm_features" and use_chinese:
+        summary = "分析由受约束的模型提取业务特征，并通过确定性线索策略生成。"
+    elif outcome.analysis_method == "demo_fixture" and use_chinese:
+        summary = "分析由离线演示样例提取业务特征，并通过确定性线索策略生成。"
+    elif use_chinese:
+        summary = "分析由确定性规则提取业务特征，并通过确定性线索策略生成。"
+    elif outcome.analysis_method == "llm_features":
         summary = (
             "Analysis generated from constrained LLM-extracted features and the "
             "deterministic lead policy."

@@ -30,6 +30,11 @@ _SAFE_FIELDS = frozenset(
         "cited_source_count",
         "error_code",
         "error_type",
+        "conversation_id",
+        "turn_number",
+        "channel",
+        "idempotency_status",
+        "requires_human_review",
     }
 )
 _EVENT_PATTERN = re.compile(r"^[a-z][a-z0-9_]{0,63}$")

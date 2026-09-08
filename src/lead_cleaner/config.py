@@ -1,6 +1,6 @@
 from enum import StrEnum
 from pathlib import Path
-from typing import Self
+from typing import Self, Literal
 
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -45,6 +45,12 @@ class Settings(BaseSettings):
 
     llm_timeout_seconds: float = Field(default=20.0, gt=0)
     llm_max_retries: int = Field(default=1, ge=0)
+    # Multi-turn Qwen uses a separate, explicit switch; public visitors stay offline.
+    conversation_llm_enabled: bool = False
+    dashscope_api_key: SecretStr | None = None
+    dashscope_model: str = "qwen3.7-plus"
+    dashscope_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    conversation_llm_timeout_seconds: float = Field(default=30.0, gt=0, le=60)
     demo_feature_fixtures_path: Path = Path("data/demo/lead_feature_fixtures.json")
 
     rag_backend: RagBackend = RagBackend.KEYWORD_RRF
@@ -59,8 +65,49 @@ class Settings(BaseSettings):
     grounded_recommendation_enabled: bool = False
     recommendation_max_output_tokens: int = Field(default=1024, ge=256, le=2048)
 
+    notion_crm_enabled: bool = False
+    notion_api_key: SecretStr | None = None
+    notion_leads_data_source_id: str | None = None
+    notion_api_version: str = "2025-09-03"
+    notion_timeout_seconds: float = Field(default=15.0, gt=0)
+    notion_max_retries: int = Field(default=2, ge=0, le=5)
+
+    conversation_database_url: str | None = None
+    conversation_auto_create_schema: bool = True
+    # Local/CI compatibility only. PostgreSQL is configured through CONVERSATION_DATABASE_URL.
+    # The v2 filename keeps an older prototype SQLite schema intact instead of rewriting it.
+    conversation_db_path: Path = Path("data/runtime/conversations-v2.sqlite3")
+    service_access_mode: Literal["local", "public_demo", "protected"] = "local"
+    service_access_token: SecretStr | None = None
+    service_session_secret: SecretStr | None = None
+    pricing_rules_path: Path | None = None
+    inbound_webhook_secret: SecretStr | None = None
+
     @model_validator(mode="after")
     def validate_configuration(self) -> Self:
+        if self.conversation_llm_enabled:
+            if not self.allow_network:
+                raise ValueError("CONVERSATION_LLM_ENABLED requires ALLOW_NETWORK=true")
+            if not self.dashscope_api_key or not self.dashscope_api_key.get_secret_value().strip():
+                raise ValueError("CONVERSATION_LLM_ENABLED requires DASHSCOPE_API_KEY")
+            if not self.dashscope_model.strip():
+                raise ValueError("DASHSCOPE_MODEL must not be empty")
+            from urllib.parse import urlsplit
+
+            endpoint = urlsplit(self.dashscope_base_url)
+            if (
+                endpoint.scheme != "https"
+                or not endpoint.hostname
+                or endpoint.username
+                or endpoint.password
+            ):
+                raise ValueError(
+                    "DASHSCOPE_BASE_URL requires an HTTPS endpoint without credentials"
+                )
+        if self.service_access_mode == "protected" and not self.service_access_token:
+            raise ValueError("Protected access requires SERVICE_ACCESS_TOKEN.")
+        if self.service_access_token and len(self.service_access_token.get_secret_value()) < 32:
+            raise ValueError("SERVICE_ACCESS_TOKEN requires at least 32 characters.")
         if self.app_mode == AppMode.LIVE:
             if not self.allow_network:
                 raise ValueError("APP_MODE=live requires ALLOW_NETWORK=true")
@@ -108,6 +155,23 @@ class Settings(BaseSettings):
 
             if self.rag_backend == RagBackend.DISABLED:
                 raise ValueError("Grounded recommendation requires a non-disabled RAG_BACKEND")
+
+        if self.notion_crm_enabled:
+            if not self.allow_network:
+                raise ValueError("NOTION_CRM_ENABLED=true requires ALLOW_NETWORK=true")
+
+            missing_notion_fields: list[str] = []
+            if self.notion_api_key is None or not self.notion_api_key.get_secret_value().strip():
+                missing_notion_fields.append("NOTION_API_KEY")
+            if (
+                self.notion_leads_data_source_id is None
+                or not self.notion_leads_data_source_id.strip()
+            ):
+                missing_notion_fields.append("NOTION_LEADS_DATA_SOURCE_ID")
+            if missing_notion_fields:
+                raise ValueError(
+                    "NOTION_CRM_ENABLED=true requires " + ", ".join(missing_notion_fields)
+                )
 
         return self
 

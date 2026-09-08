@@ -7,7 +7,10 @@
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [-1120, 0]
+      "position": [
+        -1120,
+        0
+      ]
     },
     {
       "parameters": {
@@ -17,7 +20,10 @@
       "name": "Generate Safe Sample Leads",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-900, 0]
+      "position": [
+        -900,
+        0
+      ]
     },
     {
       "parameters": {
@@ -28,7 +34,10 @@
       "name": "Normalize API Input",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-680, 0]
+      "position": [
+        -680,
+        0
+      ]
     },
     {
       "parameters": {
@@ -50,19 +59,25 @@
       "name": "Call FastAPI Process Lead",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [-450, 0],
+      "position": [
+        -450,
+        0
+      ],
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "const statusCode = Number($json.statusCode ?? 0);\nconst body = $json.body ?? {};\nconst requestId = $json.headers?.['x-request-id'] ?? body.detail?.request_id ?? null;\nlet routeKey = 'api_error';\nif (statusCode >= 200 && statusCode < 300) {\n  if (body.validation_result?.is_valid !== true) {\n    routeKey = 'invalid';\n  } else {\n    const level = body.analysis_result?.decision?.intent_level;\n    if (level === 'High') routeKey = 'high';\n    else if (level === 'Medium') routeKey = 'medium';\n    else if (level === 'Low') routeKey = 'low';\n  }\n}\nreturn { json: { route_key: routeKey, request_id: requestId, transport_status: statusCode, result: body } };"
+        "jsCode": "const statusCode = Number($json.statusCode ?? 0);\nconst body = $json.body ?? {};\nconst requestId = $json.headers?.['x-request-id'] ?? body.detail?.request_id ?? null;\nlet routeKey = 'api_error';\nif (statusCode >= 200 && statusCode < 300) {\n  if (body.validation_result?.is_valid !== true) {\n    routeKey = 'invalid';\n  } else {\n    const level = body.analysis_result?.decision?.intent_level;\n    const decision = body.analysis_result?.decision;\n    if (decision?.disposition === 'spam') routeKey = 'suppressed';\n    else if (decision?.needs_review || decision?.disposition === 'manual_review') routeKey = 'manual_review';\n    else if (level === 'High') routeKey = 'high';\n    else if (level === 'Medium') routeKey = 'medium';\n    else if (level === 'Low') routeKey = 'low';\n  }\n}\nreturn { json: { route_key: routeKey, request_id: requestId, transport_status: statusCode, result: body } };"
       },
       "id": "5027acae-8c12-4b5f-89fa-e9e5619f13a7",
       "name": "Classify API Result",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-220, 0]
+      "position": [
+        -220,
+        0
+      ]
     },
     {
       "parameters": {
@@ -81,7 +96,10 @@
                     "id": "0ab453f0-8fb7-4a08-b8c0-4bf155c77da4",
                     "leftValue": "={{ $json.route_key }}",
                     "rightValue": "high",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -102,7 +120,10 @@
                     "id": "29d08f71-f221-40c0-aada-53a9395a323f",
                     "leftValue": "={{ $json.route_key }}",
                     "rightValue": "medium",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -123,7 +144,10 @@
                     "id": "f807f9fd-18f5-40c8-88d4-1c57b30cb7c7",
                     "leftValue": "={{ $json.route_key }}",
                     "rightValue": "low",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -144,7 +168,10 @@
                     "id": "65b9c9d8-d4b8-47fd-957e-276f082f0dbb",
                     "leftValue": "={{ $json.route_key }}",
                     "rightValue": "invalid",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
@@ -165,13 +192,64 @@
                     "id": "683f5811-6c50-4f92-a1ec-4ec038ab0af3",
                     "leftValue": "={{ $json.route_key }}",
                     "rightValue": "api_error",
-                    "operator": { "type": "string", "operation": "equals" }
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
                   }
                 ],
                 "combinator": "and"
               },
               "renameOutput": true,
               "outputKey": "API Error"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "route-suppressed",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "suppressed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Suppressed"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "route-manual_review",
+                    "leftValue": "={{ $json.route_key }}",
+                    "rightValue": "manual_review",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Manual Review"
             }
           ]
         },
@@ -181,7 +259,10 @@
       "name": "Route Outcome",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [20, 0]
+      "position": [
+        20,
+        0
+      ]
     },
     {
       "parameters": {
@@ -192,7 +273,10 @@
       "name": "Prepare High Lead",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [300, -320]
+      "position": [
+        300,
+        -320
+      ]
     },
     {
       "parameters": {
@@ -203,7 +287,10 @@
       "name": "Prepare Medium Lead",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [300, -160]
+      "position": [
+        300,
+        -160
+      ]
     },
     {
       "parameters": {
@@ -214,7 +301,10 @@
       "name": "Prepare Low Lead",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [300, 0]
+      "position": [
+        300,
+        0
+      ]
     },
     {
       "parameters": {
@@ -225,7 +315,10 @@
       "name": "Prepare Invalid Lead",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [300, 160]
+      "position": [
+        300,
+        160
+      ]
     },
     {
       "parameters": {
@@ -236,7 +329,10 @@
       "name": "Prepare API Error",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [300, 320]
+      "position": [
+        300,
+        320
+      ]
     },
     {
       "parameters": {},
@@ -244,7 +340,10 @@
       "name": "Unified CRM Payload",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [600, 0]
+      "position": [
+        600,
+        0
+      ]
     },
     {
       "parameters": {},
@@ -252,18 +351,24 @@
       "name": "CRM Connector Placeholder",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [850, -100]
+      "position": [
+        850,
+        -100
+      ]
     },
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "return { json: { request_id: $json.request_id, lead_id: $json.lead_id, route: $json.route, step: 'routing_completed', status: $json.route === 'api_error' ? 'error' : 'ready_for_crm', policy_version: $json.policy_version } };"
+        "jsCode": "return {json:{request_id:$json.request_id,lead_id:$json.lead_id,route:$json.route,step:'routing_completed',status:['high','medium','low'].includes($json.route)?'awaiting_human_approval':$json.route,policy_version:$json.policy_version}};"
       },
       "id": "1aece5bc-5600-4765-a352-98517fb8dd6b",
       "name": "Prepare Safe Processing Log",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [850, 100]
+      "position": [
+        850,
+        100
+      ]
     },
     {
       "parameters": {},
@@ -271,59 +376,252 @@
       "name": "Processing Log Connector Placeholder",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [1090, 100]
+      "position": [
+        1090,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return {json:{request_id:$json.request_id,lead_id:$json.result?.cleaned_lead?.lead_id,route:'suppressed',policy_version:$json.result?.analysis_result?.decision?.policy_version}};"
+      },
+      "id": "prepare-suppressed",
+      "name": "Prepare Suppressed",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        380,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return {json:{request_id:$json.request_id,lead_id:$json.result?.cleaned_lead?.lead_id,route:'manual_review',policy_version:$json.result?.analysis_result?.decision?.policy_version}};"
+      },
+      "id": "prepare-manual_review",
+      "name": "Prepare Manual Review",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        380,
+        1200
+      ]
     }
   ],
   "connections": {
     "Manual Trigger": {
-      "main": [[{ "node": "Generate Safe Sample Leads", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Generate Safe Sample Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Generate Safe Sample Leads": {
-      "main": [[{ "node": "Normalize API Input", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Normalize API Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Normalize API Input": {
-      "main": [[{ "node": "Call FastAPI Process Lead", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Call FastAPI Process Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Call FastAPI Process Lead": {
-      "main": [[{ "node": "Classify API Result", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Classify API Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Classify API Result": {
-      "main": [[{ "node": "Route Outcome", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Route Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Route Outcome": {
       "main": [
-        [{ "node": "Prepare High Lead", "type": "main", "index": 0 }],
-        [{ "node": "Prepare Medium Lead", "type": "main", "index": 0 }],
-        [{ "node": "Prepare Low Lead", "type": "main", "index": 0 }],
-        [{ "node": "Prepare Invalid Lead", "type": "main", "index": 0 }],
-        [{ "node": "Prepare API Error", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Prepare High Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Medium Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Low Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Invalid Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare API Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Suppressed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Manual Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Prepare High Lead": {
-      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Unified CRM Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Prepare Medium Lead": {
-      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Unified CRM Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Prepare Low Lead": {
-      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Unified CRM Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Prepare Invalid Lead": {
-      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Prepare Safe Processing Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Prepare API Error": {
-      "main": [[{ "node": "Unified CRM Payload", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Prepare Safe Processing Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Unified CRM Payload": {
       "main": [
         [
-          { "node": "CRM Connector Placeholder", "type": "main", "index": 0 },
-          { "node": "Prepare Safe Processing Log", "type": "main", "index": 0 }
+          {
+            "node": "CRM Connector Placeholder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Safe Processing Log",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
     "Prepare Safe Processing Log": {
-      "main": [[{ "node": "Processing Log Connector Placeholder", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Processing Log Connector Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Suppressed": {
+      "main": [
+        [
+          {
+            "node": "Prepare Safe Processing Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Manual Review": {
+      "main": [
+        [
+          {
+            "node": "Prepare Safe Processing Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,

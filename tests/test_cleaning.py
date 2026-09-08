@@ -79,6 +79,21 @@ def test_clean_lead_preserves_external_lead_id():
     assert cleaned_lead.external_lead_id == "website-form-001"
 
 
+def test_clean_lead_uses_stable_id_for_reprocessed_external_lead():
+    raw_lead = RawLeadInput(
+        external_lead_id=" website-form-001 ",
+        email="john@example.com",
+        message="I need a private tour.",
+        source="Website",
+    )
+
+    first = clean_lead(raw_lead)
+    second = clean_lead(raw_lead)
+
+    assert first.external_lead_id == "website-form-001"
+    assert first.lead_id == second.lead_id
+
+
 def test_clean_lead_converts_none_source_to_unknown():
     raw_lead = RawLeadInput(
         email="john@example.com",
