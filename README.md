@@ -4,8 +4,8 @@
 
 [![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-604%20passed-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-699%20passed%20%7C%202%20skipped-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-95.21%25-brightgreen)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 一个可测试、可解释、可离线演示的销售线索处理服务：它把外部 lead 清洗成严格契约，
@@ -13,6 +13,16 @@
 n8n 路由到 CRM。项目同时提供可直接演示的销售工作台，支持人工确认后写入 Notion。
 
 ![Offline CLI demo](docs/assets/cli-demo.svg)
+
+## 当前演示与开发记录
+
+主要开发期：2026.04 - 2026.05，后续持续维护；最新已有复核记录为 2026-09-08。
+
+- [作品集案例与静态截图](https://jorlinshi.cn/projects/ai-sales-lead-crm-automation?lang=zh)；在线演示首次加载可能需要等待。
+- 公网访客使用隔离的离线 keyword-RRF 检索与规则回复，不调用付费 LLM，不写入真实 CRM。
+- 受保护的操作员配置支持模型理解和有据草稿；确定性代码负责评分，草稿经人工审核后才可同步 CRM。Notion 通过模拟接口验证，真实账户联调仍需单独验收。
+- n8n 为七路安全导入骨架，CRM 节点保留占位；分支与审核流程见 [工作流说明](docs/n8n-workflow.md)。
+- 历史检索评测为 18 条标注查询：MRR@3 = 1.0000，nDCG@3 = 0.8331。BGE-M3 混合检索基线与当前公网离线演示分别说明。
 
 ## 目录
 
@@ -56,7 +66,7 @@ n8n 路由到 CRM。项目同时提供可直接演示的销售工作台，支持
 | Feature extraction | deterministic rules, OpenAI Structured Outputs |
 | Decision engine | versioned `PolicyV1` with auditable score breakdown |
 | RAG | BM25, BGE-M3 / local keyword dense retrieval, RRF |
-| Automation | n8n five-way routing |
+| Automation | n8n seven-way routing |
 | Quality | pytest, pytest-socket, Ruff, Mypy, coverage |
 | Delivery | GitHub Actions, editable Python package |
 
@@ -72,7 +82,7 @@ n8n 路由到 CRM。项目同时提供可直接演示的销售工作台，支持
 - 可选的中英文 LLM 推荐生成，引用只能来自本次检索到的 Top 3；
 - API 只返回脱敏 Top 3 来源；
 - request ID、安全结构化日志、网络隔离测试和离线 CI；
-- 可导入的 n8n High / Medium / Low / Invalid / API Error 五路工作流。
+- 可导入的 n8n High / Medium / Low / Invalid / API Error / Suppressed / Manual Review 七路工作流。
 
 ## 系统架构
 
@@ -86,7 +96,7 @@ flowchart LR
     E --> F[PolicyV1 decision]
     F --> G[Hybrid RAG]
     G --> H[Template / optional LLM grounded recommendation]
-    H --> I[n8n five-way routing]
+    H --> I[n8n seven-way routing]
     I --> K[CRM / processing log]
 ```
 
@@ -374,7 +384,7 @@ disposition。公开 API 字段保持不变。完整设计、配置和评测边�
 导入 [n8n/ai-sales-lead-routing.json](n8n/ai-sales-lead-routing.json) 后，可以演示：
 
 ```text
-High | Medium | Low | Invalid | API Error
+High | Medium | Low | Invalid | API Error | Suppressed | Manual Review
 ```
 
 公开工作流不含凭据；CRM 和 Processing Log 节点是占位连接器。FastAPI 在 Windows
@@ -385,16 +395,18 @@ High | Medium | Low | Invalid | API Error
 
 ## 质量门禁
 
-最近一次完整本地验收：
+最近一次复核记录（2026-09-08）：
 
 | Check | Result |
 | --- | ---: |
-| pytest | 604 passed |
-| coverage | 95% |
+| pytest | 699 passed, 2 skipped |
+| coverage | 95.21% |
 | Ruff lint | passed |
-| Ruff format | 145 files formatted |
-| Mypy | passed |
+| Ruff format | passed |
+| Mypy | passed (75 source files) |
 | external socket policy | blocked by default |
+
+两项 PostgreSQL 实机测试因本地未配置数据库跳过。以上是[已有复核记录](docs/workflow-implementation-review.md)，本次 README 同步没有重新运行全量测试或模型评测。
 
 与 GitHub Actions 一致的本地命令：
 

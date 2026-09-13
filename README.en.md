@@ -4,8 +4,8 @@
 
 [![CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-604%20passed-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-699%20passed%20%7C%202%20skipped-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-95.21%25-brightgreen)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A testable, explainable, offline-friendly sales lead processing service. It validates and
@@ -13,6 +13,16 @@ cleans incoming leads, extracts constrained business features, applies determini
 retrieves grounded knowledge, and hands stable results to n8n for CRM routing.
 
 ![Offline CLI demo](docs/assets/cli-demo.svg)
+
+## Current demo and development record
+
+Main development: April–May 2026, with continued maintenance. The latest recorded review is dated 2026-09-08.
+
+- [Portfolio case study and static screenshots](https://jorlinshi.cn/projects/ai-sales-lead-crm-automation?lang=en); the first demo load may take a moment.
+- Public visitors use isolated, offline keyword-RRF retrieval and rule-based replies, without paid LLM calls or real CRM writes.
+- Protected operator configuration supports model understanding and grounded drafts. Deterministic code owns scoring; human review is required before CRM synchronization. Notion was checked through mocks; live-account integration requires separate acceptance.
+- n8n is a seven-route import skeleton with placeholder CRM nodes; see the [workflow guide](docs/n8n-workflow.md) for routing and approval steps.
+- The historical retrieval evaluation contains 18 labeled queries: MRR@3 = 1.0000 and nDCG@3 = 0.8331. The BGE-M3 hybrid baseline is separate from the current offline public demo.
 
 ## Contents
 
@@ -57,7 +67,7 @@ This project separates responsibilities:
 | Feature extraction | deterministic rules, OpenAI Structured Outputs |
 | Decision engine | versioned `PolicyV1` with auditable score breakdown |
 | RAG | BM25, BGE-M3 / local keyword dense retrieval, RRF |
-| Automation | n8n five-way routing |
+| Automation | n8n seven-way routing |
 | Quality | pytest, pytest-socket, Ruff, Mypy, coverage |
 | Delivery | GitHub Actions, editable Python package |
 
@@ -73,7 +83,7 @@ This project separates responsibilities:
 - Optional bilingual LLM recommendations whose citations must belong to the retrieved Top 3.
 - Sanitized Top 3 sources in the public API.
 - Request correlation, safe structured logs, network-isolated tests, and offline CI.
-- Importable n8n High / Medium / Low / Invalid / API Error workflow.
+- Importable n8n High / Medium / Low / Invalid / API Error / Suppressed / Manual Review workflow.
 
 ## Architecture
 
@@ -87,7 +97,7 @@ flowchart LR
     E --> F[PolicyV1 decision]
     F --> G[Hybrid RAG]
     G --> H[Template / optional LLM grounded recommendation]
-    H --> I[n8n five-way routing]
+    H --> I[n8n seven-way routing]
     I --> K[CRM / processing log]
 ```
 
@@ -351,7 +361,7 @@ and evaluation boundary.
 Import [n8n/ai-sales-lead-routing.json](n8n/ai-sales-lead-routing.json) to demonstrate:
 
 ```text
-High | Medium | Low | Invalid | API Error
+High | Medium | Low | Invalid | API Error | Suppressed | Manual Review
 ```
 
 The public workflow contains no credentials. CRM and Processing Log nodes are placeholders.
@@ -362,15 +372,15 @@ See [n8n workflow](docs/n8n-workflow.md).
 
 ## Quality gate
 
-Latest complete local acceptance:
+Latest recorded review (2026-09-08):
 
 | Check | Result |
 | --- | ---: |
-| pytest | 601 passed |
-| coverage | 95% |
+| pytest | 699 passed, 2 skipped |
+| coverage | 95.21% |
 | Ruff lint | passed |
-| Ruff format | 145 files formatted |
-| Mypy | passed |
+| Ruff format | passed |
+| Mypy | passed (75 source files) |
 | external socket policy | blocked by default |
 
 ```powershell
@@ -380,6 +390,8 @@ python -m mypy src
 python -m pytest -q
 python scripts/ci_offline_smoke.py
 ```
+
+Two PostgreSQL integration tests were skipped because the local database was not configured. These are [existing review results](docs/workflow-implementation-review.md); this README update did not rerun the full suite or model evaluation.
 
 CI does not read provider keys and blocks external sockets by default.
 
@@ -392,15 +404,15 @@ CI does not read provider keys and blocks external sockets by default.
 2:00-2:40  Run `injection` or `spam`
 2:40-3:20  Run `model-failure`, show timeout fallback
 3:20-4:00  Run `rag`, show local Top 3
-4:00-4:35  Show n8n five-way routing
-4:35-5:00  Show CI, 601 tests, 95% coverage, and known limitations
+4:00-4:35  Show n8n seven-way routing
+4:35-5:00  Show the 2026-09-08 review: 699 passed, 2 skipped, 95.21% coverage
 ```
 
 ## Roadmap
 
 - Expand the current FastAPI container deployment into a complete Compose stack with n8n and an
   optional local BGE service.
-- Add real CRM and Processing Log connectors behind the same idempotent write contract.
+- Add CRM and Processing Log connectors beyond Notion behind the same idempotent write contract.
 - Separate tenant configuration from versioned policy configuration.
 - Expand the RAG labels with hard negatives and continuous regression evaluation.
 - Add policy A/B tests, human-review feedback, and calibration reports.
