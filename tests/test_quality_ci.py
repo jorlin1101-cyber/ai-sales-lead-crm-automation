@@ -449,3 +449,101 @@ def test_sealed_baseline_bytes_survive_windows_git_checkout(repository_factory, 
     git(root, "checkout-index", "--all", "--prefix=" + checkout.as_posix() + "/")
     assert (checkout / relative).read_bytes() == payload
     assert git(root, "check-attr", "text", "--", relative).endswith("text: unset")
+
+
+@pytest.mark.parametrize("checker", ["standalone", "context"])
+@pytest.mark.parametrize(
+    "change", ["unchanged", "modify", "delete", "add", "ignored_add", "unprotected_add"]
+)
+def test_policy_entrypoints_keep_nested_fnmatch_protection(
+    repository_factory, monkeypatch, capsys, checker, change
+):
+    from lead_cleaner.evaluation.quality_context import verify_protected_files
+
+    root, _ = repository_factory()
+    protocol_path = root / "config/quality_baseline.v1.json"
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    protocol["protected_patterns"].append("data/rag_eval/*.json*")
+    protocol_path.write_text(json.dumps(protocol), encoding="utf-8")
+    nested_name = "data/rag_eval/review/bge-m3-v4-unjudged-review.json"
+    nested = root / nested_name
+    nested.parent.mkdir(parents=True)
+    nested.write_text('{"accepted": true}\n', encoding="utf-8")
+    ignored_name = "data/rag_eval/review/ignored.json"
+    (root / ".gitignore").write_text(ignored_name + "\n", encoding="utf-8")
+    reference = commit(root, "protect nested review files")
+    git(root, "update-ref", "refs/remotes/origin/main", reference)
+
+    changed_name = nested_name
+    if change == "modify":
+        nested.write_text('{"accepted": false}\n', encoding="utf-8")
+    elif change == "delete":
+        nested.unlink()
+    elif change in {"add", "ignored_add", "unprotected_add"}:
+        changed_name = {
+            "add": "data/rag_eval/review/new-review.jsonl",
+            "ignored_add": ignored_name,
+            "unprotected_add": "data/rag_eval/review/notes.txt",
+        }[change]
+        (root / changed_name).write_text("new content\n", encoding="utf-8")
+        if change == "ignored_add":
+            assert git(root, "check-ignore", changed_name) == changed_name
+
+    passes = change in {"unchanged", "unprotected_add"}
+    if checker == "standalone":
+        module = load_script("check_quality_policy")
+        assert policy(module, root, reference, monkeypatch) == (0 if passes else 3)
+        output = json.loads(capsys.readouterr().out)
+        if passes:
+            assert output["protected_files_verified"] == 4
+        else:
+            assert output["protocol_upgrade_requires_review"] == [changed_name]
+    elif passes:
+        assert nested_name in verify_protected_files(root, reference)["verified_files"]
+    else:
+        with pytest.raises(ValueError, match="upgrade requires review") as error:
+            verify_protected_files(root, reference)
+        assert changed_name in str(error.value)
+
+
+@pytest.mark.parametrize("checker", ["standalone", "context"])
+def test_policy_enumeration_uses_fixed_prefix_and_identical_fnmatch_semantics(
+    repository_factory, monkeypatch, checker
+):
+    from lead_cleaner.evaluation import quality_context
+
+    root, _ = repository_factory()
+    names = [
+        "data/rag_eval/review/nested.json",
+        "src/grading/nested/rules1.py",
+        "src/grading/nested/rules1.txt",
+        ".venv/large/dependency.json",
+        "data/runtime/large/output.json",
+    ]
+    for name in names:
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("fixture", encoding="utf-8")
+    patterns = [
+        "data/rag_eval/*.json*",
+        "src/grading*/rules?.[pj][sy]",
+        "config/quality_baseline.v1.json",
+        "missing/directory/*.json",
+    ]
+    original = Path.rglob
+    visited = []
+
+    def scoped_rglob(directory, pattern):
+        prefix = directory.relative_to(root).as_posix()
+        assert prefix in {"data/rag_eval", "src", "missing/directory"}
+        visited.append(prefix)
+        return original(directory, pattern)
+
+    monkeypatch.setattr(Path, "rglob", scoped_rglob)
+    module = load_script("check_quality_policy") if checker == "standalone" else quality_context
+    assert module._protected_worktree_files(root, patterns) == {
+        "data/rag_eval/review/nested.json",
+        "src/grading/nested/rules1.py",
+        "config/quality_baseline.v1.json",
+    }
+    assert visited == ["data/rag_eval", "src", "missing/directory"]

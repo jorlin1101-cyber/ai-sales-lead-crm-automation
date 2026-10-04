@@ -7,6 +7,28 @@ import subprocess
 from pathlib import Path
 
 
+def _protected_worktree_files(root: Path, patterns: list[str]) -> set[str]:
+    """Match Git's fnmatch scope, including nested and ignored worktree files."""
+    matched = set()
+    for pattern in patterns:
+        parts = pattern.split("/")
+        prefix = []
+        for part in parts:
+            if any(character in part for character in "*?["):
+                break
+            prefix.append(part)
+        base = root.joinpath(*prefix)
+        # Exact paths need no traversal. Wildcards may match '/' in fnmatch,
+        # so enumerate recursively only beneath their fixed directory prefix.
+        candidates = (base,) if len(prefix) == len(parts) else base.rglob("*")
+        for path in candidates:
+            if path.is_file():
+                name = path.relative_to(root).as_posix()
+                if fnmatch.fnmatchcase(name, pattern):
+                    matched.add(name)
+    return matched
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
@@ -37,12 +59,7 @@ def main() -> int:
     patterns = protocol["protected_patterns"]
     names = git("ls-tree", "-r", "--name-only", ref).decode().splitlines()
     expected = {name for name in names if any(fnmatch.fnmatchcase(name, p) for p in patterns)}
-    actual = {
-        p.relative_to(root).as_posix()
-        for pattern in patterns
-        for p in root.glob(pattern)
-        if p.is_file()
-    }
+    actual = _protected_worktree_files(root, patterns)
     changed = sorted(expected ^ actual)
     for name in sorted(expected & actual):
         if git("show", f"{ref}:{name}").replace(b"\r\n", b"\n") != (
