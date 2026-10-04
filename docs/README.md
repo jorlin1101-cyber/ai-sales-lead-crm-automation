@@ -30,7 +30,7 @@
 | [P0-01 最终方案设计报告](p0-01-final-design.md) | 当前实施依据：已合并二审，包含 22 场景、双基线、模式评分、CI、工作包和 26 项验收 |
 | [P0-01 开发与逐项验收](p0-01-implementation-acceptance.md) | 本次开发记录、26 项验收证据和未完成条件 |
 | [P0-01 运行与接纳说明](p0-01-quality-operations.md) | 离线运行、报告、人工复核、正式基线与 CI 操作 |
-| [P0-01 业务案例复核包](p0-01-business-review-pack.md) | 22 场景的业务要求、实测结果及待复核状态 |
+| [P0-01 业务案例复核包](p0-01-business-review-pack.md) | 22 场景的业务要求、实测结果及已确认记录 |
 | [P0-01 二次审核](p0-01-second-review-2026-10-04.md) | 代码回放和资料研究形成的 8 项修订；已纳入最终方案 |
 | [P0-01 原详细设计](p0-01-baseline-and-failure-cases-design.md) | 历史设计，保留作审查依据；后续开发以最终方案为准 |
 

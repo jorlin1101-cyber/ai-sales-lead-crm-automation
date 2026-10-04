@@ -48,10 +48,11 @@
     "requirements.txt",
     "reports/quality/review-sets/*.json"
   ],
-  "label_status": "draft",
-  "notes": "Initial development protocol; business labels and remote bootstrap acceptance remain pending.",
+  "label_status": "reviewed",
+  "notes": "All 22 business case requirements confirmed by the project owner in this conversation; remote bootstrap and formal baseline acceptance remain pending.",
   "review_required_roles": [
     "developer",
     "sales"
-  ]
+  ],
+  "business_case_review_ref": "config/quality_case_review.v1.json"
 }

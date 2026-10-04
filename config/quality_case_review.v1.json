@@ -1,0 +1,49 @@
+{
+  "schema_version": "quality-case-review.v1",
+  "review_id": "p0-01-cases-20261004-owner-confirmation",
+  "reviewer": "project_owner_current_conversation_user",
+  "reviewer_role": "project_owner_confirming_business_requirements",
+  "reviewed_at": "2026-10-04T09:31:02.518387+00:00",
+  "status": "confirmed",
+  "evidence": {
+    "kind": "explicit_user_message_in_current_conversation",
+    "quote": "业务案例已确认",
+    "recorded_at": "2026-10-04T09:31:02.518387+00:00"
+  },
+  "scope": "The expected business behavior of all 22 scenarios in the presented review pack.",
+  "source_commit": "0cf9414c5f29cf1fa06308c46dbb128dfbace95f",
+  "source_review_pack": {
+    "path": "docs/p0-01-business-review-pack.md",
+    "sha256": "91f02fa3ec12a7237b2a81a055efe17bbbb84d0f67ae3c0d3c8d01b6d8da4df9"
+  },
+  "source_data_files": {
+    "data/evals/multi_turn_conversations.jsonl": "a16df3c54eef526c72805b699a38348b4f1c497e35221e801c9a844499e77c95",
+    "data/evals/p0_quality_cases.v1.jsonl": "1e09b68134472d34dce14e634d7226b07fe35415eb5dc7d006342f1eb4a731af"
+  },
+  "case_content_hash_algorithm": "SHA-256 of canonical JSON after removing only review_status/reviewer/reviewed_at/review_reason",
+  "case_content_hashes": {
+    "western_sichuan_product": "0c07fded899ac0cf8dd8c3650c86aad6ed7bea15a5a0cec7fbd2eff1e843d55a",
+    "western_sichuan_pricing": "0133d9eb984c5411a250c81545524bb4a6951569310e8621b9c7e95cd330a31e",
+    "tibet_permit_payment": "86dac29b085b6fb6eb47a83e75d8d681cc2d9a12612af0a474989c56d1fb16a8",
+    "yunnan_family_itinerary": "9e49d3ff523f36218db72a25ca88115ba615e05a40e7ba751865afa5e9172523",
+    "F01": "32010c9f512fc45230b97846e23ced51f3446334c2082edf6dfa935a060d3455",
+    "F02": "7d16134a3ef76fc7d141ca564c57a851deb38e43a61d57c6826752561e26a598",
+    "F03": "5c0672aee3e92dcd8e77c333c141b10c8a6ecac7cf0ab361751b7a559742aa3f",
+    "F04": "c857f503f233c426bdef8470f75a84db2f1728b148af4a97424d69e56bad8abb",
+    "F05": "25cacddf725235e4189d8fd54ff2fc7d3e27a94e0bbd3e854859d658b5c90278",
+    "F06": "564baef9b71713daffad66e0c662728c3010d45d18961e8a3e8e08804a2edeed",
+    "G01": "655faa64baf095ae39696f7f7d6ae9d78290d0a2ae9272e97211beccd0f7e024",
+    "G02": "4dd91d283c6d0c4fc7a37f9953ed42e0391672669b4435265fed6bb051956193",
+    "G03": "038294d07f2acf0f23194cf332fc5d7678340530dcb5aeb778260a05504d420b",
+    "G04": "e3da3f437a9cc0a35b49eefe51514a80f654b84e47e0a0bb625503c89bf66519",
+    "G05": "5f95760fcc34f70158a027710891300ebaed1db3dd05a91d79f3af87b60d4942",
+    "G06": "49dd626d40138b9dbd93e2b47ca4fdea4e8a4cfb4c34d0b6be52c8e2c34f2b57",
+    "M01": "f7c116f71ca8eb9d193830fccc4e91904e8f61f76a74cba5bd3787d502b179fa",
+    "M02": "183460a0b51d3db7b0b84857d380522f491872a55c6249489a8366d70b62f054",
+    "M03": "13dd61ba0ecee90474c4ad7fb896cb44af2276ed7fdb1fa0108470e33ff71ba0",
+    "M04": "a9918c92ba27fd0c7ceebd0c01289eabfa3d41c316b35287803938de8e26f2b4",
+    "M05": "10c670cc83cfa0799ea87d773eeac2146d5e852ef3d53588d21338fab1ffba39",
+    "M06": "a688aaabf4360e68f9d4b770b8508f0f60579e0bebe33cf94b19a011ebb0491c"
+  },
+  "acceptance_boundary": "Case-label approval; no accepted baseline, waiver approval, live-output review or product release is recorded by this record."
+}

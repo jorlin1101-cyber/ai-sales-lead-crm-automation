@@ -316,7 +316,14 @@ def test_legacy_loader_preserves_future_explicit_review_without_fabricating_it(t
     assert loaded["reviewer"] == "synthetic-test-reviewer"
     assert loaded["reviewed_at"] == "2026-10-04"
     assert loaded["review_reason"] == "synthetic loader test"
-    assert all(item["review_status"] == "draft" for item in load_cases(ROOT))
+    for field in ("review_status", "reviewer", "reviewed_at", "review_reason"):
+        legacy.pop(field)
+    (folder / "multi_turn_conversations.jsonl").write_text(json.dumps(legacy), encoding="utf-8")
+    unreviewed = load_cases(tmp_path)[0]
+    assert unreviewed["review_status"] == "draft"
+    assert "reviewer" not in unreviewed
+    assert "reviewed_at" not in unreviewed
+    assert "review_reason" not in unreviewed
 
 
 def test_output_schema_hash_is_separate_and_unknown_when_prompt_has_no_valid_schema():

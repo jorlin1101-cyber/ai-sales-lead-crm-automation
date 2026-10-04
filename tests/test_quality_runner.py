@@ -18,6 +18,7 @@ from lead_cleaner.evaluation._quality_runtime import (
 )
 from lead_cleaner.evaluation.quality_checks import evaluate_assertions
 from lead_cleaner.evaluation.quality_runner import load_cases, run_quality_suite
+from lead_cleaner.evaluation.quality_schema import CaseSpec, content_hash
 from lead_cleaner.services.conversation_llm import QwenConversationLLM
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,7 +69,23 @@ def test_case_inventory_reuses_four_original_ids_and_has_fixed_mode_counts():
         mode: sum(mode in c["applicable_modes"] for c in values)
         for mode in ("rule_only", "mocked_model", "live")
     } == {"rule_only": 10, "mocked_model": 12, "live": 10}
-    assert all(case["review_status"] == "draft" for case in values)
+    approval = json.loads((ROOT / "config/quality_case_review.v1.json").read_text(encoding="utf-8"))
+    assert set(approval["case_content_hashes"]) == {case["case_id"] for case in values}
+    for case in values:
+        validated = CaseSpec.model_validate(case)
+        assert validated.review_status == "reviewed"
+        assert validated.reviewer == approval["reviewer"]
+        assert validated.reviewed_at == approval["reviewed_at"]
+        assert approval["review_id"] in validated.review_reason
+    audit_fields = {"review_status", "reviewer", "reviewed_at", "review_reason"}
+    for filename in approval["source_data_files"]:
+        rows = [
+            json.loads(line) for line in (ROOT / filename).read_text(encoding="utf-8").splitlines()
+        ]
+        for row in rows:
+            identifier = row.get("case_id", row.get("id"))
+            business = {key: value for key, value in row.items() if key not in audit_fields}
+            assert content_hash(business) == approval["case_content_hashes"][identifier]
 
 
 def test_production_rule_path_reports_retraction_gap_without_fixing_it(offline_runs):
