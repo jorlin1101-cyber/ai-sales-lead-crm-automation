@@ -25,7 +25,7 @@ def test_ci_workflow_is_an_offline_python_312_quality_gate() -> None:
     assert env["NOTION_API_KEY"] == ""
     assert "actions/checkout@v6" in step_text
     assert "actions/setup-python@v6" in step_text
-    assert "'python-version': '3.12'" in step_text
+    assert "'python-version': '3.12.13'" in step_text
     assert "python -m ruff check ." in step_text
     assert "python -m ruff format --check ." in step_text
     assert "python -m mypy src" in step_text

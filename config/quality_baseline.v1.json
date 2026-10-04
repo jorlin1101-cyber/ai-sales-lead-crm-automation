@@ -1,0 +1,59 @@
+{
+  "schema_version": "p0-quality.v1",
+  "protocol_id": "p0-01.v1",
+  "profile": "p0-01-ai-assisted.v1",
+  "rubric_version": "p0-rubric.v1",
+  "s0_reference": "7cbd8650757ca6754292542d902c4dfb7c39d7df",
+  "modes": {
+    "rule_only": {
+      "trials": 1,
+      "case_count": 10
+    },
+    "mocked_model": {
+      "trials": 1,
+      "case_count": 12
+    },
+    "live": {
+      "trials": 3,
+      "case_count": 10
+    }
+  },
+  "required_modes": [
+    "rule_only",
+    "mocked_model",
+    "live"
+  ],
+  "live_max_requests": 60,
+  "live_retries": 0,
+  "allowed_live_hosts": [
+    "dashscope.aliyuncs.com",
+    "dashscope-intl.aliyuncs.com"
+  ],
+  "protected_patterns": [
+    "src/lead_cleaner/evaluation/*.py",
+    "scripts/*quality*.py",
+    "src/lead_cleaner/rag/evaluation_report.py",
+    "src/lead_cleaner/rag/eval_runner.py",
+    "src/lead_cleaner/rag/eval_schemas.py",
+    "data/evals/*.jsonl",
+    "data/rag_eval/*.json*",
+    "data/recommendation_eval/*.json",
+    "data/knowledge_snapshot/knowledge_chunks.json",
+    "data/knowledge_snapshot/translations.zh.json",
+    "config/quality*.json",
+    ".github/workflows/*.yml",
+    ".github/CODEOWNERS",
+    "pyproject.toml",
+    "uv.lock",
+    "requirements.txt",
+    "reports/quality/review-sets/*.json",
+    ".gitattributes"
+  ],
+  "label_status": "reviewed",
+  "notes": "All 22 business case requirements confirmed by the project owner in this conversation; remote bootstrap and formal baseline acceptance remain pending.",
+  "review_required_roles": [
+    "developer",
+    "sales"
+  ],
+  "business_case_review_ref": "config/quality_case_review.v1.json"
+}

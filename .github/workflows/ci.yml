@@ -32,10 +32,14 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
-      - run: python -m pip install -e ".[dev]"
-      - run: python -m alembic upgrade head
-      - run: python -m pytest tests/test_conversation_postgres.py -q -o addopts='' --disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1
+          python-version: "3.12.13"
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.0"
+          cache-dependency-glob: "uv.lock"
+      - run: uv sync --locked --extra dev
+      - run: uv run --no-sync python -m alembic upgrade head
+      - run: uv run --no-sync python -m pytest tests/test_conversation_postgres.py -q -o addopts='' --disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1
 
   quality:
     runs-on: ubuntu-latest
@@ -54,36 +58,85 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify accepted scoring policy before evaluation
+        env:
+          QUALITY_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          base_ref="${QUALITY_BASE_SHA:-$(git rev-parse refs/remotes/origin/main)}"
+          if git cat-file -e "$base_ref:scripts/check_quality_policy.py" 2>/dev/null; then
+            git show "$base_ref:scripts/check_quality_policy.py" > "$RUNNER_TEMP/accepted-quality-policy.py"
+            python "$RUNNER_TEMP/accepted-quality-policy.py" --root . --trusted-ref "$base_ref"
+          else
+            python scripts/check_quality_policy.py --root . --trusted-ref "$base_ref" --bootstrap
+          fi
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: pyproject.toml
+          python-version: "3.12.13"
+      - name: Install locked uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.0"
+          cache-dependency-glob: "uv.lock"
 
       - name: Install project and development dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+        run: uv sync --locked --extra dev
+
+      - name: Check container constraints against lock
+        run: uv run --no-sync python scripts/check_quality_dependencies.py
 
       - name: Ruff lint
-        run: python -m ruff check .
+        run: uv run --no-sync python -m ruff check .
 
       - name: Ruff format check
-        run: python -m ruff format --check .
+        run: uv run --no-sync python -m ruff format --check .
 
       - name: Mypy
-        run: python -m mypy src
+        run: uv run --no-sync python -m mypy src
 
       - name: Pytest without external sockets
-        run: python -m pytest -q
+        run: uv run --no-sync python -m pytest -q
 
       - name: Offline demo smoke
         env:
           RAG_BACKEND: keyword_rrf
           RAG_REQUIRED: "true"
-        run: python scripts/ci_offline_smoke.py
+        run: uv run --no-sync python scripts/ci_offline_smoke.py
+
+      - name: Run both offline quality modes
+        env:
+          QUALITY_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: uv run --no-sync python scripts/ci_quality_eval.py
+
+      - name: Archive quality evidence even on failure
+        id: quality-artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: p0-quality-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/ci-quality/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Write artifact provenance outside sealed reports
+        if: always() && steps.quality-artifact.outputs.artifact-id != ''
+        env:
+          QUALITY_ARTIFACT_ID: ${{ steps.quality-artifact.outputs.artifact-id }}
+          QUALITY_ARTIFACT_DIGEST: ${{ steps.quality-artifact.outputs.artifact-digest }}
+        run: uv run --no-sync python scripts/write_quality_provenance.py --root data/runtime/ci-quality --out data/runtime/quality-provenance/index.json
+
+      - name: Archive outer provenance index
+        if: always() && steps.quality-artifact.outputs.artifact-id != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: p0-quality-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/quality-provenance/index.json
+          if-no-files-found: error
 
 
   docker:
