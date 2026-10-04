@@ -1,0 +1,1282 @@
+{
+  "files": {
+    "assertions.jsonl": {
+      "sha256": "d7f9511b54e97ef532ebe4aff54aae6391e02f4761254ad78a002717d258ad8b",
+      "size": 14094
+    },
+    "observations.jsonl": {
+      "sha256": "1f649ae8063494864d3fa262d215950f3e14188ef2ade934829bd6c4bb67d538",
+      "size": 64269
+    },
+    "summary.md": {
+      "sha256": "cc9b3f3443c5d90679059e29dac481add85397c29636af9a9d87fd0b5298af51",
+      "size": 4074
+    }
+  },
+  "metadata": {
+    "adapter_version": "p0-production-adapters.v1",
+    "app_mode": "rule_only",
+    "application_mode": "rule_only",
+    "budget_exhausted": false,
+    "business_labels_reviewed": true,
+    "business_side_effects_enabled": false,
+    "cases_sha256": "bca5fc14abb7f8e7265e0b37873ddcf2f35d844e5d2c2a253ffc168eac468ba9",
+    "code_hash": "f87b5992e0f2daa578128ac3ff9aee3418c83871f609d7e0f8c68fa23998cff6",
+    "database_isolation": "fresh SQLite per case/trial/probe; removed after observation",
+    "dependency_files": {
+      "requirements.txt": "49d6472504a774713383ce1b53b0a34e9835d49d3df8492f8c5bc6e1a52b4cba",
+      "uv.lock": "173269a5c3cf9c9b543c7146e3d9addcb7d1b84aa3efa3dab17d325c2dab4d4f"
+    },
+    "effective_settings": {
+      "allow_network": false,
+      "app_mode": "rule_only",
+      "conversation_auto_create_schema": true,
+      "conversation_llm_enabled": false,
+      "grounded_recommendation_enabled": false,
+      "notion_crm_enabled": false,
+      "rag_backend": "keyword_rrf",
+      "rag_candidate_top_k": 5,
+      "rag_required": true,
+      "rag_top_k": 3,
+      "service_access_mode": "local"
+    },
+    "ended_at": "2026-10-04T10:01:16.038907+00:00",
+    "environment": {
+      "dependencies": [
+        [
+          "ai-sales-lead-crm-automation",
+          "0.3.0"
+        ],
+        [
+          "alembic",
+          "1.19.1"
+        ],
+        [
+          "annotated-doc",
+          "0.0.5"
+        ],
+        [
+          "annotated-types",
+          "0.8.0"
+        ],
+        [
+          "anyio",
+          "4.14.2"
+        ],
+        [
+          "ast_serialize",
+          "0.8.0"
+        ],
+        [
+          "certifi",
+          "2026.7.22"
+        ],
+        [
+          "click",
+          "8.5.0"
+        ],
+        [
+          "coverage",
+          "7.16.0"
+        ],
+        [
+          "dnspython",
+          "2.8.0"
+        ],
+        [
+          "email-validator",
+          "2.3.0"
+        ],
+        [
+          "fastapi",
+          "0.141.1"
+        ],
+        [
+          "greenlet",
+          "3.5.5"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "httpcore",
+          "1.0.9"
+        ],
+        [
+          "httpcore2",
+          "2.12.0"
+        ],
+        [
+          "httpx",
+          "0.28.1"
+        ],
+        [
+          "httpx2",
+          "2.12.0"
+        ],
+        [
+          "idna",
+          "3.19"
+        ],
+        [
+          "iniconfig",
+          "2.3.0"
+        ],
+        [
+          "jiter",
+          "0.16.0"
+        ],
+        [
+          "librt",
+          "0.15.0"
+        ],
+        [
+          "mako",
+          "1.4.1"
+        ],
+        [
+          "markupsafe",
+          "3.0.3"
+        ],
+        [
+          "mypy",
+          "2.3.1"
+        ],
+        [
+          "mypy_extensions",
+          "1.1.0"
+        ],
+        [
+          "openai",
+          "3.6.0"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pathspec",
+          "1.1.1"
+        ],
+        [
+          "pluggy",
+          "1.6.0"
+        ],
+        [
+          "psycopg",
+          "3.3.4"
+        ],
+        [
+          "psycopg-binary",
+          "3.3.4"
+        ],
+        [
+          "pydantic",
+          "2.13.5"
+        ],
+        [
+          "pydantic-settings",
+          "2.15.0"
+        ],
+        [
+          "pydantic_core",
+          "2.46.5"
+        ],
+        [
+          "pygments",
+          "2.21.0"
+        ],
+        [
+          "pytest",
+          "9.1.1"
+        ],
+        [
+          "pytest-cov",
+          "7.1.0"
+        ],
+        [
+          "pytest-socket",
+          "0.8.1"
+        ],
+        [
+          "python-dotenv",
+          "1.2.3"
+        ],
+        [
+          "pyyaml",
+          "6.0.3"
+        ],
+        [
+          "ruff",
+          "0.15.22"
+        ],
+        [
+          "sniffio",
+          "1.3.1"
+        ],
+        [
+          "sqlalchemy",
+          "2.0.52"
+        ],
+        [
+          "starlette",
+          "1.6.0"
+        ],
+        [
+          "truststore",
+          "0.10.4"
+        ],
+        [
+          "types-pyyaml",
+          "6.0.12.20260815"
+        ],
+        [
+          "typing-inspection",
+          "0.4.4"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "uvicorn",
+          "0.52.4"
+        ]
+      ],
+      "implementation": "CPython",
+      "machine": "x86_64",
+      "python": "3.12.13",
+      "system": "Linux"
+    },
+    "environment_hash": "e255a0e6a38a4e304e5b8aa91f9779f649c21954f19559771cee4f2a84c229ad",
+    "evaluation_data_hash": "f907c7c601638664254f8795b7454ce1bd2e6dded578f23e3395cd73cfdbb434",
+    "evaluator_hash": "2168a286c5848fa8eee463b36feba0003ac9fe4a030159411fad934135fce879",
+    "expected_keys": [
+      [
+        "mocked_model",
+        "F01",
+        "main",
+        "result",
+        "supported_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F01",
+        "api",
+        "result",
+        "supported_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F01",
+        "api",
+        "persisted",
+        "supported_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F01",
+        "api",
+        "persisted",
+        "readback_consistent",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F02",
+        "main",
+        "result",
+        "supported_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F03",
+        "main",
+        "result",
+        "correct_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F04",
+        "main",
+        "result",
+        "correct_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F05",
+        "main",
+        "result",
+        "correct_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "F06",
+        "main",
+        "result",
+        "correct_group_size",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G01",
+        "main",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G01",
+        "api",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G01",
+        "api",
+        "persisted",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G01",
+        "api",
+        "persisted",
+        "readback_consistent",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G02",
+        "main",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G03",
+        "main",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G04",
+        "main",
+        "result",
+        "grounded_answer",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G05",
+        "main",
+        "result",
+        "grounded_answer",
+        "1"
+      ],
+      [
+        "mocked_model",
+        "G06",
+        "main",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ]
+    ],
+    "knowledge_hash": "ef06d3d41489f516fa37f0c102b145f4a54607dd11fc9c857fd9b247b9c678c9",
+    "live_simulated": false,
+    "live_status": "not_run",
+    "loaded_modules": {
+      "lead_cleaner": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.api": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.api.access": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/access.py",
+        "sha256": "69d47084742c6d2d85e732615c8f3f617a410322820a363c20f783126d0d6236"
+      },
+      "lead_cleaner.api.error_handlers": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/error_handlers.py",
+        "sha256": "dde694b0af5dc051f8bb94d3bb84d1028e5e88ccf0f423b390e1966f16b3e1ad"
+      },
+      "lead_cleaner.api.main": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/main.py",
+        "sha256": "c31184f024ec7edcec8c45e2ba00450af2a074ddd84c620466c756204ff92d6e"
+      },
+      "lead_cleaner.api.request_context": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/request_context.py",
+        "sha256": "1a8daa77755dc1c5a9caf7155f67a1aade1959940cfbf3b37f31bd11f1616589"
+      },
+      "lead_cleaner.config": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/config.py",
+        "sha256": "d632648ab41897e79b34bec1412f36d60b3d7b4490708203af93c36882d33d92"
+      },
+      "lead_cleaner.evaluation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/__init__.py",
+        "sha256": "1139c87d0fd21051910eafb43b31afc522751d5d72562b094ae95e6738c4b81d"
+      },
+      "lead_cleaner.evaluation._quality_adapters": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_adapters.py",
+        "sha256": "7f288f3b988995bc75a73de9a20ff65e7a8ca2cae63d745a7437342b977f6878"
+      },
+      "lead_cleaner.evaluation._quality_reviews": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_reviews.py",
+        "sha256": "0b893fa397c07e5180441516d918342d31caaa666ee9100ae4733a7d384881a6"
+      },
+      "lead_cleaner.evaluation._quality_runtime": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_runtime.py",
+        "sha256": "6f041835900b433d6ac4630559e5c999eb594b156e606aa7405f09f08233ea87"
+      },
+      "lead_cleaner.evaluation._quality_storage": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_storage.py",
+        "sha256": "82e9f338850d4115f266df8346fc807dc61113ca1eaf91560e21c729bc6ed0e6"
+      },
+      "lead_cleaner.evaluation._quality_summary": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_summary.py",
+        "sha256": "98b225c7fef81c8a9f667afde2425b8ba16a37e1613421722364ccc26e11511a"
+      },
+      "lead_cleaner.evaluation.quality_checks": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_checks.py",
+        "sha256": "e33f94e88850c2b15164a080e1822f442bacd53eb4c6b05fd2ea2327de431f47"
+      },
+      "lead_cleaner.evaluation.quality_cli": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_cli.py",
+        "sha256": "aa6b6d58dc757f9f03053365b3c951527810956005b5a3419e7bd8ca454afdf1"
+      },
+      "lead_cleaner.evaluation.quality_context": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_context.py",
+        "sha256": "f7fa799192fbf946bda0ce9dee29d5c459a249ecba7848d66ec71b17d2ca2198"
+      },
+      "lead_cleaner.evaluation.quality_report": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_report.py",
+        "sha256": "479586c36a8f60317d52817c5f02896d38ebe5632090bf4d1b2ffb4729761676"
+      },
+      "lead_cleaner.evaluation.quality_runner": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_runner.py",
+        "sha256": "1bd56a60a1dda2152de2b8393ee9572142d7cce77113a7b5f2075075ab6fba83"
+      },
+      "lead_cleaner.evaluation.quality_schema": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_schema.py",
+        "sha256": "be37545da1a953e33d9c3d48dc424652088dcc4d82ef9f28992ee8424fa76fef"
+      },
+      "lead_cleaner.observability": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/observability.py",
+        "sha256": "98b8783ae71325a3df389d4d1145ae85275650d39994d212554f9a3185b3bf1f"
+      },
+      "lead_cleaner.rag": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.rag.bge_embedding_provider": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/bge_embedding_provider.py",
+        "sha256": "4950fa3c2aefc17586e57f45a0a32be6394bcf069fb525495726a7747eccaadc"
+      },
+      "lead_cleaner.rag.bm25_retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/bm25_retriever.py",
+        "sha256": "694b5ab4873e8e4d611283f2fbb440f45fb73163968432e84100c738ccab59ea"
+      },
+      "lead_cleaner.rag.demo_embedding_provider": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/demo_embedding_provider.py",
+        "sha256": "3d4beda13b6edea9280c70094c591bc9cca7c0ead7937001e000d3e56c16582a"
+      },
+      "lead_cleaner.rag.dense_retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/dense_retriever.py",
+        "sha256": "35921c441e8b98411c701ca27e3dbc781495d77f2c30823c761acd94f97d71a9"
+      },
+      "lead_cleaner.rag.eval_runner": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/eval_runner.py",
+        "sha256": "53d304af21cf903f6830a2328cfd934ecf0fdc6ed9936c0e71f5bb47316acad3"
+      },
+      "lead_cleaner.rag.eval_schemas": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/eval_schemas.py",
+        "sha256": "6ec012d6a5c6b84ac4dd52e1cf1e1070fbf38c6115a0c6607c0866de29b2d56c"
+      },
+      "lead_cleaner.rag.evaluation_report": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/evaluation_report.py",
+        "sha256": "5a7e6dc009ee05b2518b7d95fedfa14227e88359832763490ecb759deb2964f4"
+      },
+      "lead_cleaner.rag.hybrid_retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/hybrid_retriever.py",
+        "sha256": "0ac899e33eae1ca1251a195ffdab48d7bba2f4aba8218014fe4a7695916e0293"
+      },
+      "lead_cleaner.rag.knowledge_loader": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/knowledge_loader.py",
+        "sha256": "d0e468c690139caadba9f7e8293102e140c3e99868a5a6d5c354fe0e7810b110"
+      },
+      "lead_cleaner.rag.query_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/query_builder.py",
+        "sha256": "c88b7b5d9047b225044b95e7b312ba03b030af88d0cfc605b533ee0d98eca2f3"
+      },
+      "lead_cleaner.rag.query_fusion": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/query_fusion.py",
+        "sha256": "e17046dddc3fcb4ce4191c5cd96b24aebde10c8e0cd7272a6b1fb4e1a028cbed"
+      },
+      "lead_cleaner.rag.retrieval_intent": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/retrieval_intent.py",
+        "sha256": "9c8747a779167e31dcf77ea1b67cf367915035d3e5b1e53f40c75f17fdda7747"
+      },
+      "lead_cleaner.rag.retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/retriever.py",
+        "sha256": "7b6d9a7de2069a77c7943f52aa99dfa1b5cdb1adb9befb8169b255fae58dab2c"
+      },
+      "lead_cleaner.rag.retriever_factory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/retriever_factory.py",
+        "sha256": "4c073c524aae3be8412ba0ae5cf24671be99788db1fb9717d4ad47fb727b5874"
+      },
+      "lead_cleaner.rag.rrf_fusion": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/rrf_fusion.py",
+        "sha256": "acd496920dd0aec2121bd42536af1215515b6a919e423e2210fe7d5d44811d9d"
+      },
+      "lead_cleaner.rag.schemas": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/schemas.py",
+        "sha256": "e1f36274616595455d9a7f44f12e0707ca7b2742b38402970a01468964f4f341"
+      },
+      "lead_cleaner.rag.source_mapper": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/source_mapper.py",
+        "sha256": "544ed7c7b1483db07df7844a68250e6b1f485d661bf4abcce43751a7bd58ea1e"
+      },
+      "lead_cleaner.schemas": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.schemas.ai_output": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/ai_output.py",
+        "sha256": "141bf26d58eb2067dbfd03b8e97d796f2b49003be4837dc5c74bf0bfa59f51c8"
+      },
+      "lead_cleaner.schemas.conversation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/conversation.py",
+        "sha256": "dd135b30f865fdcfc8db647eaac4c99a55a66c84f54362999d9b613c2180ad1f"
+      },
+      "lead_cleaner.schemas.crm": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/crm.py",
+        "sha256": "0af5982164e9e01f3aff794c844b43f403abf2970bc7677d916b2ffc7527eab0"
+      },
+      "lead_cleaner.schemas.lead": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/lead.py",
+        "sha256": "81ce0560953cdb8cba4edb5d047bc26107e0b4bc044e473402ff6d90a1e6e0b1"
+      },
+      "lead_cleaner.schemas.policy": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/policy.py",
+        "sha256": "6493f4b0a00e93cfca7f6fa1e73f2680562673309da3e41797ec029f3d209d7d"
+      },
+      "lead_cleaner.services": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.services.cleaning": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/cleaning.py",
+        "sha256": "bb0aa1b6726059c967a022b84066f8790318f7b82c21a927bff66c68edbd261f"
+      },
+      "lead_cleaner.services.conversation_llm": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_llm.py",
+        "sha256": "14df2a000a3a68a7652fe5fdf613489f997b622b644ac3593f645ca62fa73de2"
+      },
+      "lead_cleaner.services.conversation_memory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_memory.py",
+        "sha256": "859912e13d898fa7139f0896d014d01d9d4755eb4b41eb5fe0881cd10730e613"
+      },
+      "lead_cleaner.services.conversation_rag": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_rag.py",
+        "sha256": "31253d5c73bc55e5f908641a9891dcdb4efd2a94b93ae5fe6f8a3ed64b96a9cb"
+      },
+      "lead_cleaner.services.conversation_reply_composer": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_reply_composer.py",
+        "sha256": "3869d1b2549b0926199d59e9e5f61d1a18a0dd9d98a37b68ecece939cd46c8a6"
+      },
+      "lead_cleaner.services.conversation_service": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_service.py",
+        "sha256": "8ddc7466c3d16fa3f511c2905e0b53bac716e129ebabc576850e344be3989f58"
+      },
+      "lead_cleaner.services.conversation_slots": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_slots.py",
+        "sha256": "d76f3a598cecff9266808e13555a412ad863dc7ea89cfe85a3b4392ba8e9acb1"
+      },
+      "lead_cleaner.services.conversation_store": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_store.py",
+        "sha256": "4f31549bedafc35325b253629a58e635aa2e290f463d79ac2266f9920b80f284"
+      },
+      "lead_cleaner.services.crm_workflow": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/crm_workflow.py",
+        "sha256": "0130282c2183237c2d903e9ca1f11f118289d5f54fe91a7f658f74b2683e0cd4"
+      },
+      "lead_cleaner.services.demo_fixture_feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/demo_fixture_feature_extractor.py",
+        "sha256": "018624882f3075898928d940e01028f704f93bf7f993b3c233e441a04e03085a"
+      },
+      "lead_cleaner.services.feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/feature_extractor.py",
+        "sha256": "74178ed77a9bda83a7492ee886b431addc240f97c90aaea6440da92bc07ed8d6"
+      },
+      "lead_cleaner.services.feature_extractor_factory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/feature_extractor_factory.py",
+        "sha256": "e1ade8eeff1dd8c7cbc197f8d9aaf7c07f5192b6df6ec098b0a75ed6024d535f"
+      },
+      "lead_cleaner.services.knowledge_localization": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/knowledge_localization.py",
+        "sha256": "8d31fe8820e4615a9a51791b08252834d221a003b48c14ef1db55fbd92970516"
+      },
+      "lead_cleaner.services.lead_analyzer": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/lead_analyzer.py",
+        "sha256": "22c005a8e9d05d6447269c80cdc83d684cd876ca09e69e5783913249aed3498f"
+      },
+      "lead_cleaner.services.lead_feature_merger": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/lead_feature_merger.py",
+        "sha256": "b3542d9c276be74fbbea15a2b7663819cc758391d90544c5bb05ef5f8a785d7e"
+      },
+      "lead_cleaner.services.live_feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/live_feature_extractor.py",
+        "sha256": "4b01f83faa2a1b97dac4080daf38062f45d409b622588849e989ad1b5a4a1b64"
+      },
+      "lead_cleaner.services.llm_errors": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/llm_errors.py",
+        "sha256": "26d1d1d95e638aebeecf2c065c32f44c45d1458a36d243bbb42012ab2145b29e"
+      },
+      "lead_cleaner.services.notion_crm": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/notion_crm.py",
+        "sha256": "f65b823cf07adfe95dccf90f660cb43a60ff7397633c1601d66f295e19886bac"
+      },
+      "lead_cleaner.services.openai_feature_client": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/openai_feature_client.py",
+        "sha256": "ec859eded005e3c73ccfa394500b5fda76f0c5e90a8056df089ffcf2848966e2"
+      },
+      "lead_cleaner.services.openai_recommendation_generator": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/openai_recommendation_generator.py",
+        "sha256": "7b56210d147d463853282aa23911a80961de52d9f94adff50182fc5ee679e03c"
+      },
+      "lead_cleaner.services.openai_response_guard": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/openai_response_guard.py",
+        "sha256": "f85e67b9cd0101b60eca2c596a92f162f6a0bd88a7bb47f55b28500f6cd60d5a"
+      },
+      "lead_cleaner.services.policy_v1": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/policy_v1.py",
+        "sha256": "d9bd85a0049528a61b5ee454edb63dec892c4c00db4749a000f6753517368dd5"
+      },
+      "lead_cleaner.services.processor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/processor.py",
+        "sha256": "77cbb72865da3ad95f850d773d378c2187971ef798c83d0735e3ff0da660a63f"
+      },
+      "lead_cleaner.services.product_recommendation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/product_recommendation.py",
+        "sha256": "3fce66407937b1884f7d893af6800107e7c03f6e67b17eda536197dfc83c20f2"
+      },
+      "lead_cleaner.services.prompt_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/prompt_builder.py",
+        "sha256": "5641475c30d297832b1b3832d03a424532ad0b2c3443bb74fc52b4b2bcde328e"
+      },
+      "lead_cleaner.services.quotation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/quotation.py",
+        "sha256": "76e4c932e6581bd070db6f836eadc55bd56d7b8c54bd86af1f19be88897f0a63"
+      },
+      "lead_cleaner.services.rag_grounding": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/rag_grounding.py",
+        "sha256": "3f609ed65f01aee73ab9399ddf86d67376a5bc2a88c8eeb198db0c79e0f6d2b1"
+      },
+      "lead_cleaner.services.recommendation_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_builder.py",
+        "sha256": "9c81eff6cb0aabda4f2b632df82d293dca8fa75e585584144a642eed67ba1609"
+      },
+      "lead_cleaner.services.recommendation_generator": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_generator.py",
+        "sha256": "fccc87d1f44603c5842c61e4f4ab199465ac21947fec54fe2cf66f63b6c1fed9"
+      },
+      "lead_cleaner.services.recommendation_generator_factory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_generator_factory.py",
+        "sha256": "d09945d3d549bc66775af60c637452c78623ec308f3b966dfb6b53c972c697cb"
+      },
+      "lead_cleaner.services.recommendation_prompt_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_prompt_builder.py",
+        "sha256": "8565cc7c0238667bc3682fb74e7f888195892b0ddf21fd622ec1479469b53543"
+      },
+      "lead_cleaner.services.rule_feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/rule_feature_extractor.py",
+        "sha256": "e11d129d4c43d88af71ec3cf6ebad6a2e4e6eec1d2fc5cf566a85820b893157b"
+      },
+      "lead_cleaner.services.security_signal_detector": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/security_signal_detector.py",
+        "sha256": "2a5c9bea16dbdaf8e1c2db32931b00153e7bb2d637bce85078f03a1ee13c577b"
+      },
+      "lead_cleaner.services.service_preferences": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/service_preferences.py",
+        "sha256": "de5ef8a7f84de3f0208cc617c6ac66f293a382a5703191c44de027ab16315d8d"
+      },
+      "lead_cleaner.services.validation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/validation.py",
+        "sha256": "db6ebee1f66fb7df8ac8ea7ce064ecfd9e0dc6174a75614807042a1033c949a8"
+      }
+    },
+    "mode": "mocked_model",
+    "model": "quality-mock",
+    "model_calls": [
+      {
+        "call_count": 1,
+        "case_id": "F01",
+        "duration_ms": 0.024,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "6ff2e3aaea21f79f4399347164e684c861917e54a7c94b001349d000aa29ebaa",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "d4ffbdaf988c18a62d52cebde15acd84e26e2c07aef6d6b062d048a383bed156",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"999\", \"operation\": \"set\", \"evidence\": \"8 people\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "b59ab1d4835dba8868672d6499a04060af1323046a6887bc976d426df72e3c90",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "F01",
+        "duration_ms": 0.026,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "6ff2e3aaea21f79f4399347164e684c861917e54a7c94b001349d000aa29ebaa",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "api",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "d4ffbdaf988c18a62d52cebde15acd84e26e2c07aef6d6b062d048a383bed156",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"999\", \"operation\": \"set\", \"evidence\": \"8 people\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "b59ab1d4835dba8868672d6499a04060af1323046a6887bc976d426df72e3c90",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 0,
+        "case_id": "F01",
+        "error_type": null,
+        "expected_to_run": false,
+        "fallback_used": false,
+        "probe_id": "api",
+        "provider_execution": "not_called",
+        "provider_kind": "mock",
+        "retry_count": 0,
+        "stage": "generation",
+        "trial_id": "1",
+        "turn": 1,
+        "upstream_blocked": false,
+        "usage": "unknown",
+        "validation_result": "not_reached"
+      },
+      {
+        "call_count": 1,
+        "case_id": "F02",
+        "duration_ms": 0.021,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "517c22fe7f7c017469652ee404f0df466643c97d0b852b9384ac35bed7dda27d",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "fb55a5f098ff2606fc72beab19bdd9d4ae68878fe8dee578c6068390415990d1",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"999\", \"operation\": \"set\", \"evidence\": \"8个人\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "267922fcfe5e22dae2873ca8138708f78f697ff705a02581fc6339b38fb8b3f4",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "F03",
+        "duration_ms": 0.017,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "ac71f7c8f38b587dc5a910c0fc474fb16ccf36f12c408e59424ac8b506133c0d",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "a86d8b47dad9fa41d79923e63a22cd32454cdeaf471be57fd47297971516a307",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"8\", \"operation\": \"set\", \"evidence\": \"8 people\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "3b326e01e0ebbdffe422f0fd7cf87f3c227ee271296581c40bbb600956bd47ab",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "F04",
+        "duration_ms": 0.017,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "4cd9cbea7d9e7bfde473ecc035da94f2125f4fd293a6e4864fe5804640cb35e2",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "6e9de671a1e68598c16bbfb4835eceda7b70b16b23fb4c74eda6a49d4ceed0ba",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"8\", \"operation\": \"set\", \"evidence\": \"eight people\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "305ad052fb83e0ec464e4e6c6e131d0767be132fbec15d5d8236baf3871535a8",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "F05",
+        "duration_ms": 0.016,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "f75466ace9741b5939323e26f009fa44a314d2165f8d61462380b485d8082931",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "ce0334e81352f45e6c875217037ea750c0015442cbd0ad58c2acb350ed4a3e53",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"9\", \"operation\": \"replace\", \"evidence\": \"9 人\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "1801ba16a8c1dcfc3e5e898442567976d889321825a7dd75142b2026362d0d2b",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "F06",
+        "duration_ms": 0.018,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "cde0683306343eb72ad8decd0c10f17d9fdafd9be6b89af3b2c5cd4b74b06b6d",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "0efb386ba54db837f2e74be0149301ad2ca353705abed2c0c1a311141c5c84a3",
+        "response_choices": [
+          {
+            "content": "{\"updates\": [{\"key\": \"group_size\", \"value\": \"待定\", \"operation\": \"pending\", \"evidence\": \"人数还没确定\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "c74f6bc09efe37279d4705ab44e4d3e1ed7394a70da111f545575337f05f43e1",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G01",
+        "duration_ms": 0.017,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "9579a83f94acdacb15b63ea785759f202a869463944c19b78c0982790be65c5a",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "3680cacaae09c76bb8ead86dac67f19a71920e7d49ffb2eba024fed164f9ba7c",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"e1s1\", \"text\": \"Your booking is confirmed.\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "cc8b9e27fb93e4e97f4a5a9baca464d41cdfec3fc9bc3e0b7957335b27b350a5",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G01",
+        "duration_ms": 0.018,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "f739a8ad8a2d3bbe0c180bf6fc8e87daead20df8b06e1c7fe58ac61625913e9e",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "e029d36bc55c2b62f2cd5674c8b310d2bba5d62180d5f55300ab06e710f8a131",
+        "probe_id": "api",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "bf6199251d3c9757696f40c247929530ce0614bf5858ea4ffd8164218869e75a",
+        "response_choices": [
+          {
+            "content": "{\"updates\": []}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "933c7cccbe5245444cedb3eb26a52880bf6a214006784a3850b038134465b13f",
+        "retry_count": 0,
+        "stage": "understanding",
+        "system_prompt_sha256": "7294332ce862f8a09974023db1b79ddcb681f0f4b93c9cf4c9c721e80271a791",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G01",
+        "duration_ms": 0.016,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "9579a83f94acdacb15b63ea785759f202a869463944c19b78c0982790be65c5a",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "api",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "3680cacaae09c76bb8ead86dac67f19a71920e7d49ffb2eba024fed164f9ba7c",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"e1s1\", \"text\": \"Your booking is confirmed.\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "cc8b9e27fb93e4e97f4a5a9baca464d41cdfec3fc9bc3e0b7957335b27b350a5",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G02",
+        "duration_ms": 0.017,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "9579a83f94acdacb15b63ea785759f202a869463944c19b78c0982790be65c5a",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "3680cacaae09c76bb8ead86dac67f19a71920e7d49ffb2eba024fed164f9ba7c",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"e1s1\", \"text\": \"All services are guaranteed available.\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "d39b9e08d278e3784e26b9041e6fef5fd6cb3a4178c50ea5683d24e6225fa5ee",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G03",
+        "duration_ms": 0.015,
+        "error_type": "unsupported_answer_evidence",
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "a096fc2220dfc3208961783aae6476828a7856cda6d8a49bf69a43293e6b1f92",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "06d059efe4d29297e89f2d27bc06fbdbae83a25dd6b617c7974ecc2e220b7388",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"unknown-evidence\", \"text\": \"报价取决于人数和酒店等级。\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "ee47264d3bcd33becefa8f5d372a81a3bd76c26e9f55f05c3363b9a6f8609258",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "rejected"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G04",
+        "duration_ms": 0.015,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "a096fc2220dfc3208961783aae6476828a7856cda6d8a49bf69a43293e6b1f92",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "06d059efe4d29297e89f2d27bc06fbdbae83a25dd6b617c7974ecc2e220b7388",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"e1s1\", \"text\": \"报价会受到人数和酒店等级影响。\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "f2dbce757a48445e61bd6f75509be4f55450e0b4392a92e9d73bb62b2fe2f779",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G05",
+        "duration_ms": 0.016,
+        "error_type": null,
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "9579a83f94acdacb15b63ea785759f202a869463944c19b78c0982790be65c5a",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "3680cacaae09c76bb8ead86dac67f19a71920e7d49ffb2eba024fed164f9ba7c",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"e1s1\", \"text\": \"Pricing depends on group size and hotel category.\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "ee7e29b9c5c849d743eea479464e74aa8f7ce2b6436a3f11e728a3ce85facd32",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "accepted"
+      },
+      {
+        "call_count": 1,
+        "case_id": "G06",
+        "duration_ms": 0.014,
+        "error_type": "unsupported_numeric_claim",
+        "expected_to_run": true,
+        "fallback_used": false,
+        "input_sha256": "9579a83f94acdacb15b63ea785759f202a869463944c19b78c0982790be65c5a",
+        "max_tokens": 1800,
+        "model": "quality-mock",
+        "output_schema_sha256": "85ca9195d56d98aaabefeb6fa33dbd109265001f03c7012753ff9bbaccc9ab73",
+        "probe_id": "main",
+        "provider_execution": "succeeded",
+        "provider_kind": "mock",
+        "request_sha256": "3680cacaae09c76bb8ead86dac67f19a71920e7d49ffb2eba024fed164f9ba7c",
+        "response_choices": [
+          {
+            "content": "{\"paragraphs\": [{\"evidence_id\": \"e1s1\", \"text\": \"The price is USD 999.\"}]}",
+            "finish_reason": "stop",
+            "refusal": null
+          }
+        ],
+        "response_sha256": "d60226d364855e7fe5d59d3bf251d75c0d4863d47072b824c2b25fb04ca6d342",
+        "retry_count": 0,
+        "stage": "generation",
+        "system_prompt_sha256": "bb3368f403b1877639f58dbfbcc01743b754a00a3158f16617da75bfd94ced87",
+        "temperature": 0,
+        "trial_id": "1",
+        "turn": 1,
+        "usage": "unknown",
+        "validation_result": "rejected"
+      }
+    ],
+    "model_endpoint": null,
+    "model_endpoint_sha256": null,
+    "model_request_count": 15,
+    "model_timeout_seconds": null,
+    "output_schema_observation_status": "recorded_per_call",
+    "partial_suite": false,
+    "product_release_status": "not_evaluated",
+    "prompt_observation_status": "recorded_per_call",
+    "protocol_hash": "b268076f2a4aa6a387215723057e5c57cf3fd19ffd51a3451cb944e53cd7363c",
+    "protocol_id": "p0-01.v1",
+    "provider_kind": "mock",
+    "provider_max_retries": 0,
+    "provisional": false,
+    "real_model_calls": 0,
+    "request_limit": 60,
+    "response_cache_enabled": false,
+    "review_required_roles": [
+      "developer",
+      "sales"
+    ],
+    "rubric_hash": "613e867ea5082428fd20c018f597a3fca9e16e8be9bfe21915932dacd07c1e30",
+    "run_id": "a7602a650fc44eabb6b3253e4f53f884",
+    "runner_version": "p0-quality-runner.v1",
+    "s0_reference": "7cbd8650757ca6754292542d902c4dfb7c39d7df",
+    "scenario_count": 12,
+    "scenario_ids": [
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "F05",
+      "F06",
+      "G01",
+      "G02",
+      "G03",
+      "G04",
+      "G05",
+      "G06"
+    ],
+    "schema_version": "p0-quality.v1",
+    "socket_guard": {
+      "external_blocked": 0,
+      "loopback_connections": 0,
+      "target_connections": 0,
+      "target_host": null
+    },
+    "source_dirty": false,
+    "started_at": "2026-10-04T10:01:15.762993+00:00",
+    "suite_hash": "cc937964d2c1b7b710729783d3c63bce313ead4c20c80bafae21e14f7f3447ac",
+    "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+    "trial_count": 1
+  },
+  "schema_version": "quality-run-v1",
+  "state": "sealed",
+  "subreport_names": []
+}

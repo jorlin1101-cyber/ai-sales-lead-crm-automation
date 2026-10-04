@@ -61,3 +61,20 @@ M0 的协议、评测器、案例和依赖自此作为本次参照固定。之�
 [授权与具体绑定](../reports/quality/acceptance/p0-01-ci-37193943951/authorization.json)、[来源核验清单](../reports/quality/acceptance/p0-01-ci-37193943951/inspection.json)和[原始外层索引](../reports/quality/acceptance/p0-01-ci-37193943951/original-provenance-index.json)随专用授权登记 PR 保存。11 条缺陷只更新首次基线审核元数据，仍为 open，失败签名、严重度和修复任务不变。该 PR 涉及受保护的信任与缺陷文件，需要设计规定的管理员例外；不伪造普通质量检查通过。
 
 本次授权由项目负责人明确授予，代理核验具体 CI 证据并执行。没有记录不存在的独立人工审核人；自动离线判分不套用未来 live 的双人语义复核。
+
+## 正式基线归档提案 M2
+
+[具体报告授权 PR #3](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/pull/3) 已由受控管理员例外接纳，可信合并提交为 `04dbf69c50c06cdc2c78bd0471b1aa242b478739`。[PR 检查记录](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194316155) 精确列出两个受保护配置变更，postgres 通过；未伪造 quality 通过。
+
+从该可信主分支验证全部 39 个受保护文件后，再次通过真实 GitHub API 核验原始 artifact。两个接纳 API 调用均成功，首次参照和最近认可参照指向相同记录：
+
+| 模式 | 接纳 ID | manifest SHA-256 | 原始结果 |
+| --- | --- | --- | --- |
+| rule_only | p0-01-rule_only-37193943951 | 835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4 | 11 项：8 pass / 3 fail |
+| mocked_model | p0-01-mocked_model-37193943951 | 48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036 | 18 项：10 pass / 8 fail |
+
+两个归档单元包含原始封存 run、接纳单、来源记录；完整保存在 `reports/quality/baselines/p0-01.v1/`。复制后重新加载校验，原始字节与 manifest 不变。接纳单保留 API 处理时的目录记录，并另有可迁移的 `canonical_directory`；正式索引只用仓库相对路径。
+
+两次接纳输出的完整缺陷快照一致，已批准快照散列为 `cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02`。空人工复核集合采用模块固定常量；没有对自动失败进行人工覆盖。
+
+归档、首次/最近索引、信任指针和缺陷快照通过同一专用 PR 接纳。该 PR 修改受保护索引和信任配置，因此仍需已授权的限定管理员例外。其后主分支必须实际完成两模式 regression 才算远端验收完成；归档本身不冒充回归成功。

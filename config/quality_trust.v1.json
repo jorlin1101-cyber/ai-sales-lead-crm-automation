@@ -1,5 +1,8 @@
 {
-  "accepted_baselines": {},
+  "accepted_baselines": {
+    "p0-01-mocked_model-37193943951": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+    "p0-01-rule_only-37193943951": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4"
+  },
   "accepted_review_set_hashes": [],
   "approval_bindings": {
     "p0-01-mocked_model-37193943951": {
@@ -21,8 +24,11 @@
     ".github/workflows/ci.yml",
     ".github/workflows/quality-live.yml"
   ],
-  "latest_accepted_baselines": {},
+  "latest_accepted_baselines": {
+    "mocked_model": "p0-01-mocked_model-37193943951",
+    "rule_only": "p0-01-rule_only-37193943951"
+  },
   "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
   "schema_version": "p0-quality.v1",
-  "status": "offline_reports_approved_awaiting_archive"
+  "status": "offline_baselines_accepted_live_pending"
 }
