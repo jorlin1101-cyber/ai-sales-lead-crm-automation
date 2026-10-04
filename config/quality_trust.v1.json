@@ -1,0 +1,13 @@
+{
+  "schema_version": "p0-quality.v1",
+  "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+  "accepted_review_set_hashes": [],
+  "accepted_baselines": {},
+  "approval_bindings": {},
+  "approved_workflow_paths": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/quality-live.yml"
+  ],
+  "status": "bootstrap_pending",
+  "latest_accepted_baselines": {}
+}

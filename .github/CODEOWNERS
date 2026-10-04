@@ -1,0 +1,11 @@
+# Protected evaluation policy: require owner review in branch protection.
+/src/lead_cleaner/evaluation/ @jorlin1101-cyber
+/src/lead_cleaner/rag/eval* @jorlin1101-cyber
+/data/evals/ @jorlin1101-cyber
+/data/rag_eval/ @jorlin1101-cyber
+/data/recommendation_eval/ @jorlin1101-cyber
+/config/quality* @jorlin1101-cyber
+/reports/quality/ @jorlin1101-cyber
+/scripts/*quality* @jorlin1101-cyber
+/.github/workflows/ @jorlin1101-cyber
+/.github/CODEOWNERS @jorlin1101-cyber

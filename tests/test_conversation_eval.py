@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 
 from lead_cleaner.api.main import create_app
 from lead_cleaner.config import AppMode, RagBackend, Settings
+from lead_cleaner.evaluation.quality_checks import legacy_conversation_checks
 
 
 EVAL_PATH = Path("data/evals/multi_turn_conversations.jsonl")
@@ -25,6 +26,7 @@ def test_multi_turn_business_reply_eval(case, tmp_path):
         rag_backend=RagBackend.KEYWORD_RRF,
         rag_required=True,
         knowledge_chunks_path=Path("data/knowledge_snapshot/knowledge_chunks.json"),
+        conversation_database_url=None,
         conversation_db_path=tmp_path / "conversation-eval.sqlite3",
     )
     conversation_key = f"eval-{case['id']}-{uuid4().hex}"
@@ -48,21 +50,5 @@ def test_multi_turn_business_reply_eval(case, tmp_path):
             response_data = response.json()
 
     assert response_data is not None
-    body = response_data["reply_draft"]["body_text"]
-    for text in case["expected_body_contains"]:
-        assert text in body
-
-    facts = {
-        fact["key"]: fact["value"]
-        for fact in response_data["confirmed_facts"]
-        if fact["status"] != "conflicted"
-    }
-    for key, value in case["expected_facts"].items():
-        assert facts[key] == value
-
-    assert set(case["expected_intents"]).issubset(response_data["reply_draft"]["answer_intents"])
-    if case["requires_grounding"]:
-        assert response_data["reply_draft"]["generation_method"] == ("rag_grounded_template")
-        assert response_data["reply_draft"]["source_ids"]
-        retrieval_ids = {source["chunk_id"] for source in response_data["retrieval"]["sources"]}
-        assert set(response_data["reply_draft"]["source_ids"]).issubset(retrieval_ids)
+    checks = legacy_conversation_checks(case, response_data, profile="rule_only")
+    assert all(check["pass"] for check in checks), [check for check in checks if not check["pass"]]

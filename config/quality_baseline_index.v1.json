@@ -1,0 +1,7 @@
+{
+  "schema_version": "p0-quality.v1",
+  "protocol_id": "p0-01.v1",
+  "initial": {},
+  "accepted": {},
+  "status": "awaiting_business_review_and_ci_bootstrap"
+}

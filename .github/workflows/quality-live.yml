@@ -1,0 +1,63 @@
+name: manual-quality-live
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: Explicit target model identifier
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  live-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: quality-live
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify accepted scoring policy
+        shell: bash
+        run: |
+          base_ref="$(git rev-parse refs/remotes/origin/main)"
+          git show "$base_ref:scripts/check_quality_policy.py" > "$RUNNER_TEMP/accepted-quality-policy.py"
+          python "$RUNNER_TEMP/accepted-quality-policy.py" --root . --trusted-ref "$base_ref"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.13"
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.0"
+          cache-dependency-glob: "uv.lock"
+      - run: uv sync --locked --extra dev
+      - name: Run three trials with explicit bounded provider access
+        env:
+          QUALITY_MODEL_API_KEY: ${{ secrets.QUALITY_MODEL_API_KEY }}
+          QUALITY_MODEL_NAME: ${{ inputs.model }}
+        run: uv run --no-sync python scripts/run_quality_eval.py run --mode live --protocol config/quality_baseline.v1.json --allow-network --max-requests 60 --out data/runtime/ci-quality/live
+      - name: Archive all available live evidence
+        id: live-artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: p0-live-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/ci-quality/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Write outer provenance
+        if: always() && steps.live-artifact.outputs.artifact-id != ''
+        env:
+          QUALITY_ARTIFACT_ID: ${{ steps.live-artifact.outputs.artifact-id }}
+          QUALITY_ARTIFACT_DIGEST: ${{ steps.live-artifact.outputs.artifact-digest }}
+        run: uv run --no-sync python scripts/write_quality_provenance.py --root data/runtime/ci-quality --out data/runtime/quality-provenance/index.json
+      - name: Archive provenance
+        if: always() && steps.live-artifact.outputs.artifact-id != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: p0-live-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/quality-provenance/index.json
+          if-no-files-found: error
