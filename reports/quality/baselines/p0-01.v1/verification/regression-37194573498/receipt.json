@@ -1,0 +1,118 @@
+{
+  "artifact_verification": "real GitHub API, original ZIP SHA256, provenance and sealed bytes",
+  "artifacts": {
+    "provenance": {
+      "id": 11299849485,
+      "name": "p0-quality-provenance-37194573498-1",
+      "sha256": "bd13d89095081404a15e8ec70478c1ef8f91d0f77aa4c7b3b2e009782ab894e1"
+    },
+    "quality": {
+      "id": 11299964243,
+      "name": "p0-quality-37194573498-1",
+      "sha256": "17ef94134c9ea8f92216f944006a9c2d0321aaf31860cccb57cbf95ab35f0f91"
+    }
+  },
+  "attempt": 1,
+  "branch_protection": {
+    "allow_deletions": false,
+    "allow_force_pushes": false,
+    "enforce_admins": false,
+    "evidence_file": "data/runtime/p001-github-handoff/final-regression-audit-20261004T101949661562Z/branch-protection.json",
+    "required_approving_review_count": 0,
+    "required_checks": [
+      {
+        "app_id": 15368,
+        "context": "quality"
+      },
+      {
+        "app_id": 15368,
+        "context": "postgres"
+      },
+      {
+        "app_id": 15368,
+        "context": "docker"
+      }
+    ],
+    "response_sha256": "fbbac33a8c7fc1fad7db0afb529beaa3911e7fbaf9d01a754758ad0817691fff",
+    "source": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection",
+    "strict": true
+  },
+  "ci_conclusion": "success",
+  "head_sha": "3357a61d928868af1070ff9e57579112b0deacfc",
+  "inspection_audit": "data/runtime/p001-github-handoff/run-37194573498/audits/20261004T101908794839Z-inspect-4343d28e",
+  "live_status": "not_run",
+  "meaning": "Accepted offline baseline regression is unchanged; 11 registered old failures remain open. This receipt does not assert defect fixes, live model accuracy, or product release.",
+  "modes": {
+    "mocked_model": {
+      "baseline_id": "p0-01-mocked_model-37193943951",
+      "baseline_manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+      "candidate_sha": "3357a61d928868af1070ff9e57579112b0deacfc",
+      "changes_count": 0,
+      "decision_artifact_member": "mocked_model-decision/decision.json",
+      "decision_sha256": "4a45243c3d7daf484381bd8b8917d832f00329d044b19865084672714a1d8317",
+      "environment_hash": "e255a0e6a38a4e304e5b8aa91f9779f649c21954f19559771cee4f2a84c229ad",
+      "environment_inventory_equal_to_m0": true,
+      "existing_failure_count": 8,
+      "exit_code": 0,
+      "fingerprints_equal_to_m0": {
+        "environment_hash": true,
+        "evaluator_hash": true,
+        "knowledge_hash": true,
+        "mode": true,
+        "protocol_hash": true,
+        "protocol_id": true,
+        "suite_hash": true
+      },
+      "gate_kind": "regression",
+      "initial_baseline_id": "p0-01-mocked_model-37193943951",
+      "initial_changes_count": 0,
+      "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+      "manifest_hash": "4640b3592a3ff22d0a0ed4e3dc8fdad8ca58ed75403ccd7a2c3ea8e29d63d004",
+      "provisional": false,
+      "retrieval": {
+        "status": "not_applicable"
+      }
+    },
+    "rule_only": {
+      "baseline_id": "p0-01-rule_only-37193943951",
+      "baseline_manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+      "candidate_sha": "3357a61d928868af1070ff9e57579112b0deacfc",
+      "changes_count": 0,
+      "decision_artifact_member": "rule_only-decision/decision.json",
+      "decision_sha256": "b228a523a3ed313d9ea779a7916c073c52c0fd4feb7cc120f5fbce72a41192e9",
+      "environment_hash": "e255a0e6a38a4e304e5b8aa91f9779f649c21954f19559771cee4f2a84c229ad",
+      "environment_inventory_equal_to_m0": true,
+      "existing_failure_count": 3,
+      "exit_code": 0,
+      "fingerprints_equal_to_m0": {
+        "environment_hash": true,
+        "evaluator_hash": true,
+        "knowledge_hash": true,
+        "mode": true,
+        "protocol_hash": true,
+        "protocol_id": true,
+        "suite_hash": true
+      },
+      "gate_kind": "regression",
+      "initial_baseline_id": "p0-01-rule_only-37193943951",
+      "initial_changes_count": 0,
+      "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+      "manifest_hash": "40ac0a755680eced731c38ac11c090e880adb450193f809559002aa6b6bd905a",
+      "provisional": false,
+      "retrieval": {
+        "comparable": true,
+        "errors": [],
+        "regressions": [],
+        "status": "pass"
+      }
+    }
+  },
+  "origin_main": "3357a61d928868af1070ff9e57579112b0deacfc",
+  "product_release_status": "not_evaluated",
+  "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+  "run_id": "37194573498",
+  "run_url": "https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194573498",
+  "schema_version": "p0-01-final-regression-receipt.v1",
+  "status": "verified",
+  "verified_at": "20261004T101949661562Z"
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": "p0-01-remote-governance.v1",
+  "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+  "authorization": {
+    "source": "project owner in current conversation",
+    "quote": "允许公开并完成后续接纳",
+    "independent_human_review": false,
+    "scope": "public publication, CI validation, controlled policy upgrades, merges, branch protection and formal baseline acceptance"
+  },
+  "policy_fix": {
+    "pull_request": 2,
+    "head_commit": "12ee64a45f43dfecd876e9d18d05765ab044c6df",
+    "merge_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+    "admin_exception": true,
+    "exception_reason": "trusted existing guard rejects protected policy upgrades by design; nested path bug independently reproduced and corrected; 1084 local tests passed with 96.66 percent coverage; successful main CI required before baseline freeze",
+    "blocked_pr_run": 37193858175,
+    "main_validation_run": 37193943951
+  },
+  "branch_protection": {
+    "url": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection",
+    "required_status_checks": {
+      "url": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection/required_status_checks",
+      "strict": true,
+      "contexts": [
+        "quality",
+        "postgres",
+        "docker"
+      ],
+      "contexts_url": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection/required_status_checks/contexts",
+      "checks": [
+        {
+          "context": "quality",
+          "app_id": 15368
+        },
+        {
+          "context": "postgres",
+          "app_id": 15368
+        },
+        {
+          "context": "docker",
+          "app_id": 15368
+        }
+      ]
+    },
+    "required_pull_request_reviews": {
+      "url": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection/required_pull_request_reviews",
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0
+    },
+    "required_signatures": {
+      "url": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection/required_signatures",
+      "enabled": false
+    },
+    "enforce_admins": {
+      "url": "https://api.github.com/repos/jorlin1101-cyber/ai-sales-lead-crm-automation/branches/main/protection/enforce_admins",
+      "enabled": false
+    },
+    "required_linear_history": {
+      "enabled": false
+    },
+    "allow_force_pushes": {
+      "enabled": false
+    },
+    "allow_deletions": {
+      "enabled": false
+    },
+    "block_creations": {
+      "enabled": false
+    },
+    "required_conversation_resolution": {
+      "enabled": true
+    },
+    "lock_branch": {
+      "enabled": false
+    },
+    "allow_fork_syncing": {
+      "enabled": false
+    }
+  },
+  "acceptance_changes": [
+    {
+      "headRefOid": "278141a2ec8e6fefe4588a07544211ec60721418",
+      "mergeCommit": {
+        "oid": "04dbf69c50c06cdc2c78bd0471b1aa242b478739"
+      },
+      "mergedAt": "2026-10-04T10:08:20Z",
+      "number": 3,
+      "url": "https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/pull/3",
+      "admin_exception": true,
+      "reason": "controlled initial baseline authorization"
+    },
+    {
+      "headRefOid": "417648c5f9c4ef36188f2a89a7a051cc7ee6dab3",
+      "mergeCommit": {
+        "oid": "3357a61d928868af1070ff9e57579112b0deacfc"
+      },
+      "mergedAt": "2026-10-04T10:11:39Z",
+      "number": 4,
+      "url": "https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/pull/4",
+      "admin_exception": true,
+      "reason": "controlled initial baseline archive and pointers"
+    }
+  ],
+  "verified_main_runs": [
+    {
+      "run_id": 37193943951,
+      "url": "https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37193943951",
+      "conclusion": "success",
+      "headSha": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+      "status": "completed"
+    },
+    {
+      "run_id": 37194392517,
+      "url": "https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194392517",
+      "conclusion": "success",
+      "headSha": "04dbf69c50c06cdc2c78bd0471b1aa242b478739",
+      "status": "completed"
+    },
+    {
+      "run_id": 37194573498,
+      "url": "https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194573498",
+      "conclusion": "success",
+      "headSha": "3357a61d928868af1070ff9e57579112b0deacfc",
+      "status": "completed"
+    }
+  ]
+}
