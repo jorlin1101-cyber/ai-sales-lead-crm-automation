@@ -26,6 +26,7 @@
 | Document | Purpose |
 | --- | --- |
 | [分版本实施方案](implementation-roadmap-2026-10-04.md) | 基于 GitHub 04be2e5 的同步建议、P0/P1/P2 任务、P3 启动条件、依赖、指标与验收；实施进展见开发基线报告 |
+| [开发基线验收报告](development-baseline-2026-10-04.md) | S0 已完成：原目录备份、新副本同步、实际测试结果、问题修复、启动与回退方法 |
 
 ## Source of Truth
 
