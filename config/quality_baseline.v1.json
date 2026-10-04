@@ -46,7 +46,8 @@
     "pyproject.toml",
     "uv.lock",
     "requirements.txt",
-    "reports/quality/review-sets/*.json"
+    "reports/quality/review-sets/*.json",
+    ".gitattributes"
   ],
   "label_status": "reviewed",
   "notes": "All 22 business case requirements confirmed by the project owner in this conversation; remote bootstrap and formal baseline acceptance remain pending.",

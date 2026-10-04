@@ -433,3 +433,19 @@ def test_provenance_requires_an_explicit_output_path(provenance_harness, monkeyp
         fixture["module"].main()
     assert error.value.code == 2
     assert not fixture["output"].exists()
+
+
+def test_sealed_baseline_bytes_survive_windows_git_checkout(repository_factory, tmp_path):
+    root, _ = repository_factory()
+    git(root, "config", "core.autocrlf", "true")
+    (root / ".gitattributes").write_bytes((ROOT / ".gitattributes").read_bytes())
+    relative = "reports/quality/baselines/p0-01.v1/sample/run/manifest.json"
+    source = root / relative
+    source.parent.mkdir(parents=True)
+    payload = b'{"sealed":true}\n'
+    source.write_bytes(payload)
+    commit(root, "sealed report fixture")
+    checkout = tmp_path / "windows-checkout"
+    git(root, "checkout-index", "--all", "--prefix=" + checkout.as_posix() + "/")
+    assert (checkout / relative).read_bytes() == payload
+    assert git(root, "check-attr", "text", "--", relative).endswith("text: unset")
