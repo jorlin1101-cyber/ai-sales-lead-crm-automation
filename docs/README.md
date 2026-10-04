@@ -21,6 +21,12 @@
 | [Workflow implementation review](workflow-implementation-review.md) | 2026-09-05 优化交付、逐项复核和未验证边界 |
 | [Acceptance matrix](acceptance-matrix.md) | 核心场景与自动化证据矩阵 |
 
+## Planning
+
+| Document | Purpose |
+| --- | --- |
+| [分版本实施方案](implementation-roadmap-2026-10-04.md) | 基于 GitHub 04be2e5 的同步建议、P0/P1/P2 任务、P3 启动条件、依赖、指标与验收；实施进展见开发基线报告 |
+
 ## Source of Truth
 
 文档帮助理解代码，但最终行为必须由以下内容共同确认：
