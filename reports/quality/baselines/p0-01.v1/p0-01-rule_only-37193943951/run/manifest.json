@@ -1,0 +1,737 @@
+{
+  "files": {
+    "assertions.jsonl": {
+      "sha256": "8ba2e2143403e04a81ee59dcbee4acb3ed606e9363491c85cba1185e69aeca95",
+      "size": 20497
+    },
+    "observations.jsonl": {
+      "sha256": "b97a48f2307bfdbbab61c5b9da63f2d9263c55a5cd18673de52f636471921a4b",
+      "size": 146264
+    },
+    "recommendation-contract.json": {
+      "sha256": "fb4c88250a2a270951cbea14f924101d88ceeaddfbb0f936bcdc8bd27ae03cf3",
+      "size": 14828
+    },
+    "retrieval-v4.json": {
+      "sha256": "ec4a4adb85ea9a0fb4865c2437a605be23a5af4ab22e1364f5309d2a8d8d02da",
+      "size": 119278
+    },
+    "summary.md": {
+      "sha256": "79351aff6207d2f9b6f008800844bc8554e0a4dae9e03af05c6cbb146fcbc470",
+      "size": 1575
+    }
+  },
+  "metadata": {
+    "adapter_version": "p0-production-adapters.v1",
+    "app_mode": "rule_only",
+    "application_mode": "rule_only",
+    "budget_exhausted": false,
+    "business_labels_reviewed": true,
+    "business_side_effects_enabled": false,
+    "cases_sha256": "9b3f1df6fb9a534ad8c755e0a96eed0b8173000256cf051af8dcbcc2aa3c60d3",
+    "code_hash": "f87b5992e0f2daa578128ac3ff9aee3418c83871f609d7e0f8c68fa23998cff6",
+    "database_isolation": "fresh SQLite per case/trial/probe; removed after observation",
+    "dependency_files": {
+      "requirements.txt": "49d6472504a774713383ce1b53b0a34e9835d49d3df8492f8c5bc6e1a52b4cba",
+      "uv.lock": "173269a5c3cf9c9b543c7146e3d9addcb7d1b84aa3efa3dab17d325c2dab4d4f"
+    },
+    "effective_settings": {
+      "allow_network": false,
+      "app_mode": "rule_only",
+      "conversation_auto_create_schema": true,
+      "conversation_llm_enabled": false,
+      "grounded_recommendation_enabled": false,
+      "notion_crm_enabled": false,
+      "rag_backend": "keyword_rrf",
+      "rag_candidate_top_k": 5,
+      "rag_required": true,
+      "rag_top_k": 3,
+      "service_access_mode": "local"
+    },
+    "ended_at": "2026-10-04T10:01:15.726762+00:00",
+    "environment": {
+      "dependencies": [
+        [
+          "ai-sales-lead-crm-automation",
+          "0.3.0"
+        ],
+        [
+          "alembic",
+          "1.19.1"
+        ],
+        [
+          "annotated-doc",
+          "0.0.5"
+        ],
+        [
+          "annotated-types",
+          "0.8.0"
+        ],
+        [
+          "anyio",
+          "4.14.2"
+        ],
+        [
+          "ast_serialize",
+          "0.8.0"
+        ],
+        [
+          "certifi",
+          "2026.7.22"
+        ],
+        [
+          "click",
+          "8.5.0"
+        ],
+        [
+          "coverage",
+          "7.16.0"
+        ],
+        [
+          "dnspython",
+          "2.8.0"
+        ],
+        [
+          "email-validator",
+          "2.3.0"
+        ],
+        [
+          "fastapi",
+          "0.141.1"
+        ],
+        [
+          "greenlet",
+          "3.5.5"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "httpcore",
+          "1.0.9"
+        ],
+        [
+          "httpcore2",
+          "2.12.0"
+        ],
+        [
+          "httpx",
+          "0.28.1"
+        ],
+        [
+          "httpx2",
+          "2.12.0"
+        ],
+        [
+          "idna",
+          "3.19"
+        ],
+        [
+          "iniconfig",
+          "2.3.0"
+        ],
+        [
+          "jiter",
+          "0.16.0"
+        ],
+        [
+          "librt",
+          "0.15.0"
+        ],
+        [
+          "mako",
+          "1.4.1"
+        ],
+        [
+          "markupsafe",
+          "3.0.3"
+        ],
+        [
+          "mypy",
+          "2.3.1"
+        ],
+        [
+          "mypy_extensions",
+          "1.1.0"
+        ],
+        [
+          "openai",
+          "3.6.0"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pathspec",
+          "1.1.1"
+        ],
+        [
+          "pluggy",
+          "1.6.0"
+        ],
+        [
+          "psycopg",
+          "3.3.4"
+        ],
+        [
+          "psycopg-binary",
+          "3.3.4"
+        ],
+        [
+          "pydantic",
+          "2.13.5"
+        ],
+        [
+          "pydantic-settings",
+          "2.15.0"
+        ],
+        [
+          "pydantic_core",
+          "2.46.5"
+        ],
+        [
+          "pygments",
+          "2.21.0"
+        ],
+        [
+          "pytest",
+          "9.1.1"
+        ],
+        [
+          "pytest-cov",
+          "7.1.0"
+        ],
+        [
+          "pytest-socket",
+          "0.8.1"
+        ],
+        [
+          "python-dotenv",
+          "1.2.3"
+        ],
+        [
+          "pyyaml",
+          "6.0.3"
+        ],
+        [
+          "ruff",
+          "0.15.22"
+        ],
+        [
+          "sniffio",
+          "1.3.1"
+        ],
+        [
+          "sqlalchemy",
+          "2.0.52"
+        ],
+        [
+          "starlette",
+          "1.6.0"
+        ],
+        [
+          "truststore",
+          "0.10.4"
+        ],
+        [
+          "types-pyyaml",
+          "6.0.12.20260815"
+        ],
+        [
+          "typing-inspection",
+          "0.4.4"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "uvicorn",
+          "0.52.4"
+        ]
+      ],
+      "implementation": "CPython",
+      "machine": "x86_64",
+      "python": "3.12.13",
+      "system": "Linux"
+    },
+    "environment_hash": "e255a0e6a38a4e304e5b8aa91f9779f649c21954f19559771cee4f2a84c229ad",
+    "evaluation_data_hash": "f907c7c601638664254f8795b7454ce1bd2e6dded578f23e3395cd73cfdbb434",
+    "evaluator_hash": "2168a286c5848fa8eee463b36feba0003ac9fe4a030159411fad934135fce879",
+    "expected_keys": [
+      [
+        "rule_only",
+        "western_sichuan_product",
+        "main",
+        "result",
+        "legacy_business_requirements",
+        "1"
+      ],
+      [
+        "rule_only",
+        "western_sichuan_pricing",
+        "main",
+        "result",
+        "legacy_business_requirements",
+        "1"
+      ],
+      [
+        "rule_only",
+        "tibet_permit_payment",
+        "main",
+        "result",
+        "legacy_business_requirements",
+        "1"
+      ],
+      [
+        "rule_only",
+        "yunnan_family_itinerary",
+        "main",
+        "result",
+        "legacy_business_requirements",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M01",
+        "main",
+        "result",
+        "current_requests_partnership",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M02",
+        "main",
+        "result",
+        "current_requests_private_or_custom_service",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M03",
+        "main",
+        "result",
+        "current_customer_kind",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M04",
+        "main",
+        "result",
+        "current_requests_partnership",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M04",
+        "main",
+        "result",
+        "preserve_private_request",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M05",
+        "main",
+        "result",
+        "corrected_group_size",
+        "1"
+      ],
+      [
+        "rule_only",
+        "M06",
+        "main",
+        "result",
+        "trip_not_opted_out",
+        "1"
+      ]
+    ],
+    "knowledge_hash": "ef06d3d41489f516fa37f0c102b145f4a54607dd11fc9c857fd9b247b9c678c9",
+    "live_simulated": false,
+    "live_status": "not_run",
+    "loaded_modules": {
+      "lead_cleaner": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.api": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.api.access": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/access.py",
+        "sha256": "69d47084742c6d2d85e732615c8f3f617a410322820a363c20f783126d0d6236"
+      },
+      "lead_cleaner.api.error_handlers": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/error_handlers.py",
+        "sha256": "dde694b0af5dc051f8bb94d3bb84d1028e5e88ccf0f423b390e1966f16b3e1ad"
+      },
+      "lead_cleaner.api.main": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/main.py",
+        "sha256": "c31184f024ec7edcec8c45e2ba00450af2a074ddd84c620466c756204ff92d6e"
+      },
+      "lead_cleaner.api.request_context": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/api/request_context.py",
+        "sha256": "1a8daa77755dc1c5a9caf7155f67a1aade1959940cfbf3b37f31bd11f1616589"
+      },
+      "lead_cleaner.config": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/config.py",
+        "sha256": "d632648ab41897e79b34bec1412f36d60b3d7b4490708203af93c36882d33d92"
+      },
+      "lead_cleaner.evaluation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/__init__.py",
+        "sha256": "1139c87d0fd21051910eafb43b31afc522751d5d72562b094ae95e6738c4b81d"
+      },
+      "lead_cleaner.evaluation._quality_adapters": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_adapters.py",
+        "sha256": "7f288f3b988995bc75a73de9a20ff65e7a8ca2cae63d745a7437342b977f6878"
+      },
+      "lead_cleaner.evaluation._quality_reviews": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_reviews.py",
+        "sha256": "0b893fa397c07e5180441516d918342d31caaa666ee9100ae4733a7d384881a6"
+      },
+      "lead_cleaner.evaluation._quality_runtime": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_runtime.py",
+        "sha256": "6f041835900b433d6ac4630559e5c999eb594b156e606aa7405f09f08233ea87"
+      },
+      "lead_cleaner.evaluation._quality_storage": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_storage.py",
+        "sha256": "82e9f338850d4115f266df8346fc807dc61113ca1eaf91560e21c729bc6ed0e6"
+      },
+      "lead_cleaner.evaluation._quality_summary": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/_quality_summary.py",
+        "sha256": "98b225c7fef81c8a9f667afde2425b8ba16a37e1613421722364ccc26e11511a"
+      },
+      "lead_cleaner.evaluation.quality_checks": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_checks.py",
+        "sha256": "e33f94e88850c2b15164a080e1822f442bacd53eb4c6b05fd2ea2327de431f47"
+      },
+      "lead_cleaner.evaluation.quality_cli": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_cli.py",
+        "sha256": "aa6b6d58dc757f9f03053365b3c951527810956005b5a3419e7bd8ca454afdf1"
+      },
+      "lead_cleaner.evaluation.quality_context": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_context.py",
+        "sha256": "f7fa799192fbf946bda0ce9dee29d5c459a249ecba7848d66ec71b17d2ca2198"
+      },
+      "lead_cleaner.evaluation.quality_report": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_report.py",
+        "sha256": "479586c36a8f60317d52817c5f02896d38ebe5632090bf4d1b2ffb4729761676"
+      },
+      "lead_cleaner.evaluation.quality_runner": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_runner.py",
+        "sha256": "1bd56a60a1dda2152de2b8393ee9572142d7cce77113a7b5f2075075ab6fba83"
+      },
+      "lead_cleaner.evaluation.quality_schema": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/evaluation/quality_schema.py",
+        "sha256": "be37545da1a953e33d9c3d48dc424652088dcc4d82ef9f28992ee8424fa76fef"
+      },
+      "lead_cleaner.observability": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/observability.py",
+        "sha256": "98b8783ae71325a3df389d4d1145ae85275650d39994d212554f9a3185b3bf1f"
+      },
+      "lead_cleaner.rag": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.rag.bge_embedding_provider": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/bge_embedding_provider.py",
+        "sha256": "4950fa3c2aefc17586e57f45a0a32be6394bcf069fb525495726a7747eccaadc"
+      },
+      "lead_cleaner.rag.bm25_retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/bm25_retriever.py",
+        "sha256": "694b5ab4873e8e4d611283f2fbb440f45fb73163968432e84100c738ccab59ea"
+      },
+      "lead_cleaner.rag.demo_embedding_provider": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/demo_embedding_provider.py",
+        "sha256": "3d4beda13b6edea9280c70094c591bc9cca7c0ead7937001e000d3e56c16582a"
+      },
+      "lead_cleaner.rag.dense_retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/dense_retriever.py",
+        "sha256": "35921c441e8b98411c701ca27e3dbc781495d77f2c30823c761acd94f97d71a9"
+      },
+      "lead_cleaner.rag.eval_runner": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/eval_runner.py",
+        "sha256": "53d304af21cf903f6830a2328cfd934ecf0fdc6ed9936c0e71f5bb47316acad3"
+      },
+      "lead_cleaner.rag.eval_schemas": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/eval_schemas.py",
+        "sha256": "6ec012d6a5c6b84ac4dd52e1cf1e1070fbf38c6115a0c6607c0866de29b2d56c"
+      },
+      "lead_cleaner.rag.evaluation_report": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/evaluation_report.py",
+        "sha256": "5a7e6dc009ee05b2518b7d95fedfa14227e88359832763490ecb759deb2964f4"
+      },
+      "lead_cleaner.rag.hybrid_retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/hybrid_retriever.py",
+        "sha256": "0ac899e33eae1ca1251a195ffdab48d7bba2f4aba8218014fe4a7695916e0293"
+      },
+      "lead_cleaner.rag.knowledge_loader": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/knowledge_loader.py",
+        "sha256": "d0e468c690139caadba9f7e8293102e140c3e99868a5a6d5c354fe0e7810b110"
+      },
+      "lead_cleaner.rag.query_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/query_builder.py",
+        "sha256": "c88b7b5d9047b225044b95e7b312ba03b030af88d0cfc605b533ee0d98eca2f3"
+      },
+      "lead_cleaner.rag.query_fusion": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/query_fusion.py",
+        "sha256": "e17046dddc3fcb4ce4191c5cd96b24aebde10c8e0cd7272a6b1fb4e1a028cbed"
+      },
+      "lead_cleaner.rag.retrieval_intent": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/retrieval_intent.py",
+        "sha256": "9c8747a779167e31dcf77ea1b67cf367915035d3e5b1e53f40c75f17fdda7747"
+      },
+      "lead_cleaner.rag.retriever": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/retriever.py",
+        "sha256": "7b6d9a7de2069a77c7943f52aa99dfa1b5cdb1adb9befb8169b255fae58dab2c"
+      },
+      "lead_cleaner.rag.retriever_factory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/retriever_factory.py",
+        "sha256": "4c073c524aae3be8412ba0ae5cf24671be99788db1fb9717d4ad47fb727b5874"
+      },
+      "lead_cleaner.rag.rrf_fusion": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/rrf_fusion.py",
+        "sha256": "acd496920dd0aec2121bd42536af1215515b6a919e423e2210fe7d5d44811d9d"
+      },
+      "lead_cleaner.rag.schemas": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/schemas.py",
+        "sha256": "e1f36274616595455d9a7f44f12e0707ca7b2742b38402970a01468964f4f341"
+      },
+      "lead_cleaner.rag.source_mapper": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/rag/source_mapper.py",
+        "sha256": "544ed7c7b1483db07df7844a68250e6b1f485d661bf4abcce43751a7bd58ea1e"
+      },
+      "lead_cleaner.schemas": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.schemas.ai_output": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/ai_output.py",
+        "sha256": "141bf26d58eb2067dbfd03b8e97d796f2b49003be4837dc5c74bf0bfa59f51c8"
+      },
+      "lead_cleaner.schemas.conversation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/conversation.py",
+        "sha256": "dd135b30f865fdcfc8db647eaac4c99a55a66c84f54362999d9b613c2180ad1f"
+      },
+      "lead_cleaner.schemas.crm": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/crm.py",
+        "sha256": "0af5982164e9e01f3aff794c844b43f403abf2970bc7677d916b2ffc7527eab0"
+      },
+      "lead_cleaner.schemas.lead": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/lead.py",
+        "sha256": "81ce0560953cdb8cba4edb5d047bc26107e0b4bc044e473402ff6d90a1e6e0b1"
+      },
+      "lead_cleaner.schemas.policy": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/schemas/policy.py",
+        "sha256": "6493f4b0a00e93cfca7f6fa1e73f2680562673309da3e41797ec029f3d209d7d"
+      },
+      "lead_cleaner.services": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lead_cleaner.services.cleaning": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/cleaning.py",
+        "sha256": "bb0aa1b6726059c967a022b84066f8790318f7b82c21a927bff66c68edbd261f"
+      },
+      "lead_cleaner.services.conversation_llm": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_llm.py",
+        "sha256": "14df2a000a3a68a7652fe5fdf613489f997b622b644ac3593f645ca62fa73de2"
+      },
+      "lead_cleaner.services.conversation_memory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_memory.py",
+        "sha256": "859912e13d898fa7139f0896d014d01d9d4755eb4b41eb5fe0881cd10730e613"
+      },
+      "lead_cleaner.services.conversation_rag": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_rag.py",
+        "sha256": "31253d5c73bc55e5f908641a9891dcdb4efd2a94b93ae5fe6f8a3ed64b96a9cb"
+      },
+      "lead_cleaner.services.conversation_reply_composer": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_reply_composer.py",
+        "sha256": "3869d1b2549b0926199d59e9e5f61d1a18a0dd9d98a37b68ecece939cd46c8a6"
+      },
+      "lead_cleaner.services.conversation_service": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_service.py",
+        "sha256": "8ddc7466c3d16fa3f511c2905e0b53bac716e129ebabc576850e344be3989f58"
+      },
+      "lead_cleaner.services.conversation_slots": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_slots.py",
+        "sha256": "d76f3a598cecff9266808e13555a412ad863dc7ea89cfe85a3b4392ba8e9acb1"
+      },
+      "lead_cleaner.services.conversation_store": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/conversation_store.py",
+        "sha256": "4f31549bedafc35325b253629a58e635aa2e290f463d79ac2266f9920b80f284"
+      },
+      "lead_cleaner.services.crm_workflow": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/crm_workflow.py",
+        "sha256": "0130282c2183237c2d903e9ca1f11f118289d5f54fe91a7f658f74b2683e0cd4"
+      },
+      "lead_cleaner.services.demo_fixture_feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/demo_fixture_feature_extractor.py",
+        "sha256": "018624882f3075898928d940e01028f704f93bf7f993b3c233e441a04e03085a"
+      },
+      "lead_cleaner.services.feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/feature_extractor.py",
+        "sha256": "74178ed77a9bda83a7492ee886b431addc240f97c90aaea6440da92bc07ed8d6"
+      },
+      "lead_cleaner.services.feature_extractor_factory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/feature_extractor_factory.py",
+        "sha256": "e1ade8eeff1dd8c7cbc197f8d9aaf7c07f5192b6df6ec098b0a75ed6024d535f"
+      },
+      "lead_cleaner.services.knowledge_localization": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/knowledge_localization.py",
+        "sha256": "8d31fe8820e4615a9a51791b08252834d221a003b48c14ef1db55fbd92970516"
+      },
+      "lead_cleaner.services.lead_analyzer": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/lead_analyzer.py",
+        "sha256": "22c005a8e9d05d6447269c80cdc83d684cd876ca09e69e5783913249aed3498f"
+      },
+      "lead_cleaner.services.lead_feature_merger": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/lead_feature_merger.py",
+        "sha256": "b3542d9c276be74fbbea15a2b7663819cc758391d90544c5bb05ef5f8a785d7e"
+      },
+      "lead_cleaner.services.live_feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/live_feature_extractor.py",
+        "sha256": "4b01f83faa2a1b97dac4080daf38062f45d409b622588849e989ad1b5a4a1b64"
+      },
+      "lead_cleaner.services.llm_errors": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/llm_errors.py",
+        "sha256": "26d1d1d95e638aebeecf2c065c32f44c45d1458a36d243bbb42012ab2145b29e"
+      },
+      "lead_cleaner.services.notion_crm": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/notion_crm.py",
+        "sha256": "f65b823cf07adfe95dccf90f660cb43a60ff7397633c1601d66f295e19886bac"
+      },
+      "lead_cleaner.services.openai_feature_client": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/openai_feature_client.py",
+        "sha256": "ec859eded005e3c73ccfa394500b5fda76f0c5e90a8056df089ffcf2848966e2"
+      },
+      "lead_cleaner.services.openai_recommendation_generator": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/openai_recommendation_generator.py",
+        "sha256": "7b56210d147d463853282aa23911a80961de52d9f94adff50182fc5ee679e03c"
+      },
+      "lead_cleaner.services.openai_response_guard": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/openai_response_guard.py",
+        "sha256": "f85e67b9cd0101b60eca2c596a92f162f6a0bd88a7bb47f55b28500f6cd60d5a"
+      },
+      "lead_cleaner.services.policy_v1": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/policy_v1.py",
+        "sha256": "d9bd85a0049528a61b5ee454edb63dec892c4c00db4749a000f6753517368dd5"
+      },
+      "lead_cleaner.services.processor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/processor.py",
+        "sha256": "77cbb72865da3ad95f850d773d378c2187971ef798c83d0735e3ff0da660a63f"
+      },
+      "lead_cleaner.services.product_recommendation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/product_recommendation.py",
+        "sha256": "3fce66407937b1884f7d893af6800107e7c03f6e67b17eda536197dfc83c20f2"
+      },
+      "lead_cleaner.services.prompt_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/prompt_builder.py",
+        "sha256": "5641475c30d297832b1b3832d03a424532ad0b2c3443bb74fc52b4b2bcde328e"
+      },
+      "lead_cleaner.services.quotation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/quotation.py",
+        "sha256": "76e4c932e6581bd070db6f836eadc55bd56d7b8c54bd86af1f19be88897f0a63"
+      },
+      "lead_cleaner.services.rag_grounding": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/rag_grounding.py",
+        "sha256": "3f609ed65f01aee73ab9399ddf86d67376a5bc2a88c8eeb198db0c79e0f6d2b1"
+      },
+      "lead_cleaner.services.recommendation_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_builder.py",
+        "sha256": "9c81eff6cb0aabda4f2b632df82d293dca8fa75e585584144a642eed67ba1609"
+      },
+      "lead_cleaner.services.recommendation_generator": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_generator.py",
+        "sha256": "fccc87d1f44603c5842c61e4f4ab199465ac21947fec54fe2cf66f63b6c1fed9"
+      },
+      "lead_cleaner.services.recommendation_generator_factory": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_generator_factory.py",
+        "sha256": "d09945d3d549bc66775af60c637452c78623ec308f3b966dfb6b53c972c697cb"
+      },
+      "lead_cleaner.services.recommendation_prompt_builder": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/recommendation_prompt_builder.py",
+        "sha256": "8565cc7c0238667bc3682fb74e7f888195892b0ddf21fd622ec1479469b53543"
+      },
+      "lead_cleaner.services.rule_feature_extractor": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/rule_feature_extractor.py",
+        "sha256": "e11d129d4c43d88af71ec3cf6ebad6a2e4e6eec1d2fc5cf566a85820b893157b"
+      },
+      "lead_cleaner.services.security_signal_detector": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/security_signal_detector.py",
+        "sha256": "2a5c9bea16dbdaf8e1c2db32931b00153e7bb2d637bce85078f03a1ee13c577b"
+      },
+      "lead_cleaner.services.service_preferences": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/service_preferences.py",
+        "sha256": "de5ef8a7f84de3f0208cc617c6ac66f293a382a5703191c44de027ab16315d8d"
+      },
+      "lead_cleaner.services.validation": {
+        "path": "/home/runner/work/ai-sales-lead-crm-automation/ai-sales-lead-crm-automation/src/lead_cleaner/services/validation.py",
+        "sha256": "db6ebee1f66fb7df8ac8ea7ce064ecfd9e0dc6174a75614807042a1033c949a8"
+      }
+    },
+    "mode": "rule_only",
+    "model": null,
+    "model_calls": [],
+    "model_endpoint": null,
+    "model_endpoint_sha256": null,
+    "model_request_count": 0,
+    "model_timeout_seconds": null,
+    "output_schema_observation_status": "not_applicable",
+    "partial_suite": false,
+    "product_release_status": "not_evaluated",
+    "prompt_observation_status": "not_applicable",
+    "protocol_hash": "b268076f2a4aa6a387215723057e5c57cf3fd19ffd51a3451cb944e53cd7363c",
+    "protocol_id": "p0-01.v1",
+    "provider_kind": "none",
+    "provider_max_retries": 0,
+    "provisional": false,
+    "real_model_calls": 0,
+    "request_limit": 60,
+    "response_cache_enabled": false,
+    "review_required_roles": [
+      "developer",
+      "sales"
+    ],
+    "rubric_hash": "613e867ea5082428fd20c018f597a3fca9e16e8be9bfe21915932dacd07c1e30",
+    "run_id": "60eb38c820e3406e80f14966ffdd49ba",
+    "runner_version": "p0-quality-runner.v1",
+    "s0_reference": "7cbd8650757ca6754292542d902c4dfb7c39d7df",
+    "scenario_count": 10,
+    "scenario_ids": [
+      "western_sichuan_product",
+      "western_sichuan_pricing",
+      "tibet_permit_payment",
+      "yunnan_family_itinerary",
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "schema_version": "p0-quality.v1",
+    "socket_guard": {
+      "external_blocked": 0,
+      "loopback_connections": 0,
+      "target_connections": 0,
+      "target_host": null
+    },
+    "source_dirty": false,
+    "started_at": "2026-10-04T10:01:15.066367+00:00",
+    "suite_hash": "cc937964d2c1b7b710729783d3c63bce313ead4c20c80bafae21e14f7f3447ac",
+    "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+    "trial_count": 1
+  },
+  "schema_version": "quality-run-v1",
+  "state": "sealed",
+  "subreport_names": [
+    "recommendation-contract",
+    "retrieval-v4"
+  ]
+}

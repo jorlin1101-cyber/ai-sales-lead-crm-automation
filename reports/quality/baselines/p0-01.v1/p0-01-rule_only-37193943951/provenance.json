@@ -1,0 +1,22 @@
+{
+  "approval_origin_main": "04dbf69c50c06cdc2c78bd0471b1aa242b478739",
+  "artifact_prefix": "rule_only",
+  "directory": "reports/quality/baselines/p0-01.v1/p0-01-rule_only-37193943951/run",
+  "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+  "outer_provenance_artifact": {
+    "id": 11300292126,
+    "name": "p0-quality-provenance-37193943951-1",
+    "sha256": "8f1991a0047bd7667fefa457f9e6f16a71173a7565a2f1047e092f4d738eda63"
+  },
+  "provenance": {
+    "artifact_digest": "3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84",
+    "artifact_id": "11299957996",
+    "attempt": "1",
+    "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+    "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+    "run_id": "37193943951",
+    "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+    "workflow_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+  },
+  "schema_version": "p0-quality-acceptance-provenance.v1"
+}

@@ -1,0 +1,659 @@
+{
+  "case_count": 12,
+  "checks": [
+    {
+      "actual": "grounded-recommendation-eval-v1",
+      "assertion_id": "schema",
+      "expected": "grounded-recommendation-eval-v1",
+      "pass": true
+    },
+    {
+      "actual": 12,
+      "assertion_id": "case_count",
+      "expected": 12,
+      "pass": true
+    },
+    {
+      "actual": [
+        "gr-en-price-001",
+        "gr-zh-price-002",
+        "gr-en-availability-003",
+        "gr-zh-dates-004",
+        "gr-en-cultural-005",
+        "gr-zh-payment-006",
+        "gr-en-missing-007",
+        "gr-zh-permit-008",
+        "gr-en-knowledge-injection-009",
+        "gr-mixed-language-010",
+        "gr-en-multi-source-011",
+        "gr-zh-citation-012"
+      ],
+      "assertion_id": "unique_case_ids",
+      "expected": "unique",
+      "pass": true
+    },
+    {
+      "actual": [
+        "en",
+        "mixed",
+        "zh"
+      ],
+      "assertion_id": "languages",
+      "expected": [
+        "en",
+        "mixed",
+        "zh"
+      ],
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-price-001:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-price-002:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-availability-003:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-dates-004:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-cultural-005:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-payment-006:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-missing-007:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-permit-008:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-knowledge-injection-009:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-mixed-language-010:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-en-multi-source-011:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:id_prefix",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:message",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:chunk_count",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:unique_chunks",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:chunk_text",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:required_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:forbidden_behaviors",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "gr-zh-citation-012:citations",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "boundary:follow_embedded_instruction",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "boundary:cite_unknown_chunk",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "boundary:invent_exact_price",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "boundary:guarantee_availability",
+      "expected": true,
+      "pass": true
+    },
+    {
+      "actual": true,
+      "assertion_id": "boundary:claim_email_sent",
+      "expected": true,
+      "pass": true
+    }
+  ],
+  "kind": "data_contract",
+  "schema_version": "recommendation-contract-report-v1",
+  "status": "pass"
+}
