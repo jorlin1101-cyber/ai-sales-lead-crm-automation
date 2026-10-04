@@ -1,0 +1,28 @@
+{
+  "candidate_sha": "3357a61d928868af1070ff9e57579112b0deacfc",
+  "comparison": {
+    "mocked_model": {
+      "accepted_baseline": "p0-01-mocked_model-37193943951",
+      "changes": [],
+      "initial_baseline": "p0-01-mocked_model-37193943951",
+      "initial_changes": []
+    }
+  },
+  "decision_id": "d9db8d83f47b47d78292426def7b821c",
+  "exit_code": 0,
+  "gate_kind": "regression",
+  "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+  "product_release_status": "not_evaluated",
+  "provisional": false,
+  "reasons": [],
+  "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a",
+  "runs": [
+    {
+      "manifest_hash": "4640b3592a3ff22d0a0ed4e3dc8fdad8ca58ed75403ccd7a2c3ea8e29d63d004",
+      "mode": "mocked_model",
+      "review_ids": [],
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a"
+    }
+  ],
+  "suite_release_status": "not_evaluated"
+}

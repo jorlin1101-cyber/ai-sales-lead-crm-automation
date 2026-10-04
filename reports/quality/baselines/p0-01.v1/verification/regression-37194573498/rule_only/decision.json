@@ -1,0 +1,34 @@
+{
+  "candidate_sha": "3357a61d928868af1070ff9e57579112b0deacfc",
+  "comparison": {
+    "rule_only": {
+      "accepted_baseline": "p0-01-rule_only-37193943951",
+      "changes": [],
+      "initial_baseline": "p0-01-rule_only-37193943951",
+      "initial_changes": [],
+      "retrieval": {
+        "comparable": true,
+        "errors": [],
+        "regressions": [],
+        "status": "pass"
+      }
+    }
+  },
+  "decision_id": "191ef17fc99e415dad519132a5b0da24",
+  "exit_code": 0,
+  "gate_kind": "regression",
+  "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+  "product_release_status": "not_evaluated",
+  "provisional": false,
+  "reasons": [],
+  "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a",
+  "runs": [
+    {
+      "manifest_hash": "40ac0a755680eced731c38ac11c090e880adb450193f809559002aa6b6bd905a",
+      "mode": "rule_only",
+      "review_ids": [],
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a"
+    }
+  ],
+  "suite_release_status": "not_evaluated"
+}

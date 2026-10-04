@@ -1,5 +1,7 @@
 # P0-01 GitHub 正式接纳记录
 
+当前结论：两份正式离线基线已接纳，首次回归及全部 GitHub 检查通过。25 项验收通过，Q22 真实模型实验未开展。11 项原有业务失败仍保留，产品发布仍被阻断。完整逐项结果见 [实施验收记录](p0-01-implementation-acceptance.md)。
+
 ## 授权与边界
 
 项目负责人在本次会话确认了 22 条业务案例，并在查看公开同步清单后明确回复：
@@ -62,7 +64,7 @@ M0 的协议、评测器、案例和依赖自此作为本次参照固定。之�
 
 本次授权由项目负责人明确授予，代理核验具体 CI 证据并执行。没有记录不存在的独立人工审核人；自动离线判分不套用未来 live 的双人语义复核。
 
-## 正式基线归档提案 M2
+## 正式基线归档 M2：提案与接纳过程
 
 [具体报告授权 PR #3](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/pull/3) 已由受控管理员例外接纳，可信合并提交为 `04dbf69c50c06cdc2c78bd0471b1aa242b478739`。[PR 检查记录](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194316155) 精确列出两个受保护配置变更，postgres 通过；未伪造 quality 通过。
 
@@ -78,3 +80,21 @@ M0 的协议、评测器、案例和依赖自此作为本次参照固定。之�
 两次接纳输出的完整缺陷快照一致，已批准快照散列为 `cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02`。空人工复核集合采用模块固定常量；没有对自动失败进行人工覆盖。
 
 归档、首次/最近索引、信任指针和缺陷快照通过同一专用 PR 接纳。该 PR 修改受保护索引和信任配置，因此仍需已授权的限定管理员例外。其后主分支必须实际完成两模式 regression 才算远端验收完成；归档本身不冒充回归成功。
+
+## 接纳闭环已完成：M2 首次正式回归
+
+[基线归档 PR #4](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/pull/4) 于 `2026-10-04T10:11:39Z` 合并，实际 main 提交为 `3357a61d928868af1070ff9e57579112b0deacfc`。PR 的 [受保护索引阻断记录](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194500219) 保留，限定管理员例外没有更改任何检查结果或全局保护。
+
+[首次正式回归运行 37194573498](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194573498) 已全部成功：quality、postgres、docker 均通过；1084 passed、2 skipped、总覆盖率 96.66%，两项 PostgreSQL 测试在独立作业完成。真实 CI 日志中两模式均为 `gate_kind=regression`、`exit_code=0`、`provisional=false`，汇总为 `[0,0,0,0]`。这次是对已接纳基线的实际比较，不再是首次盘点。
+
+独立复核还使用 M1 的真实 trust 重放两个接纳 API，输出与接纳单一致；16 个归档文件与提交中的 Git blob 完全相同，12 个封存文件与再次从 GitHub 下载的原始 ZIP 完全相同。initial、accepted 和最新信任指针一致，已知缺陷快照保持 11 项 open。
+
+M1 在 `2026-10-04T10:08:20Z` 合并，其 [主分支 CI 37194392517](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194392517) 也全部通过。评分口径 M0、授权 M1、接纳 M2 三个版本分别记录，避免自引用和错误改写受测提交。
+
+正式接纳后的 [发布阻断诊断](../reports/quality/baselines/p0-01.v1/verification/release-M0-after-acceptance/decision.json) 对 M0 的两份报告重新验证真实来源；结果为 `exit_code=2`、`suite_release_status=blocked`、`provisional=false`。原因是 11 项必需业务断言失败和缺少 live，不再是临时报告或来源未认证。真实模型调用仍为 0，整个产品发布仍为 `not_evaluated`。
+
+因此 P0-01 的 25 项非条件性验收已完成；Q22 属于尚未开展的真实模型条件性实验，不能标为通过。后续产品修复继续处理 P0-03 的事实核验、P0-04 的更正撤回、P0-05 的承诺证据；本次没有声称这 11 项产品缺陷已修复。
+
+原始首次回归 decision 已另行归档：[规则模式](../reports/quality/baselines/p0-01.v1/verification/regression-37194573498/rule_only/decision.json)、[模拟模型模式](../reports/quality/baselines/p0-01.v1/verification/regression-37194573498/mocked_model/decision.json)。两者相对首次和最近认可基线的变化数均为 0；规则模式的检索报告可比且无逐查询退化。[治理审计记录](../reports/quality/baselines/p0-01.v1/verification/governance.json)保存实际保护配置及专用接纳的合并记录。
+
+[最终回归核验收据](../reports/quality/baselines/p0-01.v1/verification/regression-37194573498/receipt.json)记录实际 artifact 摘要、decision 散列、环境与全部比较指纹；两模式环境清单均与 M0 相同。[对应分支保护快照](../reports/quality/baselines/p0-01.v1/verification/regression-37194573498/branch-protection.json)一并保存。网络下载重试与本地审计位置保留在收据中；最终使用实际下载字节和当次 GitHub 元数据完成核验，没有模拟远端产物。

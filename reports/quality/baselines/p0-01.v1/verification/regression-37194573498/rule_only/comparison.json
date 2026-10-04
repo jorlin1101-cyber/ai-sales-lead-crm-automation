@@ -1,0 +1,14 @@
+{
+  "rule_only": {
+    "accepted_baseline": "p0-01-rule_only-37193943951",
+    "changes": [],
+    "initial_baseline": "p0-01-rule_only-37193943951",
+    "initial_changes": [],
+    "retrieval": {
+      "comparable": true,
+      "errors": [],
+      "regressions": [],
+      "status": "pass"
+    }
+  }
+}

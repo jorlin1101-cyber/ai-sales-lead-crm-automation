@@ -1,12 +1,14 @@
 # P0-01 质量评测操作说明
 
-适用版本：`p0-01.v1`；发布检查清单：`p0-01-ai-assisted.v1`。本文描述当前代码接口，设计依据见 [最终方案](p0-01-final-design.md)，本次交付状态见 [实施验收记录](p0-01-implementation-acceptance.md)。
+适用版本：`p0-01.v1`；发布检查清单：`p0-01-ai-assisted.v1`。本文描述当前代码接口，设计依据见 [最终方案](p0-01-final-design.md)，本次交付状态见 [实施验收记录](p0-01-implementation-acceptance.md)，真实 GitHub 运行、审批和接纳依据见 [远端正式接纳记录](p0-01-remote-acceptance.md)。
 
 ## 1. 先确认当前状态
 
 当前已提供两种离线运行、隔离执行、封存报告、人工复核集合、三个门槛、基线接纳 API 和真实模型手动 workflow。它们是工程能力，不构成业务批准。
 
-当前22条业务案例标准已由项目负责人在会话中明确确认，审核字段与依据已记录，详见[确认记录](../config/quality_case_review.v1.json)。基线索引尚未初始化，信任配置为 `bootstrap_pending`。远端 `main` 分支保护尚未启用，管理员正式接纳流程尚待完成。本次实施没有调用真实模型 API，也没有形成真实 AI 质量结论。`provisional=true` 的工程报告不能接纳为正式基线或用于发布。
+22 条业务案例标准已由项目负责人明确确认，见 [确认记录](../config/quality_case_review.v1.json)。公开及后续接纳已另行得到“允许公开并完成后续接纳”的明确授权。M0 `83921e3d346f61340f1a2b5f626b47b85bd1a101` 的 [真实主分支 CI](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37193943951) 已全绿，两份离线报告已通过 GitHub 来源、ZIP 摘要及全部文件字节核验。
+
+远端 main 已启用三个必需 Actions 检查、strict、禁止强推与删除。当前采用单 owner 的受控管理员例外，不宣称独立双人代码审核。两份正式基线已从 M1 可信提交 `04dbf69c50c06cdc2c78bd0471b1aa242b478739` 接纳，并在 M2 `3357a61d928868af1070ff9e57579112b0deacfc` 原子归档；[首次正式回归 37194573498](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37194573498) 的三个检查全部通过。真实模型仍未调用，也没有真实 AI 质量结论。来源核验后的正式报告 release 诊断仍为 `exit_code=2`、`suite_release_status=blocked`，保留 11 项 mandatory fail 和缺 live 原因；接纳既有缺陷不等于允许发布。`provisional=true` 的工程报告不能接纳为正式基线或用于发布。
 
 推荐顺序是：先运行两种离线模式并查看缺陷 → 审核 22 条案例及判分要求 → 受控接纳首版规则 → 在固定 CI 环境重跑 → 审核并冻结两个离线基线 → 日常检查回归 → 按需执行真实模型实验与人工复核 → 对指定候选运行本套件发布检查。
 
@@ -58,7 +60,7 @@ uv run --no-sync python scripts/run_quality_eval.py check --gate inventory --run
 
 先由业务人员核对全部 22 条案例的客户表达、期望、严重度、适用模式、人工判分要求及修复任务，保留审核依据，再经专门规则审核更新案例的 `review_status` 和协议说明。不能批量改成 `reviewed` 来代替真实审核。已有草稿报告不会因此自动转正：标签和套件散列变化后，应提交规则并重新运行。
 
-固定 CI 的 Python、uv、`uv.lock`、安装选项和运行环境，分别运行两种离线模式及 inventory。当前 workflow 使用 `ubuntu-latest`，宿主镜像仍可能滚动；必须核对记录的 `environment_hash`，有差异时先统一环境并重跑，不能把 Windows 本地报告直接当作 Linux 严格回归参照。
+固定 CI 的 Python、uv、`uv.lock`、安装选项和运行环境，分别运行两种离线模式及 inventory。当前 workflow 使用 `ubuntu-latest`，宿主镜像仍可能滚动。M0 实测 Ubuntu 24.04 / `20260927.320.1`；环境散列包括 Python、实现、system、machine 与安装依赖，不包含完整 OS 镜像版本，后者单独留证。必须核对 `environment_hash`，有差异时先统一环境并重跑。可以在 Windows 核验、接纳从 CI 下载的 Linux 原报告，但不能把 Windows 新跑的报告直接拿来严格比较 Linux 基线。
 
 首次接纳允许已经明确登记的业务失败，但不允许执行错误、未执行或尚未裁定结果。每个旧缺陷在 `config/quality_known_issues.v1.json` 的 `issues` 中精确记录这些字段：
 
@@ -104,7 +106,7 @@ binding = {
 ```python
 from pathlib import Path
 from lead_cleaner.evaluation.quality_context import (
-    git, load_trust_context, trusted_json,
+    git, load_trust_context, trusted_json, verify_protected_files,
 )
 from lead_cleaner.evaluation.quality_report import (
     EMPTY_REVIEW_SET, accept_baseline, load_run, write_record,
@@ -113,6 +115,7 @@ from lead_cleaner.evaluation.quality_schema import content_hash
 
 root = Path.cwd()
 trusted_ref = git(root, "rev-parse", "refs/remotes/origin/main")
+verify_protected_files(root, trusted_ref)
 trust = load_trust_context(root, trusted_ref)
 issues = trusted_json(
     root, trusted_ref, "config/quality_known_issues.v1.json"
@@ -132,6 +135,8 @@ write_record(
     record,
 )
 ```
+
+上述 API 不自行访问 GitHub 验证 artifact。正式调用前须完成第 7 节的真实来源核验并保存核验记录；不能用手填 `trusted=true` 代替核验。API 目前没有 `provenance` 参数，不要在这个调用中设置 `require_provenance=true` 期待自动补全来源。
 
 首次初始化要求可信上下文显式含 `latest_accepted_baselines`，且当前 mode 尚无指针；初始化全部模式前它是 `{}`。后续接纳要求该 mode 指针等于 `previous.acceptance_id`，并重新运行 regression。前序被别人推进、缺少真实 approval binding、标签未审核、源码有改动或接纳 ID 已用过时，API 拒绝。
 
@@ -158,6 +163,15 @@ write_record(
 
 多个模式同时推进时，审核最终合并的缺陷快照，避免用另一个模式的旧快照覆盖已关闭缺陷。曾经在最近认可版本 pass 的断言再次失败，即使最初版本也失败、旧 issue 仍 open，回归仍阻断。
 
+### 4.3 首次接纳的 M0 → M1 → M2 顺序
+
+1. **M0**：取得固定规则下 main push 的全绿 CI 与两份真实报告，核对原始产物，固定受测 SHA 和 manifest 散列。
+2. **M1**：专门审批 PR 保存每模式的 approval binding 和最终批准的缺陷快照，initial/accepted 指针仍为空。`approval_ref` 使用稳定审核 ID，不引用正在生成的 M1 自身 SHA。issue 的审核状态等元数据也计入整个列表的 hash，须在计算 binding 前确定。
+3. **M2 准备**：fetch 实际 M1，在干净受信任代码下核验保护文件、加载 trust/issues 和已验证报告，分别调用 `accept_baseline(previous=None)`。之后才写 M2 的接纳归档、两个索引、信任指针和一致缺陷快照。
+4. **M2 闭环**：受控接纳该专用 PR，等待真实 main CI 首次运行 regression 并全绿，保留两模式独立 decision。M2 自身 SHA、合并结果和这次 CI 的证据在提交后另行留证，不能要求它们预先写进 M2 本身。
+
+M0 之后不要为了更新状态修改评测器、案例、依赖或整份 `quality_baseline.v1.json`，包括说明文字；否则原报告可能不可比。状态和审核进展写在独立记录中。历史报告目录不能增添接纳备注；Git 已对 `reports/quality/baselines/**` 关闭换行转换，复制、提交和重新检出后都应保持封存字节一致。
+
 ## 5. 日常回归与人工复核
 
 先获取当前远端主分支，使用它的完整提交 SHA 作为 `--trusted-ref`。正式检查拒绝自行选择历史祖先快照。受测 SHA 则来自独立确定的候选提交，不能从待验报告反推。
@@ -182,7 +196,9 @@ uv run --no-sync python scripts/run_quality_eval.py check --gate regression --ru
 
 案例、标签、严重度、断言器、知识资料、依赖、workflow、信任配置、基线索引和已知缺陷均属于受保护范围。它们改变后，普通 PR 的策略检查会阻断。首次标签审核、首基线接纳、后续指针推进也涉及这些文件，不能假设一次普通业务 PR 就会自动放行。
 
-当前没有自动审核升级 API。应建立专门的规则升级或基线接纳 PR，附旧、新规则的差异、删项/放宽/豁免变化、对应对照报告及审核依据，由仓库管理员审核后按受控例外接纳，保留授权和实施记录；不能让普通 PR 用自己的评分器和 trust 文件重新自签为通过。远端保护及这套管理员正式接纳机制本次仍待完成。
+当前没有自动审核升级 API。应建立专门的规则升级或基线接纳 PR，附旧、新规则的差异、删项/放宽/豁免变化、对应对照报告及审核依据，由获授权的仓库管理员按受控例外接纳，保留授权和实施记录；不能让普通 PR 用自己的评分器和 trust 文件重新自签为通过。
+
+当前 main 的 quality/postgres/docker 检查绑定 GitHub Actions，strict=true，禁止强推/删除；单 owner 仓库必需 approving review 数量为 0，不要求 owner 批准自己的 PR，管理员强制限制关闭以保留设计规定的例外。规则升级时保留真实阻断记录，仅对指定专用 PR 使用已获授权的管理员例外，不把失败检查改为成功、不全局关闭检查。这是明确的单 owner 信任边界，不能描述为两名独立人员审核；live 的双角色语义复核规则仍不变。实际使用情况见 [远端接纳记录](p0-01-remote-acceptance.md)。
 
 评分口径变化需要按新口径重测比较对象，再建立新的参照链并保留旧链。当前 CLI 固定接受 `p0-01.v1`、22 场景及既定模式矩阵；新增协议版本还需要实现和审核相应支持，不能只改 JSON 的版本字符串。不可比报告不能用于宣称性能或质量提升。
 

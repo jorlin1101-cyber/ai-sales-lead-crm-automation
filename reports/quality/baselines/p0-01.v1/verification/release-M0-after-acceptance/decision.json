@@ -1,0 +1,209 @@
+{
+  "candidate_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+  "comparison": {
+    "rule_only": {
+      "accepted_baseline": "p0-01-rule_only-37193943951",
+      "changes": [],
+      "initial_baseline": "p0-01-rule_only-37193943951",
+      "initial_changes": [],
+      "retrieval": {
+        "comparable": true,
+        "errors": [],
+        "regressions": [],
+        "status": "pass"
+      }
+    }
+  },
+  "decision_id": "cab4ec86be9d43e0b65e9a80113a42d5",
+  "exit_code": 2,
+  "gate_kind": "release",
+  "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+  "product_release_status": "not_evaluated",
+  "provisional": false,
+  "reasons": [
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "F01",
+        "main",
+        "result",
+        "supported_group_size",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "F01",
+        "api",
+        "result",
+        "supported_group_size",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "F01",
+        "api",
+        "persisted",
+        "supported_group_size",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "F02",
+        "main",
+        "result",
+        "supported_group_size",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "G01",
+        "main",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "G01",
+        "api",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "G01",
+        "api",
+        "persisted",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "mocked_model",
+        "G02",
+        "main",
+        "result",
+        "unsupported_claim_blocked",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "mocked_model"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "rule_only",
+        "M01",
+        "main",
+        "result",
+        "current_requests_partnership",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "rule_only"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "rule_only",
+        "M02",
+        "main",
+        "result",
+        "current_requests_private_or_custom_service",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "rule_only"
+    },
+    {
+      "exit_code": 1,
+      "key": [
+        "rule_only",
+        "M03",
+        "main",
+        "result",
+        "current_customer_kind",
+        "1"
+      ],
+      "message": "A mandatory behavior assertion failed.",
+      "mode": "rule_only"
+    },
+    {
+      "exit_code": 2,
+      "message": "Required mode report is missing.",
+      "mode": "live"
+    }
+  ],
+  "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a",
+  "runs": [
+    {
+      "manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+      "mode": "mocked_model",
+      "provenance": {
+        "artifact_digest": "3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84",
+        "artifact_id": "11299957996",
+        "attempt": "1",
+        "manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+        "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+        "run_id": "37193943951",
+        "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+        "workflow_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+      },
+      "review_ids": [],
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a"
+    },
+    {
+      "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+      "mode": "rule_only",
+      "provenance": {
+        "artifact_digest": "3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84",
+        "artifact_id": "11299957996",
+        "attempt": "1",
+        "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+        "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+        "run_id": "37193943951",
+        "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+        "workflow_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+      },
+      "review_ids": [],
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a"
+    }
+  ],
+  "suite_release_status": "blocked"
+}
