@@ -48,14 +48,34 @@ def trusted_json(root: Path, trusted_ref: str, path: str) -> dict[str, Any]:
     return value
 
 
+def _protected_worktree_files(root: Path, patterns: list[str]) -> set[str]:
+    """Match Git's fnmatch scope, including nested and ignored worktree files."""
+    matched = set()
+    for pattern in patterns:
+        parts = pattern.split("/")
+        prefix = []
+        for part in parts:
+            if any(character in part for character in "*?["):
+                break
+            prefix.append(part)
+        base = root.joinpath(*prefix)
+        # Exact paths need no traversal. Wildcards may match '/' in fnmatch,
+        # so enumerate recursively only beneath their fixed directory prefix.
+        candidates = (base,) if len(prefix) == len(parts) else base.rglob("*")
+        for path in candidates:
+            if path.is_file():
+                name = path.relative_to(root).as_posix()
+                if fnmatch.fnmatchcase(name, pattern):
+                    matched.add(name)
+    return matched
+
+
 def verify_protected_files(root: Path, trusted_ref: str) -> dict[str, Any]:
     protocol = trusted_json(root, trusted_ref, "config/quality_baseline.v1.json")
     patterns = protocol["protected_patterns"]
     tracked = git(root, "ls-tree", "-r", "--name-only", trusted_ref).splitlines()
     old_files = {name for name in tracked if any(fnmatch.fnmatchcase(name, p) for p in patterns)}
-    current = {
-        p.relative_to(root).as_posix() for pat in patterns for p in root.glob(pat) if p.is_file()
-    }
+    current = _protected_worktree_files(root, patterns)
     differences = sorted(old_files ^ current)
     for name in sorted(old_files & current):
         expected = subprocess.run(

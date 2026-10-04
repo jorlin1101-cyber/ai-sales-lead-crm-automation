@@ -50,7 +50,7 @@
     ".gitattributes"
   ],
   "label_status": "reviewed",
-  "notes": "All 22 business case requirements confirmed by the project owner in this conversation; remote bootstrap and formal baseline acceptance remain pending.",
+  "notes": "All 22 business case requirements were confirmed by the project owner. Current formal acceptance status is recorded separately in quality_baseline_index.v1.json and quality_trust.v1.json; sealed evidence retains its original fingerprints.",
   "review_required_roles": [
     "developer",
     "sales"
