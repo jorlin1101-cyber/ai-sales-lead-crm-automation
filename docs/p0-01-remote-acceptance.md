@@ -41,3 +41,23 @@
 - 总覆盖率：96.66%，原 95% 门槛保留。
 - Ruff 静态检查、206 文件格式检查及 87 源文件类型检查通过。
 - 完整本地日志：`data/runtime/p001-github-handoff/policy-fix-pytest.txt`（忽略目录，仅本机留存）；后续 GitHub 全量日志提供公开运行证据。
+
+## 正式报告来源 M0
+
+- [评分工具修复 PR #2](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/pull/2)，修复提交 `12ee64a45f43dfecd876e9d18d05765ab044c6df`，主分支合并提交 `83921e3d346f61340f1a2b5f626b47b85bd1a101`。
+- [修复 PR 的规则阻断记录](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37193858175)：quality 因受保护文件升级返回 3，postgres 通过，docker 随 quality 跳过；依前述受控例外接纳，没有声称这次 PR 全绿。
+- [M0 主分支正式成功运行](https://github.com/jorlin1101-cyber/ai-sales-lead-crm-automation/actions/runs/37193943951)：quality、postgres、docker 全部通过。
+- GitHub 实测 1084 passed、2 skipped，总覆盖率 96.66%；PostgreSQL 作业另行 2 passed；Docker 健康与非 root 检查通过。
+- 本次 runner 是 `ubuntu-24.04`，镜像版本 `20260927.320.1`。Python 3.12.13、uv 0.12.0 和依赖锁固定；`ubuntu-latest` 仍可能滚动，不宣称完整操作系统镜像永久固定。后续回归还需匹配报告中的环境指纹。
+- 原始质量 artifact ID `11299957996`，ZIP SHA-256 `3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84`。
+- 上传后外层来源索引 artifact ID `11300292126`，ZIP SHA-256 `8f1991a0047bd7667fefa457f9e6f16a71173a7565a2f1047e092f4d738eda63`。
+
+M0 的协议、评测器、案例和依赖自此作为本次参照固定。之后接纳元数据分别提交，原始报告保持 M0 的实际受测 SHA。
+
+## 具体报告与旧缺陷授权登记 M1
+
+真实下载与来源验证已完成，两个报告均为 clean、reviewed、nonprovisional，inventory 返回 0。两份报告的 11 项失败与现有 open 缺陷逐项精确一致，执行错误和待裁定均为 0。来源包、封存文件和 manifest 均通过字节及散列核验。
+
+[授权与具体绑定](../reports/quality/acceptance/p0-01-ci-37193943951/authorization.json)、[来源核验清单](../reports/quality/acceptance/p0-01-ci-37193943951/inspection.json)和[原始外层索引](../reports/quality/acceptance/p0-01-ci-37193943951/original-provenance-index.json)随专用授权登记 PR 保存。11 条缺陷只更新首次基线审核元数据，仍为 open，失败签名、严重度和修复任务不变。该 PR 涉及受保护的信任与缺陷文件，需要设计规定的管理员例外；不伪造普通质量检查通过。
+
+本次授权由项目负责人明确授予，代理核验具体 CI 证据并执行。没有记录不存在的独立人工审核人；自动离线判分不套用未来 live 的双人语义复核。

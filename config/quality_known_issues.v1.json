@@ -13,7 +13,9 @@
       "severity": "major",
       "resolved_commit": null,
       "repair_task": "P0-04",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-rule_only-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-04-M02-main-result-current_requests_private_or_custom_service",
@@ -27,7 +29,9 @@
       "severity": "major",
       "resolved_commit": null,
       "repair_task": "P0-04",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-rule_only-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-04-M03-main-result-current_customer_kind",
@@ -41,7 +45,9 @@
       "severity": "major",
       "resolved_commit": null,
       "repair_task": "P0-04",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-rule_only-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-03-F01-main-result-supported_group_size",
@@ -55,7 +61,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-03",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-03-F01-api-result-supported_group_size",
@@ -69,7 +77,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-03",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-03-F01-api-persisted-supported_group_size",
@@ -83,7 +93,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-03",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-03-F02-main-result-supported_group_size",
@@ -97,7 +109,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-03",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-05-G01-main-result-unsupported_claim_blocked",
@@ -111,7 +125,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-05",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-05-G01-api-result-unsupported_claim_blocked",
@@ -125,7 +141,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-05",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-05-G01-api-persisted-unsupported_claim_blocked",
@@ -139,7 +157,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-05",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     },
     {
       "issue_id": "P0-05-G02-main-result-unsupported_claim_blocked",
@@ -153,7 +173,9 @@
       "severity": "critical",
       "resolved_commit": null,
       "repair_task": "P0-05",
-      "review_status": "engineering_observed_pending_business_review"
+      "review_status": "owner_authorized_initial_baseline_known_failure",
+      "approval_ref": "p0-01-mocked_model-37193943951",
+      "review_basis": "docs/p0-01-remote-acceptance.md; project owner authorized formal acceptance in the current conversation; exact failure observed in successful main CI 37193943951; remains open and cannot authorize release"
     }
   ]
 }
