@@ -1,0 +1,169 @@
+{
+  "attempt": 1,
+  "downloads": {
+    "provenance": {
+      "id": 11300292126,
+      "name": "p0-quality-provenance-37193943951-1",
+      "sha256": "8f1991a0047bd7667fefa457f9e6f16a71173a7565a2f1047e092f4d738eda63"
+    },
+    "quality": {
+      "id": 11299957996,
+      "name": "p0-quality-37193943951-1",
+      "sha256": "3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84"
+    }
+  },
+  "failure_matches": [
+    {
+      "assertion_id": "supported_group_size",
+      "case_id": "F01",
+      "checkpoint": "result",
+      "failure_type": "unsafe_fact_accepted",
+      "issue_id": "P0-03-F01-main-result-supported_group_size",
+      "mode": "mocked_model",
+      "probe_id": "main",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "supported_group_size",
+      "case_id": "F01",
+      "checkpoint": "result",
+      "failure_type": "unsafe_fact_accepted",
+      "issue_id": "P0-03-F01-api-result-supported_group_size",
+      "mode": "mocked_model",
+      "probe_id": "api",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "supported_group_size",
+      "case_id": "F01",
+      "checkpoint": "persisted",
+      "failure_type": "unsafe_fact_accepted",
+      "issue_id": "P0-03-F01-api-persisted-supported_group_size",
+      "mode": "mocked_model",
+      "probe_id": "api",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "supported_group_size",
+      "case_id": "F02",
+      "checkpoint": "result",
+      "failure_type": "unsafe_fact_accepted",
+      "issue_id": "P0-03-F02-main-result-supported_group_size",
+      "mode": "mocked_model",
+      "probe_id": "main",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "unsupported_claim_blocked",
+      "case_id": "G01",
+      "checkpoint": "result",
+      "failure_type": "unsupported_claim_accepted",
+      "issue_id": "P0-05-G01-main-result-unsupported_claim_blocked",
+      "mode": "mocked_model",
+      "probe_id": "main",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "unsupported_claim_blocked",
+      "case_id": "G01",
+      "checkpoint": "result",
+      "failure_type": "unsupported_claim_accepted",
+      "issue_id": "P0-05-G01-api-result-unsupported_claim_blocked",
+      "mode": "mocked_model",
+      "probe_id": "api",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "unsupported_claim_blocked",
+      "case_id": "G01",
+      "checkpoint": "persisted",
+      "failure_type": "unsupported_claim_accepted",
+      "issue_id": "P0-05-G01-api-persisted-unsupported_claim_blocked",
+      "mode": "mocked_model",
+      "probe_id": "api",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "unsupported_claim_blocked",
+      "case_id": "G02",
+      "checkpoint": "result",
+      "failure_type": "unsupported_claim_accepted",
+      "issue_id": "P0-05-G02-main-result-unsupported_claim_blocked",
+      "mode": "mocked_model",
+      "probe_id": "main",
+      "severity": "critical",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "current_requests_partnership",
+      "case_id": "M01",
+      "checkpoint": "result",
+      "failure_type": "feature_mismatch",
+      "issue_id": "P0-04-M01-main-result-current_requests_partnership",
+      "mode": "rule_only",
+      "probe_id": "main",
+      "severity": "major",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "current_requests_private_or_custom_service",
+      "case_id": "M02",
+      "checkpoint": "result",
+      "failure_type": "feature_mismatch",
+      "issue_id": "P0-04-M02-main-result-current_requests_private_or_custom_service",
+      "mode": "rule_only",
+      "probe_id": "main",
+      "severity": "major",
+      "trial_id": "1"
+    },
+    {
+      "assertion_id": "current_customer_kind",
+      "case_id": "M03",
+      "checkpoint": "result",
+      "failure_type": "feature_mismatch",
+      "issue_id": "P0-04-M03-main-result-current_customer_kind",
+      "mode": "rule_only",
+      "probe_id": "main",
+      "severity": "major",
+      "trial_id": "1"
+    }
+  ],
+  "inventory_exit_code": 0,
+  "known_issues_hash": "b9dae3388ecef2b3d785ddbbfb9d0078e63f6b47312c3509b30f41c1c368c555",
+  "live_status": "not_run",
+  "modes": {
+    "mocked_model": {
+      "assertion_count": 18,
+      "behavior_counts": {
+        "fail": 8,
+        "pass": 10
+      },
+      "manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+      "provisional": false,
+      "scenario_count": 12
+    },
+    "rule_only": {
+      "assertion_count": 11,
+      "behavior_counts": {
+        "fail": 3,
+        "pass": 8
+      },
+      "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+      "provisional": false,
+      "scenario_count": 10
+    }
+  },
+  "origin_main": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+  "product_release_status": "not_evaluated",
+  "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+  "run_id": "37193943951",
+  "status": "verified_inventory_only",
+  "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+}

@@ -1,0 +1,47 @@
+{
+  "candidate_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+  "comparison": {},
+  "decision_id": "9c11ea172cb44915a19154dfade9cfed",
+  "exit_code": 0,
+  "gate_kind": "inventory",
+  "known_issues_hash": "b9dae3388ecef2b3d785ddbbfb9d0078e63f6b47312c3509b30f41c1c368c555",
+  "product_release_status": "not_evaluated",
+  "provisional": false,
+  "reasons": [],
+  "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a",
+  "runs": [
+    {
+      "manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+      "mode": "mocked_model",
+      "provenance": {
+        "artifact_digest": "3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84",
+        "artifact_id": "11299957996",
+        "attempt": "1",
+        "manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+        "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+        "run_id": "37193943951",
+        "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+        "workflow_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+      },
+      "review_ids": [],
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a"
+    },
+    {
+      "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+      "mode": "rule_only",
+      "provenance": {
+        "artifact_digest": "3df34c334531f31a0a11e61f8766e5972f8e53360415b1474674da24129f7d84",
+        "artifact_id": "11299957996",
+        "attempt": "1",
+        "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+        "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+        "run_id": "37193943951",
+        "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+        "workflow_sha": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+      },
+      "review_ids": [],
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a"
+    }
+  ],
+  "suite_release_status": "not_evaluated"
+}

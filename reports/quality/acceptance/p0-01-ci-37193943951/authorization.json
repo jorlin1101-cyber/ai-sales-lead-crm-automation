@@ -1,0 +1,31 @@
+{
+  "schema_version": "p0-01-baseline-authorization.v1",
+  "authorization_source": "project owner in current conversation",
+  "authorization_quote": "允许公开并完成后续接纳",
+  "business_case_confirmation_quote": "业务案例已确认",
+  "approval_scope": "accept exactly these two successful main CI reports as initial offline baselines, preserving all 11 registered failures; no product release authorization",
+  "review_model": "single_owner_authorized_agent_execution",
+  "independent_human_review": false,
+  "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101",
+  "run_id": 37193943951,
+  "approval_bindings": {
+    "p0-01-mocked_model-37193943951": {
+      "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+      "manifest_hash": "48173cd71fc8c499ffa86feb828ad433af4981b2e6975e74f9c21b58dbb7d036",
+      "previous_acceptance_id": null,
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a",
+      "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+    },
+    "p0-01-rule_only-37193943951": {
+      "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+      "manifest_hash": "835a9c229b1a5b683de8d20b43ee157c2507c85af374a40e87336f2e025526b4",
+      "previous_acceptance_id": null,
+      "review_set_hash": "fc47fa6fd885bf0dbde83831562699dec8632f572309ce93b7d7126d7bffe18a",
+      "tested_commit": "83921e3d346f61340f1a2b5f626b47b85bd1a101"
+    }
+  },
+  "known_issues_hash": "cfd52f4c379f97393c84447e07d2a4905e82f1659ee1bcf1e0ad24c6aad25f02",
+  "verification": "inspection.json and verified-provenance.json; GitHub API and full downloaded sealed bytes verified",
+  "live_status": "not_run",
+  "product_release_status": "not_evaluated"
+}
