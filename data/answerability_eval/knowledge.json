@@ -1,0 +1,491 @@
+{
+  "schema_version": "answerability-knowledge.v1",
+  "snapshots": {
+    "core": {
+      "snapshot_id": "core",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "transfer",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-transfer",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Airport Transfers",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "exclusions",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-exclusions",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Exclusions",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游不包含国际机票和个人旅行保险，旅客需自行安排。 International flights and personal travel insurance are not included in the Yunnan family tour. Travelers arrange these separately.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "5fef15865a301eb10c6b9772c4620ea03799c308c590a6b4628a867383c07e93",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "payment",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-payment",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Payment Conditions",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "书面行程和明细报价双方确认后，支付总价30%的定金；余款在抵达前14天支付。 A 30% deposit is due after both parties confirm the written itinerary and itemized quotation. The balance is due 14 days before arrival.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "e0071fc32db88aea79038eb7f5b8b375217b2a3777df1fd8f15237012565d1ab",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "itinerary",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-itinerary",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Itinerary",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游标准行程为7天6晚，路线是昆明—大理—丽江—香格里拉。 The standard Yunnan family itinerary lasts 7 days and 6 nights: Kunming, Dali, Lijiang and Shangri-La.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "0ed2b72ac861700399af25fe09aa41a79171b7d784898129ad01934b719fbf2a",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "quote",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-quote",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Pricing Variables",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "私人定制游价格取决于人数、旅行日期、酒店等级和车辆要求。此资料不提供具体金额，也不证明任何日期的余位。 Private tour pricing depends on group size, travel dates, hotel category and vehicle requirements. This guide provides no exact amount or date-specific availability.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "29fd4b721a2f441017cffee9f13559be525da8b384c2f414aef8b6cca234cc3d",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "guide_eligibility",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-guide_eligibility",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Guide Eligibility",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游的已确认亲子团队可以使用本产品的随团导游服务。下一节规定该服务的工作时段。 Confirmed family groups on the Yunnan family product may use its accompanying guide service. The service hours are specified separately.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "11ee7f94b7a6fb7d9c7ff2a7166423b6372eedcc658ab8951c468617bdc3e220",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "guide_hours",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-guide_hours",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Guide Service Hours",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "本产品随团导游的服务时间为每日09:00至17:00；此处不单独说明哪些客人适用。 This product offers accompanying guide service from 09:00 to 17:00 daily; eligibility is specified separately.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "75599287f2107a36b9dbe917f3daefbe059e48753463a6ee1cad2fe2d5bc49aa",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "hotel_intro",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-hotel_intro",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Hotel Introduction",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    },
+    "conditional": {
+      "snapshot_id": "conditional",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "transfer",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-transfer",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Airport Transfers",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "date_policy",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-date_policy",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "October Workshop",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+          "valid_from": "2026-10-01",
+          "valid_to": "2026-10-31",
+          "validity_basis": "business_date",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "hotel_intro",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-hotel_intro",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Hotel Introduction",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    },
+    "expired": {
+      "snapshot_id": "expired",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "transfer",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-transfer",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Airport Transfers",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "expired_price",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-expired_price",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Historical Promotion",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "2026年9月限时手工体验促销价为每人99元，仅适用于该月，现有文本不能代表后续报价。 The workshop promotion was CNY 99 per person in September 2026 only. This historical text is not a quotation for later dates.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "187be66c714cbb9672374a107189fb98a13f7f22ed090643adf5170576a867a9",
+          "valid_from": "2026-09-01",
+          "valid_to": "2026-09-30",
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    },
+    "conflict": {
+      "snapshot_id": "conflict",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "transfer",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-transfer",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Airport Transfers",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        },
+        {
+          "chunk": {
+            "chunk_id": "cancel_a",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-cancel_a",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Cancellation A",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游在出发前7天取消可全额退款；与另一份同范围有效政策尚未解决冲突。 Yunnan family trips cancelled 7 days before departure receive a full refund; an equally applicable conflicting policy remains unresolved.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "bcab72c8a814da7bd136cf625327a105241f18a803c686c83b6aa518ee9445ef",
+          "valid_from": "2026-10-01",
+          "valid_to": "2026-10-31",
+          "validity_basis": "evaluation_time",
+          "conflict_key": "yunnan_cancel_seven_days",
+          "conflict_value": "full_refund"
+        },
+        {
+          "chunk": {
+            "chunk_id": "cancel_b",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-cancel_b",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Cancellation B",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "云南亲子游在出发前7天取消定金不退；与另一份同范围有效政策尚未解决冲突。 Deposits for Yunnan family trips cancelled 7 days before departure are non-refundable; an equally applicable conflicting policy remains unresolved.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "dc472a3fbbb3676cfba58204e558429e086bd97be5294be8c752118a7002989b",
+          "valid_from": "2026-10-01",
+          "valid_to": "2026-10-31",
+          "validity_basis": "evaluation_time",
+          "conflict_key": "yunnan_cancel_seven_days",
+          "conflict_value": "deposit_nonrefundable"
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    },
+    "unverified": {
+      "snapshot_id": "unverified",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "unverified_price",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-unverified_price",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Undated Promotion",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "页面写有手工体验促销价每人88元，但没有生效日期、结束日期或仍在执行的证明。 The page lists a workshop promotion of CNY 88 per person, without effective dates or proof that the promotion is still valid.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "44be668323283336cfbd757fe543816571dcb1f2908716516856d4dfc79ad886",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    },
+    "unrelated": {
+      "snapshot_id": "unrelated",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "unrelated",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-unrelated",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Local Plants",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "这份资料介绍云南当地常见植物，列举茶树和杜鹃花。 This document describes plants commonly found in Yunnan, including tea plants and rhododendrons.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "b35fc950ddc63441db2652022b5e40c1fc3c14173da23bc3cacd905e77015c3f",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    },
+    "hotel": {
+      "snapshot_id": "hotel",
+      "synthetic": true,
+      "chunks": [
+        {
+          "chunk": {
+            "chunk_id": "hotel_intro",
+            "source_type": "notion_page",
+            "notion_page_id": "synthetic-p002-hotel_intro",
+            "source_title": "P0-02 Synthetic Yunnan Travel Guide",
+            "source_path": "Synthetic Evaluation / Yunnan",
+            "doc_type": "faq",
+            "region": "yunnan",
+            "product_name": "Synthetic Yunnan Family Tour",
+            "section": "Hotel Introduction",
+            "chunk_index": 0,
+            "chunk_strategy": "heading_section",
+            "text": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation.",
+            "last_edited_time": "2026-09-01T00:00:00Z"
+          },
+          "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+          "valid_from": null,
+          "valid_to": null,
+          "validity_basis": "evaluation_time",
+          "conflict_key": null,
+          "conflict_value": null
+        }
+      ],
+      "review_scope": "完整评测专用快照；仅用于合成回归验证，待业务逐条审核。 Complete synthetic snapshot; business review remains pending."
+    }
+  }
+}
