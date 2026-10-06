@@ -9,6 +9,7 @@ from typing import Any
 
 from lead_cleaner.answerability_evaluation.metrics import required_answerable, supported_facets
 from lead_cleaner.answerability_evaluation.reports import content_hash
+from lead_cleaner.answerability_evaluation.registry import protocol_spec
 
 ASSERTION_IDS = ("execution", "facts_state", "answer_content", "grounding", "clarification")
 RUBRIC = "answerability-rubric.v1"
@@ -16,7 +17,15 @@ RUBRIC = "answerability-rubric.v1"
 
 def expected_keys(dataset: dict[str, Any], mode: str) -> list[list[str]]:
     return [
-        ["p0-02.v1", mode, case["case_id"], "conversation", turn["turn_id"], name, "1"]
+        [
+            dataset.get("protocol_id", "p0-02.v1"),
+            mode,
+            case["case_id"],
+            "conversation",
+            turn["turn_id"],
+            name,
+            "1",
+        ]
         for case in dataset["cases"]
         for turn in case["turns"]
         for name in ASSERTION_IDS
@@ -94,9 +103,20 @@ def _within_period(entry: dict[str, Any], point: date) -> bool:
 
 
 def _validate_applicability(
-    claim: dict[str, Any], turn: dict[str, Any], chunks: dict[str, Any]
+    claim: dict[str, Any],
+    turn: dict[str, Any],
+    chunks: dict[str, Any],
+    policy_conflicts: list[dict[str, Any]] | None = None,
 ) -> None:
     for ref in claim["evidence_refs"]:
+        for conflict in policy_conflicts or []:
+            if conflict["status"] == "unresolved" and any(
+                evidence["chunk_id"] == ref["chunk_id"]
+                and ref["start"] < evidence["end"]
+                and evidence["start"] < ref["end"]
+                for evidence in conflict["evidence"]
+            ):
+                raise ValueError("Claim uses an unresolved conflicting policy interval")
         entry = chunks[ref["chunk_id"]]
         point = _claim_point(claim, turn, entry)
         if not _within_period(entry, point):
@@ -128,7 +148,8 @@ def adjudicate_claims(
     """Validate observation-bound semantic judgments; gates verify the reviewer authority."""
     if (
         review.get("observation_hash") != content_hash(observation)
-        or review.get("rubric_version") != RUBRIC
+        or review.get("rubric_version")
+        != protocol_spec(observation["protocol_id"])["rubric_version"]
     ):
         raise ValueError("Review does not bind the original observation and rubric")
     if review.get("claims_complete") is not True or not review.get("completeness_rationale"):
@@ -196,7 +217,7 @@ def adjudicate_claims(
         if claim["verdict"] == "supported":
             if not refs:
                 raise ValueError("Supported business claim needs actual evidence")
-            _validate_applicability(claim, turn, chunks)
+            _validate_applicability(claim, turn, chunks, snapshot.get("policy_conflicts"))
             if facet_id is not None:
                 facet = facets[facet_id]
                 if not facet["answerable"] or not any(
@@ -403,6 +424,8 @@ def evaluate_assertions(
     }
     rows = []
     for obs in observations:
+        if obs["protocol_id"] != dataset.get("protocol_id", "p0-02.v1"):
+            raise ValueError("Observation protocol differs from the scoring dataset")
         turn, snapshot = lookup[(obs["case_id"], obs["turn_id"])]
         rows.extend(score_observation(turn, snapshot, obs))
     return rows

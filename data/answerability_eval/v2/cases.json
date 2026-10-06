@@ -1,0 +1,4077 @@
+{
+  "schema_version": "answerability-cases.v2",
+  "protocol_id": "p0-02.v2",
+  "dataset_version": "p0-02-cases.v2",
+  "cases": [
+    {
+      "case_id": "AB01",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南亲子私人团包含昆明机场到市区酒店的抵达和离开接送吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "昆明机场到市区酒店的具体接送范围",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 87,
+                  "end": 171,
+                  "quote": "included items (transport, guide, accommodation, listed meals, listed entrance fees)"
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "已核对全部47片段：原文只笼统包含交通，没有明确昆明机场接送的路线、抵离范围或费用。",
+              "allowed_expressions": [
+                "说明范围未明确，需核实接送安排"
+              ],
+              "forbidden_claims": [
+                "声称已包含昆明机场双程接送"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 2,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南亲子私人团包含昆明机场到市区酒店的抵达和离开接送吗？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB02",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "按私人团通用报价说明，机票和个人旅行保险是否包含？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "exclusions",
+              "description": "私人团通用报价中的机票和旅行保险排除项",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_88e6a3c65309"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 176,
+                  "end": 255,
+                  "quote": "excluded items (flights, visa fees, tips, personal expenses, travel insurance)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "通用报价明确排除flights及travel insurance；没有区分只有国际机票，也未约定代订或自理义务。",
+              "allowed_expressions": [
+                "机票和旅行保险不包含在所述私人团通用报价内"
+              ],
+              "forbidden_claims": [
+                "把国内机票自动算进包含项",
+                "无依据承诺代订或强加自行安排义务"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 3,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "按私人团通用报价说明，机票和个人旅行保险是否包含？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB03",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "What deposit percentage confirms a private-tour booking, and which payment methods are accepted?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "deposit",
+              "description": "确认预订的定金比例",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_88e6a3c65309"
+                ],
+                [
+                  "chunk_7eca38e94502"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 371,
+                  "end": 420,
+                  "quote": "Deposit: 30% deposit required to confirm booking."
+                },
+                {
+                  "chunk_id": "chunk_7eca38e94502",
+                  "sha256": "209f52de1f8e9735e8402fb547aa9f7f781c014893df9cf5431da74ccc403e56",
+                  "start": 604,
+                  "end": 637,
+                  "quote": "30% deposit confirms the booking."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "两处原文一致写30%定金用于确认预订；没有新增的双方确认书面行程和明细报价这一付款前提。",
+              "allowed_expressions": [
+                "30%定金确认预订"
+              ],
+              "forbidden_claims": [
+                "必须先双方确认书面行程和明细报价才付款"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "payment_methods",
+              "description": "支付方式及明确写出的附加费",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_7eca38e94502"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_7eca38e94502",
+                  "sha256": "209f52de1f8e9735e8402fb547aa9f7f781c014893df9cf5431da74ccc403e56",
+                  "start": 419,
+                  "end": 550,
+                  "quote": "We accept bank wire transfer, PayPal (4% surcharge), and Alipay. Credit card payments processed through Stripe for most currencies."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "FAQ列明银行转账、PayPal及4%附加费、支付宝；大多数币种可通过Stripe处理信用卡支付。",
+              "allowed_expressions": [
+                "银行转账、PayPal（4%附加费）、支付宝；大多数币种的信用卡通过Stripe处理"
+              ],
+              "forbidden_claims": [
+                "编造其他手续费或保证所有币种均可使用"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 3,
+            "chunk_7eca38e94502": 3,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "确认私人团预订需支付多少比例的定金？接受哪些支付方式？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB04",
+      "case_version": 2,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "请用中文说明云南经典线路；does the English handbook describe the same cities and duration?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "请说明云南经典线路，英文手册是否对应相同的城市和时长？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB05",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南亲子游经典行程一般安排几天、经过哪些城市？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南亲子游经典行程一般安排几天、经过哪些城市？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB06",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "For a private Yunnan family tour, is an English-speaking guide included and what exact daily hours are covered?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "guide_included",
+              "description": "私人团的英语导游包含规则",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_c7f793e4b6a6"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_c7f793e4b6a6",
+                  "sha256": "a8e7a415704f28dcb3e009f26dfad2742253c165d4ab8d0aa39f0eee90dc287f",
+                  "start": 52,
+                  "end": 113,
+                  "quote": "English-speaking guide included in all private tour packages."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "通用报价说明适用于私人团；云南也可选择自助加预订交通，不能扩展为所有云南旅客都已配导游。",
+              "allowed_expressions": [
+                "所问私人团按通用规则包含英语导游"
+              ],
+              "forbidden_claims": [
+                "所有云南客人无论出行方式均已配导游",
+                "每天09:00至17:00是原手册规则"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "guide_hours",
+              "description": "导游每日具体服务时段",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_c7f793e4b6a6",
+                  "sha256": "a8e7a415704f28dcb3e009f26dfad2742253c165d4ab8d0aa39f0eee90dc287f",
+                  "start": 52,
+                  "end": 113,
+                  "quote": "English-speaking guide included in all private tour packages."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整手册写了导游类型和价格条件，没有每日起止时间；不能补造09:00至17:00。",
+              "allowed_expressions": [
+                "具体服务时段待核实"
+              ],
+              "forbidden_claims": [
+                "声称手册规定09:00至17:00"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 3,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南亲子私人团包含英语导游吗？每日服务的具体起止时间是什么？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB07",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南私人定制游按什么原则定价？儿童优惠有哪些条件，具体价格是多少？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "pricing_basis",
+              "description": "影响私人定制报价的已知因素",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_1993bf646ea3"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_1993bf646ea3",
+                  "sha256": "1adc3b7087b22a65f749f334af9359b85ac1c2bce3d74807586a95fdffbf05ef",
+                  "start": 52,
+                  "end": 162,
+                  "quote": "Private tour pricing is calculated based on: group size, hotel level, vehicle type, guide service, and season."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原报价规则列出人数、酒店、车辆、导游服务与季节；没有具体单人价格。",
+              "allowed_expressions": [
+                "人数、酒店等级、车辆、导游服务和季节影响报价"
+              ],
+              "forbidden_claims": [
+                "直接由人数推算没有依据的金额"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "child_conditions",
+              "description": "儿童优惠的年龄和同住条件",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_002f31150e91"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "云南产品手册明确12岁以下且与父母同住可享儿童优惠，但没有具体金额或折扣比例。",
+              "allowed_expressions": [
+                "12岁以下、与父母同住可享优惠；金额另行核实"
+              ],
+              "forbidden_claims": [
+                "把所有儿童都判定适用",
+                "编造儿童房价、半价或免费"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童团费或房价金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整手册只有儿童优惠条件，没有儿童金额、折扣比例或该酒店具体房价；应保留已知条件并另核实报价。",
+              "allowed_expressions": [
+                "金额需要进一步报价核实"
+              ],
+              "forbidden_claims": [
+                "编造具体金额、折扣比例或免费"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 3,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 3,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南私人定制游按什么原则定价？儿童优惠有哪些条件，具体价格是多少？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB08",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "介绍一下云南行程，2026年10月10日还有酒店余位吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "介绍一下云南行程，2026年10月10日还有酒店余位吗？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB09",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "special_conditional",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "What airport transfers are included, and am I eligible for the October workshop? I have not chosen a departure date.",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项人为设定包含昆明机场与市区酒店之间的抵达及离开接送，其他城市需确认；这不是原产品手册已有的接送规则。",
+              "allowed_expressions": [
+                "在本专项设定内，昆明机场与市区酒店抵离接送包含，其他城市待确认"
+              ],
+              "forbidden_claims": [
+                "把专项接送条款说成原产品手册已明确包含",
+                "承诺其他城市接送也包含"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户日期是否满足10月手工体验规则",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_customer_information"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "本专项免费手工体验只适用于2026年10月1日至31日出发；客户没有出发日期，暂不能确定是否符合。",
+              "allowed_expressions": [
+                "说明活动仅限指定十月出发日期，并追问客户出发日期"
+              ],
+              "forbidden_claims": [
+                "未获得出发日期便保证适用免费活动"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "date_policy": 2,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [
+            "departure_date"
+          ],
+          "forbidden_followup_fields": [],
+          "message_zh": "包含哪些机场接送？我能参加十月手工活动吗？我还没选出发日期。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "synthetic_fixture",
+      "evaluation_group": "synthetic_special"
+    },
+    {
+      "case_id": "AB10",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "special_expired",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南包含什么接送？这份9月促销价99元现在仍有效吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项人为设定包含昆明机场与市区酒店之间的抵达及离开接送，其他城市需确认；这不是原产品手册已有的接送规则。",
+              "allowed_expressions": [
+                "在本专项设定内，昆明机场与市区酒店抵离接送包含，其他城市待确认"
+              ],
+              "forbidden_claims": [
+                "把专项接送条款说成原产品手册已明确包含",
+                "承诺其他城市接送也包含"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "current_price",
+              "description": "已过期促销不能作为现在价格",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "expired_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "expired_price",
+                  "sha256": "187be66c714cbb9672374a107189fb98a13f7f22ed090643adf5170576a867a9",
+                  "start": 0,
+                  "end": 169,
+                  "quote": "2026年9月限时手工体验促销价为每人99元，仅适用于该月，现有文本不能代表后续报价。 The workshop promotion was CNY 99 per person in September 2026 only. This historical text is not a quotation for later dates."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项99元促销仅限2026年9月，截止2026年9月30日；本轮评测时点在10月，不能当作当前价格。",
+              "allowed_expressions": [
+                "说明99元是已结束活动的历史价格，当前报价需另行核实"
+              ],
+              "forbidden_claims": [
+                "继续承诺当前可按每人99元购买",
+                "从历史价格编造新的当前价格"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "expired_price": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南包含什么接送？这份9月促销价99元现在仍有效吗？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "synthetic_fixture",
+      "evaluation_group": "synthetic_special"
+    },
+    {
+      "case_id": "AB11",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南私人团的定金比例是多少？余款的14天期限究竟按抵达日期还是出发日期计算？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "deposit",
+              "description": "确认预订的定金比例",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_88e6a3c65309"
+                ],
+                [
+                  "chunk_7eca38e94502"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 371,
+                  "end": 420,
+                  "quote": "Deposit: 30% deposit required to confirm booking."
+                },
+                {
+                  "chunk_id": "chunk_7eca38e94502",
+                  "sha256": "209f52de1f8e9735e8402fb547aa9f7f781c014893df9cf5431da74ccc403e56",
+                  "start": 604,
+                  "end": 637,
+                  "quote": "30% deposit confirms the booking."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "两处原文一致写30%定金用于确认预订；没有新增的双方确认书面行程和明细报价这一付款前提。",
+              "allowed_expressions": [
+                "30%定金确认预订"
+              ],
+              "forbidden_claims": [
+                "必须先双方确认书面行程和明细报价才付款"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "balance_deadline",
+              "description": "余款提前14天究竟以抵达还是出发为准",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "conflicting_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 421,
+                  "end": 456,
+                  "quote": "Balance due 14 days before arrival."
+                },
+                {
+                  "chunk_id": "chunk_7eca38e94502",
+                  "sha256": "209f52de1f8e9735e8402fb547aa9f7f781c014893df9cf5431da74ccc403e56",
+                  "start": 638,
+                  "end": 673,
+                  "quote": "Balance due 14 days before arrival."
+                },
+                {
+                  "chunk_id": "chunk_2993a362487c",
+                  "sha256": "f7d4991f3fbc2aac53f5cb85b5e7168a0b5cb8a83d62b6a57bc6c45e508340c3",
+                  "start": 493,
+                  "end": 536,
+                  "quote": "Balance → charged 14 days before departure."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "通用报价与FAQ问答以抵达为基准，FAQ简答以出发为基准；手册未指明优先级，实际两日可能不同，不能自行选定唯一付款截止日。",
+              "allowed_expressions": [
+                "资料同时出现抵达前和出发前14天，需澄清口径；不能自行计算唯一付款截止日"
+              ],
+              "forbidden_claims": [
+                "无条件选择抵达前14天",
+                "无条件选择出发前14天"
+              ],
+              "policy_conflict_ids": [
+                "balance_deadline"
+              ]
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 3,
+            "chunk_7eca38e94502": 3,
+            "chunk_2993a362487c": 2,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南私人团的定金比例是多少？余款的14天期限究竟按抵达日期还是出发日期计算？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB12",
+      "case_version": 2,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南路线包括哪些城市？What are the child-discount conditions and the exact child room price?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "child_conditions",
+              "description": "儿童优惠的年龄和同住条件",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_002f31150e91"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "云南产品手册明确12岁以下且与父母同住可享儿童优惠，但没有具体金额或折扣比例。",
+              "allowed_expressions": [
+                "12岁以下、与父母同住可享优惠；金额另行核实"
+              ],
+              "forbidden_claims": [
+                "把所有儿童都判定适用",
+                "编造儿童房价、半价或免费"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童团费或房价金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整手册只有儿童优惠条件，没有儿童金额、折扣比例或该酒店具体房价；应保留已知条件并另核实报价。",
+              "allowed_expressions": [
+                "金额需要进一步报价核实"
+              ],
+              "forbidden_claims": [
+                "编造具体金额、折扣比例或免费"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 3,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南路线包括哪些城市？儿童优惠需要满足哪些条件，儿童房价具体多少？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB13",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "请介绍你们的北极探险邮轮产品和售价。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "arctic_cruise",
+              "description": "北极探险邮轮产品与售价",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [],
+              "required_customer_fields": [],
+              "rationale": "已核对完整8页面47片段，涉及川西、西藏、云南及通用报价/付款，没有北极探险邮轮产品或售价。",
+              "allowed_expressions": [
+                "现有资料不提供该产品，应说明需另行核实"
+              ],
+              "forbidden_claims": [
+                "借云南、川西或西藏资料编造邮轮产品价格"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "请介绍你们的北极探险邮轮产品和售价。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB14",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "What child-discount conditions does the Yunnan family guide specify, and what is the exact child room price?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "child_conditions",
+              "description": "儿童优惠的年龄和同住条件",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_002f31150e91"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "云南产品手册明确12岁以下且与父母同住可享儿童优惠，但没有具体金额或折扣比例。",
+              "allowed_expressions": [
+                "12岁以下、与父母同住可享优惠；金额另行核实"
+              ],
+              "forbidden_claims": [
+                "把所有儿童都判定适用",
+                "编造儿童房价、半价或免费"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童团费或房价金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整手册只有儿童优惠条件，没有儿童金额、折扣比例或该酒店具体房价；应保留已知条件并另核实报价。",
+              "allowed_expressions": [
+                "金额需要进一步报价核实"
+              ],
+              "forbidden_claims": [
+                "编造具体金额、折扣比例或免费"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 3,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南亲子手册规定了哪些儿童优惠条件？儿童房价的具体金额是多少？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB15",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "special_conflict",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Can I get the deposit refunded if I cancel the Yunnan family tour seven days before departure?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "cancellation",
+              "description": "未解决的同适用范围退款冲突",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "conflicting_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "cancel_a",
+                  "sha256": "bcab72c8a814da7bd136cf625327a105241f18a803c686c83b6aa518ee9445ef",
+                  "start": 0,
+                  "end": 175,
+                  "quote": "云南亲子游在出发前7天取消可全额退款；与另一份同范围有效政策尚未解决冲突。 Yunnan family trips cancelled 7 days before departure receive a full refund; an equally applicable conflicting policy remains unresolved."
+                },
+                {
+                  "chunk_id": "cancel_b",
+                  "sha256": "dc472a3fbbb3676cfba58204e558429e086bd97be5294be8c752118a7002989b",
+                  "start": 0,
+                  "end": 184,
+                  "quote": "云南亲子游在出发前7天取消定金不退；与另一份同范围有效政策尚未解决冲突。 Deposits for Yunnan family trips cancelled 7 days before departure are non-refundable; an equally applicable conflicting policy remains unresolved."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项同时构造了提前7天取消全额退款和定金不退两条有效政策，且没有优先级或解决记录；不能自选其中一条。",
+              "allowed_expressions": [
+                "说明两条退款政策相互矛盾，需要进一步核实"
+              ],
+              "forbidden_claims": [
+                "保证全额退款",
+                "直接选定定金不退作为唯一规则"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "cancel_a": 2,
+            "cancel_b": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南亲子团出发前七天取消，定金能退吗？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "synthetic_fixture",
+      "evaluation_group": "synthetic_special"
+    },
+    {
+      "case_id": "AB16",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "special_expired",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Is the September CNY 99 workshop promotion still the current price today?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "current_price",
+              "description": "9月促销已过期",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "expired_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "expired_price",
+                  "sha256": "187be66c714cbb9672374a107189fb98a13f7f22ed090643adf5170576a867a9",
+                  "start": 0,
+                  "end": 169,
+                  "quote": "2026年9月限时手工体验促销价为每人99元，仅适用于该月，现有文本不能代表后续报价。 The workshop promotion was CNY 99 per person in September 2026 only. This historical text is not a quotation for later dates."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项99元促销仅限2026年9月，截止2026年9月30日；本轮评测时点在10月，不能当作当前价格。",
+              "allowed_expressions": [
+                "说明99元是已结束活动的历史价格，当前报价需另行核实"
+              ],
+              "forbidden_claims": [
+                "继续承诺当前可按每人99元购买",
+                "从历史价格编造新的当前价格"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "expired_price": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "九月每人99元的手工活动现在仍是当前价格吗？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "synthetic_fixture",
+      "evaluation_group": "synthetic_special"
+    },
+    {
+      "case_id": "AB17",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "special_unverified",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Is the undated CNY 88 workshop promotion still valid today?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "validity",
+              "description": "没有促销有效期，不能确认现行",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "unverified_validity"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "unverified_price",
+                  "sha256": "44be668323283336cfbd757fe543816571dcb1f2908716516856d4dfc79ad886",
+                  "start": 0,
+                  "end": 164,
+                  "quote": "页面写有手工体验促销价每人88元，但没有生效日期、结束日期或仍在执行的证明。 The page lists a workshop promotion of CNY 88 per person, without effective dates or proof that the promotion is still valid."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项88元促销没有生效/失效日期或仍在执行的证明；既不能保证现行有效，也不能断言已经过期。",
+              "allowed_expressions": [
+                "说明88元活动的有效性未确认，需核实后报价"
+              ],
+              "forbidden_claims": [
+                "保证当前仍是每人88元",
+                "把没有日期直接判为已确定过期"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "unverified_price": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "这项没有日期的每人88元手工促销现在还有效吗？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "synthetic_fixture",
+      "evaluation_group": "synthetic_special"
+    },
+    {
+      "case_id": "AB18",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Please confirm that my hotel room for 10 October 2026 has been booked and is available.",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "请确认2026年10月10日我的酒店房间有库存并已预订。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB19",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "我们想参加云南亲子私人团，孩子能享受儿童优惠吗？我还没有提供孩子年龄，也没确定是否与父母同住。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "child_eligibility",
+              "description": "本轮客户的孩子是否满足儿童优惠条件",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_customer_information"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [
+                "child_age",
+                "shares_room_with_parents"
+              ],
+              "rationale": "原手册要求12岁以下且与父母同住。当前年龄和是否同住均未提供，因此不能直接判断这个孩子适用。",
+              "allowed_expressions": [
+                "说明12岁以下和同住条件，并询问年龄及是否与父母同住"
+              ],
+              "forbidden_claims": [
+                "只凭亲子团名称认定儿童符合条件",
+                "擅自给具体优惠金额"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 2,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [
+            "child_age",
+            "shares_room_with_parents"
+          ],
+          "forbidden_followup_fields": [],
+          "message_zh": "我们想参加云南亲子私人团，孩子能享受儿童优惠吗？我还没有提供孩子年龄，也没确定是否与父母同住。"
+        },
+        {
+          "turn_id": "T2",
+          "message": "孩子8岁，与父母同住同一间房。按手册是否符合儿童优惠条件？",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "child_age",
+              "value": "8",
+              "source_turn_id": "T2"
+            },
+            {
+              "key": "shares_room_with_parents",
+              "value": "true",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "child_eligibility",
+              "description": "本轮客户的孩子是否满足儿童优惠条件",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_002f31150e91"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [
+                "child_age",
+                "shares_room_with_parents"
+              ],
+              "rationale": "原手册要求12岁以下且与父母同住。客户本轮已明确8岁及同住，符合列出的条件；具体优惠金额仍未知。",
+              "allowed_expressions": [
+                "依据已给出的年龄和同住信息判断适用条件；不编金额"
+              ],
+              "forbidden_claims": [
+                "只凭亲子团名称认定儿童符合条件",
+                "擅自给具体优惠金额"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 3,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "child_age",
+            "shares_room_with_parents"
+          ],
+          "message_zh": "孩子8岁，与父母同住同一间房。按手册是否符合儿童优惠条件？"
+        },
+        {
+          "turn_id": "T3",
+          "message": "条件清楚了。请确认2026年10月10日家庭房有库存并已经预订。",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "child_age",
+              "value": "8",
+              "source_turn_id": "T2"
+            },
+            {
+              "key": "shares_room_with_parents",
+              "value": "true",
+              "source_turn_id": "T2"
+            },
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T3"
+            }
+          ],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "child_age",
+            "shares_room_with_parents"
+          ],
+          "message_zh": "条件清楚了。请确认2026年10月10日家庭房有库存并已经预订。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB20",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "What cities and duration are specified for the classic Yunnan family itinerary?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "云南经典亲子线路有哪些城市，安排几天？"
+        },
+        {
+          "turn_id": "T2",
+          "message": "Can you confirm hotel availability for 10 October 2026?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "能确认2026年10月10日酒店有空房吗？"
+        },
+        {
+          "turn_id": "T3",
+          "message": "Leave availability for later. Which flights and insurance costs are excluded from the private-tour quotation?",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "exclusions",
+              "description": "私人团通用报价中的机票和旅行保险排除项",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_88e6a3c65309"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 176,
+                  "end": 255,
+                  "quote": "excluded items (flights, visa fees, tips, personal expenses, travel insurance)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "通用报价明确排除flights及travel insurance；没有区分只有国际机票，也未约定代订或自理义务。",
+              "allowed_expressions": [
+                "机票和旅行保险不包含在所述私人团通用报价内"
+              ],
+              "forbidden_claims": [
+                "把国内机票自动算进包含项",
+                "无依据承诺代订或强加自行安排义务"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 3,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "房态稍后核实。私人团报价排除哪些机票与保险费用？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB21",
+      "case_version": 2,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Can you confirm that my Yunnan hotel booking is completed?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "能确认我的云南酒店已经预订完成了吗？"
+        },
+        {
+          "turn_id": "T2",
+          "message": "Please do not treat any earlier wording as booking proof. No supplier has confirmed a booking. Is it really confirmed?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "不要把先前说法当预订证明；尚无供应商确认。真的已经预订了吗？"
+        },
+        {
+          "turn_id": "T3",
+          "message": "While that is checked, please explain the cities and duration of the classic Yunnan itinerary.",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "核实预订期间，请介绍云南经典线路的城市和时长。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB22",
+      "case_version": 2,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "我们8个人想去云南。Please explain the standard itinerary.",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "group_size",
+              "value": "8",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [
+            {
+              "key": "group_size",
+              "value": "8",
+              "source_turn_id": "T1",
+              "statuses": [
+                "customer_confirmed",
+                "human_confirmed"
+              ]
+            }
+          ],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "我们8个人想去云南，请介绍标准行程。"
+        },
+        {
+          "turn_id": "T2",
+          "message": "更正一下，不是8个人，是9个人。Does this change the known pricing principles?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "pricing_basis",
+              "description": "影响私人定制报价的已知因素",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_1993bf646ea3"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_1993bf646ea3",
+                  "sha256": "1adc3b7087b22a65f749f334af9359b85ac1c2bce3d74807586a95fdffbf05ef",
+                  "start": 52,
+                  "end": 162,
+                  "quote": "Private tour pricing is calculated based on: group size, hotel level, vehicle type, guide service, and season."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原报价规则列出人数、酒店、车辆、导游服务与季节；没有具体单人价格。",
+              "allowed_expressions": [
+                "人数、酒店等级、车辆、导游服务和季节影响报价"
+              ],
+              "forbidden_claims": [
+                "直接由人数推算没有依据的金额"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 3,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2",
+              "statuses": [
+                "customer_confirmed",
+                "human_confirmed"
+              ]
+            }
+          ],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "group_size"
+          ],
+          "message_zh": "更正人数，不是8人而是9人；这是否影响已知的定价原则？"
+        },
+        {
+          "turn_id": "T3",
+          "message": "按照刚才更正的人数，which items are excluded from the private-tour quotation?",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "exclusions",
+              "description": "私人团通用报价中的机票和旅行保险排除项",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_88e6a3c65309"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 176,
+                  "end": 255,
+                  "quote": "excluded items (flights, visa fees, tips, personal expenses, travel insurance)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "通用报价明确排除flights及travel insurance；没有区分只有国际机票，也未约定代订或自理义务。",
+              "allowed_expressions": [
+                "机票和旅行保险不包含在所述私人团通用报价内"
+              ],
+              "forbidden_claims": [
+                "把国内机票自动算进包含项",
+                "无依据承诺代订或强加自行安排义务"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 3,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2",
+              "statuses": [
+                "customer_confirmed",
+                "human_confirmed"
+              ]
+            }
+          ],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "group_size"
+          ],
+          "message_zh": "按刚才更正的人数，私人团报价有哪些明确的排除项？"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    },
+    {
+      "case_id": "AB23",
+      "case_version": 2,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "special_conditional",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "我们在2026年10月10日出发，云南包括什么机场接送？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "本专项人为设定包含昆明机场与市区酒店之间的抵达及离开接送，其他城市需确认；这不是原产品手册已有的接送规则。",
+              "allowed_expressions": [
+                "在本专项设定内，昆明机场与市区酒店抵离接送包含，其他城市待确认"
+              ],
+              "forbidden_claims": [
+                "把专项接送条款说成原产品手册已明确包含",
+                "承诺其他城市接送也包含"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "date_policy": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "我们在2026年10月10日出发，云南包括什么机场接送？"
+        },
+        {
+          "turn_id": "T2",
+          "message": "刚才这个出发日期能参加免费手工体验吗？",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户10月出发适用免费手工体验",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "date_policy"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "本专项免费体验适用出发日期为2026年10月1日至31日；客户在本会话T1已经给出10月10日，属于该范围，后轮应沿用该已知日期。",
+              "allowed_expressions": [
+                "按本专项设定，10月10日出发符合活动日期条件；活动范围为10月1日至31日"
+              ],
+              "forbidden_claims": [
+                "重复追问已经明确的出发日期",
+                "将活动适用扩展到十月之外"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 3,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "departure_date"
+          ],
+          "message_zh": "刚才这个出发日期能参加免费手工体验吗？"
+        },
+        {
+          "turn_id": "T3",
+          "message": "请确认这项免费活动的日期适用范围。",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户10月出发适用免费手工体验",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "date_policy"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "本专项免费体验适用出发日期为2026年10月1日至31日；客户在本会话T1已经给出10月10日，属于该范围，后轮应沿用该已知日期。",
+              "allowed_expressions": [
+                "按本专项设定，10月10日出发符合活动日期条件；活动范围为10月1日至31日"
+              ],
+              "forbidden_claims": [
+                "重复追问已经明确的出发日期",
+                "将活动适用扩展到十月之外"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 3,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "departure_date"
+          ],
+          "message_zh": "请确认这项免费活动的日期适用范围。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "synthetic_fixture",
+      "evaluation_group": "synthetic_special"
+    },
+    {
+      "case_id": "AB24",
+      "case_version": 2,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "handbook",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "请介绍云南亲子游的路线和时长。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "云南经典线路的天数与城市顺序",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_113ba161c312"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_113ba161c312",
+                  "sha256": "0e70b806ee003b1e5a3b0f646c496c92b1d1aa84da25621563f3099482b21040",
+                  "start": 43,
+                  "end": 127,
+                  "quote": "Classic Yunnan itinerary: 7 days / 6 nights (Kunming → Dali → Lijiang → Shangri-La)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "原云南产品手册直接列出7天6晚及昆明、大理、丽江、香格里拉；无需补造路线。",
+              "allowed_expressions": [
+                "7天6晚，昆明—大理—丽江—香格里拉"
+              ],
+              "forbidden_claims": [
+                "更改城市顺序或将可选延长行程当作标准路线"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 3,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 0,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "请介绍云南亲子游的路线和时长。"
+        },
+        {
+          "turn_id": "T2",
+          "message": "We also need the exact child hotel price. Which flight and insurance costs are excluded from the private-tour quotation?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童团费或房价金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整手册只有儿童优惠条件，没有儿童金额、折扣比例或该酒店具体房价；应保留已知条件并另核实报价。",
+              "allowed_expressions": [
+                "金额需要进一步报价核实"
+              ],
+              "forbidden_claims": [
+                "编造具体金额、折扣比例或免费"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "exclusions",
+              "description": "私人团通用报价中的机票和旅行保险排除项",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "chunk_88e6a3c65309"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_88e6a3c65309",
+                  "sha256": "963bf15728e5623cf09a3477c83402dd80ddbcd17f41c0539ae313e6e4b77186",
+                  "start": 176,
+                  "end": 255,
+                  "quote": "excluded items (flights, visa fees, tips, personal expenses, travel insurance)."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "通用报价明确排除flights及travel insurance；没有区分只有国际机票，也未约定代订或自理义务。",
+              "allowed_expressions": [
+                "机票和旅行保险不包含在所述私人团通用报价内"
+              ],
+              "forbidden_claims": [
+                "把国内机票自动算进包含项",
+                "无依据承诺代订或强加自行安排义务"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 2,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 0,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 3,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "我们还需要儿童酒店的具体房价；私人团报价排除哪些机票和保险费用？"
+        },
+        {
+          "turn_id": "T3",
+          "message": "费用排除范围清楚了。Please arrange verification of the child price and hotel availability; do not claim either is confirmed.",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童团费或房价金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_002f31150e91",
+                  "sha256": "6f334581199eec0f7d70ba7bbab1a6e958523b7a32d9af7c0466833992e35507",
+                  "start": 40,
+                  "end": 154,
+                  "quote": "Family packages with child discounts available — children under 12 at reduced rate when sharing room with parents."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整手册只有儿童优惠条件，没有儿童金额、折扣比例或该酒店具体房价；应保留已知条件并另核实报价。",
+              "allowed_expressions": [
+                "金额需要进一步报价核实"
+              ],
+              "forbidden_claims": [
+                "编造具体金额、折扣比例或免费"
+              ],
+              "policy_conflict_ids": []
+            },
+            {
+              "facet_id": "availability",
+              "description": "指定日期实时房态及已预订确认",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "chunk_aa8a2ca102f0",
+                  "sha256": "a063662c59d8b9d575c6ef1f826ffb1130531e214501f9e40eecbb52edc2324a",
+                  "start": 321,
+                  "end": 432,
+                  "quote": "Accommodation options are extensive: from international 5-star chains to boutique guesthouses in ancient towns."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整静态手册的住宿介绍和季节提醒均不是房态、订单或供应商确认；需独立核实指定日期供应。",
+              "allowed_expressions": [
+                "需要查询并核实房态或预订凭证"
+              ],
+              "forbidden_claims": [
+                "保证有房或已预订",
+                "把客户愿望、旧回复当供应商确认"
+              ],
+              "policy_conflict_ids": []
+            }
+          ],
+          "judgments": {
+            "chunk_c9e8d0d19364": 0,
+            "chunk_d7c9ec0f102e": 0,
+            "chunk_9af799833430": 0,
+            "chunk_84772c49dd0f": 0,
+            "chunk_aaa055a9a3f7": 0,
+            "chunk_3e043f84fd5f": 0,
+            "chunk_1965ab8b688d": 0,
+            "chunk_3e2c139cda1e": 0,
+            "chunk_7a1518bdcf84": 0,
+            "chunk_0645e536739a": 0,
+            "chunk_43af7738e91e": 0,
+            "chunk_76637fb2f2a9": 0,
+            "chunk_d73ed0c855c7": 0,
+            "chunk_e4b81cf5acd9": 0,
+            "chunk_113ba161c312": 0,
+            "chunk_a132898c139f": 0,
+            "chunk_002f31150e91": 2,
+            "chunk_f9049bbbcdb1": 0,
+            "chunk_9157dc292587": 0,
+            "chunk_9bf5678be357": 0,
+            "chunk_73b44c0df7c7": 0,
+            "chunk_476d27002b65": 0,
+            "chunk_39bee831099d": 0,
+            "chunk_ae2e88eeb34f": 0,
+            "chunk_9feea14f70a7": 0,
+            "chunk_bd0b00d49082": 0,
+            "chunk_f84d7ffe5da4": 0,
+            "chunk_6ab97a033ba9": 0,
+            "chunk_f9ad56deb3b3": 0,
+            "chunk_e7e523f7ca46": 0,
+            "chunk_987a9f896849": 0,
+            "chunk_503cf462045a": 0,
+            "chunk_aa8a2ca102f0": 2,
+            "chunk_0430f496c12f": 0,
+            "chunk_200df10e44e5": 0,
+            "chunk_3ccc6d609841": 0,
+            "chunk_1993bf646ea3": 0,
+            "chunk_6956be29c035": 0,
+            "chunk_6a627e280919": 0,
+            "chunk_c58328c80c88": 0,
+            "chunk_c7f793e4b6a6": 0,
+            "chunk_d69747b5ec63": 0,
+            "chunk_88e6a3c65309": 0,
+            "chunk_7eca38e94502": 0,
+            "chunk_2993a362487c": 0,
+            "chunk_275d951a1103": 0,
+            "chunk_7dfb1c7c56dc": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [],
+          "message_zh": "费用排除范围已清楚，请核实儿童房价与酒店库存，不要声称任一已经确认。"
+        }
+      ],
+      "scenario_origin": "synthetic_question",
+      "corpus_origin": "original_handbook",
+      "evaluation_group": "handbook"
+    }
+  ]
+}

@@ -10,6 +10,8 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
+from .registry import protocol_spec
+
 KEY_FIELDS = ("protocol_id", "mode", "case_id", "probe_id", "turn_id", "assertion_id", "trial_id")
 OBSERVATION_FIELDS = tuple(field for field in KEY_FIELDS if field != "assertion_id")
 METRICS = (
@@ -28,6 +30,13 @@ FINGERPRINTS = (
     "evaluator_hash",
     "environment_hash",
 )
+V2_BINDINGS = ("source_manifest_hash", "group_source_hash")
+V2_GROUPS = {
+    "handbook": {"case_count": 18, "turn_count": 28, "retrieval_units": 39},
+    "synthetic_special": {"case_count": 6, "turn_count": 8, "retrieval_units": 15},
+}
+V2_SPECIAL_CASES = {"AB09", "AB10", "AB15", "AB16", "AB17", "AB23"}
+V2_ASSERTIONS = {"execution", "facts_state", "answer_content", "grounding", "clarification"}
 CORE_FILES = {
     "metadata.json",
     "observations.jsonl",
@@ -165,19 +174,205 @@ def _metric(metric: Any) -> None:
             raise ReportError("Invalid metric coverage count")
 
 
+def fingerprint_fields(metadata: Mapping[str, Any]) -> tuple[str, ...]:
+    return FINGERPRINTS + (V2_BINDINGS if metadata.get("protocol_id") == "p0-02.v2" else ())
+
+
+def group_binding(metadata: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        field: metadata.get(field)
+        for field in ("evaluation_groups", "case_groups", "case_sources", "source_manifest_hash")
+    }
+
+
+def _grouped_metrics(value: Any) -> None:
+    if not isinstance(value, dict):
+        raise ReportError("Invalid grouped metrics")
+    if value.get("applicability") == "not_observed":
+        if value != {"applicability": "not_observed", "value": None}:
+            raise ReportError("Invalid unobserved metric")
+    elif "applicability" in value:
+        _metric(value)
+    else:
+        for child in value.values():
+            if isinstance(child, dict):
+                _grouped_metrics(child)
+
+
+def _validate_v2(data: Mapping[str, Any]) -> None:
+    from .metrics import summarize_retrieval
+
+    metadata = data["metadata"]
+    groups = metadata.get("evaluation_groups")
+    mapping = metadata.get("case_groups")
+    sources = metadata.get("case_sources")
+    wanted = {
+        f"AB{i:02d}": "synthetic_special" if f"AB{i:02d}" in V2_SPECIAL_CASES else "handbook"
+        for i in range(1, 25)
+    }
+    if groups != V2_GROUPS or mapping != wanted:
+        raise ReportError("V2 requires the frozen per-group case/turn/retrieval cohorts")
+    if (
+        not isinstance(sources, dict)
+        or set(sources) != set(wanted)
+        or any(
+            not isinstance(source, dict)
+            or set(source) != {"scenario_origin", "corpus_origin", "snapshot_id"}
+            or any(not isinstance(v, str) or not v for v in source.values())
+            for source in sources.values()
+        )
+    ):
+        raise ReportError("V2 case source coverage is incomplete")
+    if not isinstance(metadata.get("source_manifest"), dict) or not metadata["source_manifest"]:
+        raise ReportError("V2 requires the complete source manifest")
+    if metadata["source_manifest"].get("schema_version") != "answerability-source-manifest.v2":
+        raise ReportError("Source manifest version differs")
+    if any(
+        source["scenario_origin"] != "synthetic_question"
+        or source["corpus_origin"]
+        != ("original_handbook" if wanted[case_id] == "handbook" else "synthetic_fixture")
+        for case_id, source in sources.items()
+    ):
+        raise ReportError("V2 case source category differs from its fixed group")
+    if metadata.get("source_manifest_hash") != content_hash(metadata["source_manifest"]):
+        raise ReportError("Source manifest binding mismatch")
+    if metadata.get("group_source_hash") != content_hash(group_binding(metadata)):
+        raise ReportError("Group/source binding mismatch")
+    by_case: dict[str, list[dict[str, Any]]] = {}
+    for observation in data["observations"]:
+        by_case.setdefault(observation["case_id"], []).append(observation)
+        if any(
+            field in observation
+            for field in ("evaluation_group", "scenario_origin", "corpus_origin")
+        ):
+            raise ReportError("Scoring-side source labels cannot enter raw observations")
+    if set(by_case) != set(wanted):
+        raise ReportError("V2 observation case coverage differs")
+    for case_id, observations in by_case.items():
+        expected_turns = ["T1", "T2", "T3"] if int(case_id[2:]) >= 19 else ["T1"]
+        if [o["turn_id"] for o in observations] != expected_turns:
+            raise ReportError("V2 frozen turn coverage differs")
+        for observation in observations:
+            rows = [
+                r
+                for r in data["assertions"]
+                if key(r, OBSERVATION_FIELDS) == key(observation, OBSERVATION_FIELDS)
+            ]
+            if {r["assertion_id"] for r in rows} != V2_ASSERTIONS or any(
+                r["probe_id"] != "conversation"
+                or r["trial_id"] != "1"
+                or r.get("mandatory") is not True
+                for r in rows
+            ):
+                raise ReportError("V2 requires every fixed mandatory turn assertion")
+    metrics = data["metrics"]
+    if (
+        not isinstance(metrics, dict)
+        or set(metrics.get("groups", {})) != set(V2_GROUPS)
+        or metrics.get("cross_group_accuracy") != "not_computed"
+        or "replies" in metrics
+        or "retrieval" in metrics
+        or metrics.get("retrieval_applicability")
+        != ("applicable" if metadata["mode"] == "rule_only" else "not_applicable")
+    ):
+        raise ReportError("V2 metrics must keep source groups separate")
+    for name, planned in V2_GROUPS.items():
+        cases = {case_id for case_id, group in wanted.items() if group == name}
+        observed = [o for o in data["observations"] if o["case_id"] in cases]
+        retrieval = [r for r in data["retrieval"] if r["case_id"] in cases]
+        if any(r.get("protocol_id") != "p0-02.v2" or r.get("turn_id") != "T1" for r in retrieval):
+            raise ReportError("V2 retrieval protocol/turn binding differs")
+        expected_retrieval = planned["retrieval_units"] if metadata["mode"] == "rule_only" else 0
+        if len(observed) != planned["turn_count"] or len(retrieval) != expected_retrieval:
+            raise ReportError("V2 group execution coverage differs")
+        if metadata["mode"] == "rule_only":
+            singles = {case_id for case_id in cases if int(case_id[2:]) < 19}
+            paths = {r["path"] for r in retrieval}
+            if paths != {"raw_query", "runtime_rule_query", "runtime_fused_query"} or {
+                (r["case_id"], r["path"]) for r in retrieval
+            } != {(case_id, path) for case_id in singles for path in paths}:
+                raise ReportError("V2 retrieval requires all three paths for each single-turn case")
+        group = metrics["groups"][name]
+        expected_counts = {
+            "case_count": planned["case_count"],
+            "turn_count": planned["turn_count"],
+            "retrieval_units": expected_retrieval,
+            "observed_turn_count": len(observed),
+            "observed_retrieval_units": len(retrieval),
+        }
+        if (
+            not isinstance(group, dict)
+            or group.get("counts") != expected_counts
+            or any(not isinstance(group.get(field), dict) for field in ("replies", "retrieval"))
+        ):
+            raise ReportError("V2 grouped metric denominators/coverage differ")
+        for metric_name, denominator in (
+            ("all", planned["turn_count"]),
+            ("conversation_success", planned["case_count"]),
+            ("adjudication_coverage", planned["turn_count"]),
+            ("answer_coverage", planned["turn_count"]),
+        ):
+            metric = group["replies"].get(metric_name, {})
+            if (
+                metric.get("denominator") != denominator
+                or metric.get("planned_count") != denominator
+            ):
+                raise ReportError("V2 reply metric shrank its fixed planned denominator")
+        # Every mutually exclusive cohort must retain all turns, including
+        # failures/unknowns. Exact per-label membership is checked with the
+        # independently loaded dataset at the gate boundary.
+        for prefix, labels in (
+            ("state:", ("answerable", "partial", "unanswerable")),
+            ("language:", ("zh", "en", "mixed")),
+            ("turns:", ("single", "multi")),
+        ):
+            cohort_keys = {prefix + label for label in labels}
+            actual_keys = {field for field in group["replies"] if field.startswith(prefix)}
+            # The existing aggregator omits languages with zero samples (the
+            # special cohort has no mixed-language cases). Never omit a
+            # positive cohort: its denominator must still sum to all turns.
+            if (
+                not actual_keys
+                or not actual_keys <= cohort_keys
+                or (prefix != "language:" and actual_keys != cohort_keys)
+            ):
+                raise ReportError("V2 reply cohort labels are incomplete or unexpected")
+            cohort = [group["replies"][field] for field in sorted(actual_keys)]
+            if (
+                any(
+                    not isinstance(metric, dict)
+                    or type(metric.get("denominator")) is not int
+                    or metric["denominator"] < 0
+                    or metric.get("planned_count") != metric["denominator"]
+                    for metric in cohort
+                )
+                or sum(metric["denominator"] for metric in cohort) != planned["turn_count"]
+            ):
+                raise ReportError("V2 reply cohort shrank its fixed planned denominator")
+        try:
+            recomputed_retrieval = summarize_retrieval(retrieval)
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ReportError("V2 retrieval metric coverage is incomplete") from exc
+        if canonical_json(group["retrieval"]) != canonical_json(recomputed_retrieval):
+            raise ReportError("V2 grouped retrieval differs from its raw metric records")
+        _grouped_metrics(group["replies"])
+        _grouped_metrics(group["retrieval"])
+
+
 def validate_run(
     data: Mapping[str, Any],
     expected_keys: Iterable[Any] | None = None,
     expected_retrieval_keys: Iterable[Any] | None = None,
 ) -> None:
     metadata = data["metadata"]
-    if (
-        metadata.get("schema_version") != "answerability-eval.v1"
-        or metadata.get("protocol_id") != "p0-02.v1"
-    ):
+    try:
+        spec = protocol_spec(metadata.get("protocol_id", ""))
+    except ValueError as exc:
+        raise ReportError("Unsupported answerability protocol") from exc
+    if metadata.get("schema_version") != spec["schema_version"]:
         raise ReportError("Unsupported answerability protocol")
     if metadata.get("mode") not in {"rule_only", "mocked_model"} or any(
-        not metadata.get(field) for field in FINGERPRINTS
+        not metadata.get(field) for field in fingerprint_fields(metadata)
     ):
         raise ReportError("Missing fingerprint or invalid mode")
     if metadata.get("real_model_calls") != 0:
@@ -227,6 +422,8 @@ def validate_run(
             raise ReportError("Invalid retrieval execution or missing metrics")
         for metric in row["metrics"].values():
             _metric(metric)
+    if metadata["protocol_id"] == "p0-02.v2":
+        _validate_v2(data)
     canonical_json(data)
 
 
@@ -259,7 +456,8 @@ def seal_run(
         str(run_data.get("summary", "P0-02：原始报告已封存；真实模型未测。\n")).encode("utf-8"),
     )
     manifest = {
-        "storage_version": "answerability-run.v1",
+        "storage_version": "answerability-run."
+        + run_data["metadata"]["protocol_id"].rsplit(".", 1)[1],
         "files": {
             name: {"sha256": file_hash(directory / name), "size": (directory / name).stat().st_size}
             for name in sorted(CORE_FILES)
@@ -289,7 +487,7 @@ def load_run(
             raise ReportError("Unsafe report member")
         manifest = read_json(directory / "manifest.json")
         if (
-            manifest.get("storage_version") != "answerability-run.v1"
+            manifest.get("storage_version") not in {"answerability-run.v1", "answerability-run.v2"}
             or set(manifest.get("files", {})) != CORE_FILES
         ):
             raise ReportError("Unsupported or invalid report manifest")
@@ -316,6 +514,11 @@ def load_run(
         ):
             raise ReportError("Observation-stage digest mismatch")
         validate_run(data, expected_keys, expected_retrieval_keys)
+        if (
+            manifest["storage_version"]
+            != "answerability-run." + data["metadata"]["protocol_id"].rsplit(".", 1)[1]
+        ):
+            raise ReportError("Storage and protocol versions differ")
         return data | {
             "directory": str(directory.resolve()),
             "manifest_hash": digest,

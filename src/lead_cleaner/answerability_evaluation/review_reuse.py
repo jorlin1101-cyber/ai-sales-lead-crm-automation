@@ -12,7 +12,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 from .checks import expected_keys, score_observation
 from .reports import (
-    FINGERPRINTS,
+    fingerprint_fields,
     OBSERVATION_FIELDS,
     ReportError,
     content_hash,
@@ -20,7 +20,7 @@ from .reports import (
     load_run,
     parse_json,
 )
-from .trust import effective_assertions
+from .trust import effective_assertions, require_protocol_trust, validate_review_dataset
 from lead_cleaner.rag.schemas import RetrievedChunk
 from lead_cleaner.schemas.conversation import ConversationFact, ConversationTurnResult
 
@@ -263,7 +263,8 @@ def semantic_fingerprint(
     _require(type(guard["loopback_connections"]) is int and guard["loopback_connections"] >= 0)
     del guard["loopback_connections"]
     frozen = {
-        field: metadata[field] for field in (*FINGERPRINTS, "rubric_hash", "review_required_roles")
+        field: metadata[field]
+        for field in (*fingerprint_fields(metadata), "rubric_hash", "review_required_roles")
     }
     return content_hash(
         {"algorithm": ALGORITHM, "frozen": frozen, "turn": turn, "observation": value}
@@ -331,6 +332,8 @@ def reuse_reviewed_assertions(
     baseline, candidate = _fresh(baseline_run), _fresh(candidate_run)
     rows = deepcopy(candidate_rows)
     mode = candidate["metadata"]["mode"]
+    require_protocol_trust(candidate["metadata"], trust, required=True)
+    require_protocol_trust(baseline["metadata"], trust, required=True)
     acceptance = baseline_record.get("acceptance_id")
     if (
         not acceptance
@@ -340,7 +343,7 @@ def reuse_reviewed_assertions(
     ):
         raise ReportError("Semantic reuse requires the latest independently accepted baseline")
     fields = (
-        *FINGERPRINTS,
+        *fingerprint_fields(candidate["metadata"]),
         "rubric_hash",
         "expected_keys",
         "expected_retrieval_keys",
@@ -348,10 +351,8 @@ def reuse_reviewed_assertions(
     )
     if any(baseline["metadata"].get(field) != candidate["metadata"].get(field) for field in fields):
         raise ReportError("Semantic reuse cannot cross frozen protocol inputs")
-    if any(
-        candidate["metadata"].get(field) != dataset.get(field)
-        for field in ("dataset_hash", "knowledge_hash")
-    ) or candidate["metadata"]["expected_keys"] != expected_keys(dataset, mode):
+    validate_review_dataset(candidate, dataset)
+    if candidate["metadata"]["expected_keys"] != expected_keys(dataset, mode):
         raise ReportError("Semantic reuse requires the independently loaded matching dataset")
     if [key(row) for row in rows] != [key(row) for row in candidate["assertions"]]:
         raise ReportError("Candidate effective assertion identities differ")
@@ -416,6 +417,7 @@ def reuse_reviewed_assertions(
             continue
         record = {
             "algorithm": ALGORITHM,
+            "protocol_id": candidate["metadata"]["protocol_id"],
             "key": list(identity),
             "semantic_fingerprint": fingerprint,
             "source_acceptance_id": acceptance,
@@ -429,6 +431,13 @@ def reuse_reviewed_assertions(
             "failure_type": computed["failure_type"],
             "origin": "derived_regression_judgment",
         }
+        if candidate["metadata"]["protocol_id"] == "p0-02.v2":
+            record.update(
+                {
+                    field: candidate["metadata"][field]
+                    for field in ("source_manifest_hash", "group_source_hash")
+                }
+            )
         row.clear()
         row.update(computed, derived_from=deepcopy(record))
         derived.append(record)

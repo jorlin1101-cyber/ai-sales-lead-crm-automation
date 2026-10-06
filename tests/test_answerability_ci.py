@@ -10,8 +10,9 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-PROTOCOL = "config/quality_answerability.v1.json"
-INDEX = "config/quality_answerability_baseline_index.v1.json"
+PROTOCOL = "config/quality_answerability.v2.json"
+INDEX = "config/quality_answerability_baseline_index.v2.json"
+TRUST = "config/quality_answerability_trust.v2.json"
 
 
 def script(name):
@@ -50,7 +51,7 @@ def commit(root):
 def repository(tmp_path):
     count = 0
 
-    def create(*, protocol=True, index=True, accepted=None):
+    def create(*, protocol=True, index=True, accepted=None, trust=True):
         nonlocal count
         count += 1
         root = tmp_path / str(count)
@@ -68,13 +69,38 @@ def repository(tmp_path):
         (root / "new/nested/evaluator.py").write_text("real_scoring = True\n", encoding="utf-8")
         (root / ".gitignore").write_text("new/ignored/\n", encoding="utf-8")
         if protocol:
-            value = {"protocol_id": "p0-02.v1", "protected_patterns": ["new/*.py"]}
+            value = {"protocol_id": "p0-02.v2", "protected_patterns": ["new/*.py"]}
             (root / PROTOCOL).write_text(
                 json.dumps(value) if protocol is True else "malformed", encoding="utf-8"
             )
+        records = {
+            mode: value
+            or {
+                "protocol_id": "p0-02.v2",
+                "acceptance_id": "unit-" + mode,
+                "manifest_hash": f"{number:064x}",
+            }
+            for number, (mode, value) in enumerate((accepted or {}).items(), 1)
+        }
+        if trust:
+            (root / TRUST).write_text(
+                json.dumps(
+                    {
+                        "protocol_id": "p0-02.v2",
+                        "latest_accepted_baselines": {
+                            mode: value["acceptance_id"] for mode, value in records.items()
+                        },
+                        "accepted_baselines": {
+                            value["acceptance_id"]: value["manifest_hash"]
+                            for value in records.values()
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
         if index:
             (root / INDEX).write_text(
-                json.dumps({"protocol_id": "p0-02.v1", "accepted": accepted or {}}),
+                json.dumps({"protocol_id": "p0-02.v2", "accepted": records}),
                 encoding="utf-8",
             )
         reference = commit(root)
@@ -221,10 +247,10 @@ def test_ci_invalid_trusted_state_never_downgrades_to_inventory(repository, monk
     elif problem == "wrong_index_protocol":
         (root / INDEX).write_text('{"protocol_id": "p0-01.v1", "accepted": {}}', encoding="utf-8")
     elif problem == "invalid_index":
-        (root / INDEX).write_text('{"protocol_id": "p0-02.v1", "accepted": []}', encoding="utf-8")
+        (root / INDEX).write_text('{"protocol_id": "p0-02.v2", "accepted": []}', encoding="utf-8")
     elif problem == "unknown_mode":
         (root / INDEX).write_text(
-            '{"protocol_id": "p0-02.v1", "accepted": {"live": {}}}', encoding="utf-8"
+            '{"protocol_id": "p0-02.v2", "accepted": {"live": {}}}', encoding="utf-8"
         )
     elif problem == "old_ref":
         (root / "next.txt").write_text("new accepted commit", encoding="utf-8")
@@ -277,7 +303,10 @@ def provenance_setup(tmp_path, monkeypatch):
 
     def load_run(directory):
         loaded.append(directory)
-        return {"metadata": {"tested_commit": "a" * 40}, "manifest_hash": "b" * 64}
+        return {
+            "metadata": {"tested_commit": "a" * 40, "protocol_id": "p0-02.v2"},
+            "manifest_hash": "b" * 64,
+        }
 
     monkeypatch.setattr(module, "load_run", load_run)
     values = {
@@ -302,7 +331,7 @@ def test_provenance_binds_upload_without_changing_any_report_bytes(provenance_se
     }
     module.main()
     value = json.loads(output.read_text(encoding="utf-8"))
-    assert value["schema_version"] == "answerability-provenance.v1"
+    assert value["schema_version"] == "answerability-provenance.v2"
     assert len(value["reports"]) == 2 and len(loaded) == 2
     assert {r["artifact_prefix"] for r in value["reports"]} == {"rule_only", "mocked_model"}
     assert all(
@@ -409,3 +438,150 @@ def test_workflow_enforces_guard_before_candidate_execution_and_separate_provena
     assert "ANSWERABILITY_ARTIFACT_DIGEST" in provenance["env"]
     assert "--out data/runtime/answerability-provenance/index.json" in provenance["run"]
     assert steps[-1]["if"] == "always() && steps.provenance.outcome == 'success'"
+
+
+def test_v2_guard_keeps_v1_archive_scope(repository, monkeypatch):
+    root, _ = repository()
+    (root / "config/quality_answerability.v1.json").write_text(
+        json.dumps({"protocol_id": "p0-02.v1", "protected_patterns": ["archive/*.json"]}),
+        encoding="utf-8",
+    )
+    (root / "archive").mkdir()
+    (root / "archive/original.json").write_text('{"value": 1}', encoding="utf-8")
+    reference = commit(root)
+    git(root, "update-ref", "refs/remotes/origin/main", reference)
+    assert policy(root, reference, monkeypatch) == 0
+    (root / "archive/original.json").write_text('{"value": 2}', encoding="utf-8")
+    assert policy(root, reference, monkeypatch) == 3
+
+
+def test_v2_guard_cannot_drop_protection_by_selecting_v1(repository, monkeypatch):
+    root, reference = repository()
+    (root / PROTOCOL).unlink()
+    (root / "config/quality_answerability.v1.json").write_text(
+        json.dumps({"protocol_id": "p0-02.v1", "protected_patterns": ["legacy/*.py"]}),
+        encoding="utf-8",
+    )
+    (root / "new/nested/evaluator.py").write_text("weakened = True", encoding="utf-8")
+    assert policy(root, reference, monkeypatch) == 3
+
+
+def test_artifact_writer_rejects_inactive_or_mixed_report_versions(provenance_setup, monkeypatch):
+    module, _, output, _ = provenance_setup
+    monkeypatch.setattr(
+        module,
+        "load_run",
+        lambda path: {
+            "metadata": {"tested_commit": "a" * 40, "protocol_id": "p0-02.v1"},
+            "manifest_hash": "b" * 64,
+        },
+    )
+    with pytest.raises(ValueError, match="active protocol"):
+        module.main()
+    assert not output.exists()
+
+
+@pytest.mark.parametrize(
+    "problem",
+    [
+        "missing_trust",
+        "wrong_trust_protocol",
+        "missing_latest",
+        "missing_registered",
+        "malformed_latest",
+        "malformed_registered",
+        "empty_index",
+        "missing_mode",
+        "missing_latest_mode",
+        "latest_mismatch",
+        "manifest_mismatch",
+        "unregistered_id",
+        "missing_record_id",
+        "missing_record_manifest",
+        "wrong_record_protocol",
+        "invalid_record",
+        "unsafe_record_path",
+        "missing_record_path",
+        "all_latest_cleared",
+        "duplicate_ids",
+    ],
+)
+def test_ci_rejects_every_index_registry_drift_before_executing_candidate(
+    repository, monkeypatch, problem
+):
+    root, _ = repository(accepted={"rule_only": {}, "mocked_model": {}})
+    index = json.loads((root / INDEX).read_text("utf-8"))
+    trust = json.loads((root / TRUST).read_text("utf-8"))
+    record = index["accepted"]["rule_only"]
+    if problem == "missing_trust":
+        (root / TRUST).unlink()
+    elif problem == "wrong_trust_protocol":
+        trust["protocol_id"] = "p0-02.v1"
+    elif problem == "missing_latest":
+        trust.pop("latest_accepted_baselines")
+    elif problem == "missing_registered":
+        trust.pop("accepted_baselines")
+    elif problem == "malformed_latest":
+        trust["latest_accepted_baselines"] = []
+    elif problem == "malformed_registered":
+        trust["accepted_baselines"] = []
+    elif problem == "empty_index":
+        index["accepted"] = {}
+    elif problem == "missing_mode":
+        index["accepted"].pop("mocked_model")
+    elif problem == "missing_latest_mode":
+        trust["latest_accepted_baselines"].pop("mocked_model")
+    elif problem == "latest_mismatch":
+        trust["latest_accepted_baselines"]["rule_only"] = "other"
+    elif problem == "manifest_mismatch":
+        record["manifest_hash"] = "f" * 64
+    elif problem == "unregistered_id":
+        trust["accepted_baselines"].pop(record["acceptance_id"])
+    elif problem == "missing_record_id":
+        record.pop("acceptance_id")
+    elif problem == "missing_record_manifest":
+        record.pop("manifest_hash")
+    elif problem == "wrong_record_protocol":
+        record["protocol_id"] = "p0-02.v1"
+    elif problem == "invalid_record":
+        index["accepted"]["rule_only"] = []
+    elif problem == "unsafe_record_path":
+        index["accepted"]["rule_only"] = "../untrusted.json"
+    elif problem == "missing_record_path":
+        index["accepted"]["rule_only"] = "config/absent.json"
+    elif problem == "all_latest_cleared":
+        index["accepted"] = {}
+        trust["latest_accepted_baselines"] = {}
+    else:
+        index["accepted"]["mocked_model"] = dict(record)
+        trust["latest_accepted_baselines"]["mocked_model"] = record["acceptance_id"]
+    (root / INDEX).write_text(json.dumps(index), encoding="utf-8")
+    if problem != "missing_trust":
+        (root / TRUST).write_text(json.dumps(trust), encoding="utf-8")
+    ref = commit(root)
+    git(root, "update-ref", "refs/remotes/origin/main", ref)
+    module = script("ci_answerability_eval")
+    calls = harness(module, root, monkeypatch)
+    with pytest.raises((ValueError, subprocess.CalledProcessError)):
+        module.run_ci()
+    assert calls == []
+
+
+def test_ci_reads_path_records_and_trust_only_from_current_accepted_git(repository, monkeypatch):
+    root, _ = repository(accepted={"rule_only": {}, "mocked_model": {}})
+    index = json.loads((root / INDEX).read_text("utf-8"))
+    record_path = "config/unit-rule-baseline.json"
+    (root / record_path).write_text(json.dumps(index["accepted"]["rule_only"]), encoding="utf-8")
+    index["accepted"]["rule_only"] = record_path
+    (root / INDEX).write_text(json.dumps(index), encoding="utf-8")
+    ref = commit(root)
+    git(root, "update-ref", "refs/remotes/origin/main", ref)
+    # Candidate local files cannot select a weaker accepted state.
+    (root / record_path).write_text("{}", encoding="utf-8")
+    (root / TRUST).write_text("{}", encoding="utf-8")
+    module = script("ci_answerability_eval")
+    calls = harness(module, root, monkeypatch)
+    assert module.run_ci() == 0
+    assert all(
+        args[args.index("--gate") + 1] == "regression" for args in calls if args[2] == "check"
+    )

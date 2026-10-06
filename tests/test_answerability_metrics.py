@@ -222,3 +222,71 @@ def test_wrong_answer_is_not_a_refusal_or_an_omission():
     assert fallback["fallback_safety"]["value"] == 1
     assert fallback["all"]["value"] == 0
     assert fallback["all"]["error_count"] == 1
+
+
+def test_v2_groups_keep_errors_unknown_and_absent_units_in_each_plan():
+    from lead_cleaner.answerability_evaluation.metrics import aggregate_metrics
+
+    cases = [
+        {"case_id": "H", "evaluation_group": "handbook", "language": "zh", "turns": [turn()]},
+        {
+            "case_id": "S",
+            "evaluation_group": "synthetic_special",
+            "language": "en",
+            "turns": [turn()],
+        },
+    ]
+    data = {"protocol_id": "p0-02.v2", "cases": cases}
+    obs = [{"case_id": "H", "turn_id": "T1", "execution_status": "error"}]
+    result = aggregate_metrics(data, obs, [], [], "rule_only")
+    assert "replies" not in result and "retrieval" not in result
+    assert result["cross_group_accuracy"] == "not_computed"
+    for name in ["handbook", "synthetic_special"]:
+        group = result["groups"][name]
+        assert group["replies"]["all"]["denominator"] == 1
+        assert group["counts"]["retrieval_units"] == 3
+        assert group["counts"]["observed_retrieval_units"] == 0
+        assert group["replies"]["state:partial"]["applicability"] == "not_applicable"
+        for metrics in group["retrieval"].values():
+            assert metrics["supported_facet_hit"]["denominator"] == 1
+            assert metrics["supported_facet_hit"]["not_run_count"] == 1
+            assert metrics["supported_facet_hit"]["value"] is None
+    assert result["groups"]["handbook"]["replies"]["all"]["error_count"] == 1
+    assert result["groups"]["synthetic_special"]["replies"]["all"]["not_run_count"] == 1
+    obs[0]["execution_status"] = "completed"
+    pending = summarize_replies(data, obs, [])
+    assert pending["groups"]["handbook"]["all"]["value"] is None
+    assert pending["groups"]["handbook"]["all"]["needs_review_count"] == 1
+    with pytest.raises(ValueError):
+        summarize_replies({**data, "protocol_id": "future"}, [], [])
+    cases[0]["evaluation_group"] = "unknown"
+    with pytest.raises(ValueError, match="evaluation group"):
+        summarize_replies(data, [], [])
+
+
+def test_v2_retrieval_group_aggregation_rejects_unknown_duplicate_or_wrong_mode():
+    from lead_cleaner.answerability_evaluation.metrics import aggregate_metrics
+
+    data = {
+        "protocol_id": "p0-02.v2",
+        "cases": [
+            {"case_id": "H", "evaluation_group": "handbook", "language": "en", "turns": [turn()]}
+        ],
+    }
+    row = {
+        "case_id": "H",
+        "path": "raw_query",
+        "metrics": score_retrieval(turn(), results("unknown")),
+    }
+    score = aggregate_metrics(data, [], [], [row], "rule_only")
+    assert score["groups"]["handbook"]["retrieval"]["raw_query"]["ndcg"]["needs_review_count"] == 1
+    for rows in [[row, row], [{**row, "case_id": "unknown"}]]:
+        with pytest.raises(ValueError, match="identities"):
+            aggregate_metrics(data, [], [], rows, "rule_only")
+    with pytest.raises(ValueError, match="rule_only"):
+        aggregate_metrics(data, [], [], [row], "mocked_model")
+    with pytest.raises(ValueError, match="rule_only"):
+        aggregate_metrics(data, [], [], [], "live")
+    empty = aggregate_metrics(data, [], [], [], "mocked_model")
+    assert empty["retrieval_applicability"] == "not_applicable"
+    assert empty["groups"]["handbook"]["counts"]["retrieval_units"] == 0

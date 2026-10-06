@@ -1,0 +1,283 @@
+{
+  "schema_version": "answerability-case-migration.v2",
+  "from_protocol": "p0-02.v1",
+  "to_protocol": "p0-02.v2",
+  "source_cases_hash": "9692e8561b41a7904e6ded2e81eaa920931e3c1aab13aa70d768b24ca3e5f2d1",
+  "cases": [
+    {
+      "case_id": "AB01",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "19aa715313f7603b48a1c006eb46462023007443c3ae8eaf85e3e12650242348",
+      "current_case_hash": "7d1e8d60394a3ab7a2ac10749176a40e597d5f8fd3810a4bd54bc526f47c4be5",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB02",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "506965b8555cfe82d59eea26c133be1db600dba22166ce03dea23a89f2667202",
+      "current_case_hash": "82cd34896745142325a3165d1f73ee00b740a6dc7752f01ed99beda29d0c8149",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB03",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "4a77efe6395f3b6529836ab35246dcb197106959cf0a094b8dd00a6d6dbabaf9",
+      "current_case_hash": "2bd79da9a0b3c4445c17a4f07d4a3ea59bc1d002980106478d481d8d0a9fa5ab",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB04",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "dfb9f87a59412ab67e19394263feefc9b68af3d7fc7b052ac0db77f59a3ba1fc",
+      "current_case_hash": "46967734f1a697aba561275fa52e33065ae8f341ed815828ec2da10ece746ac2",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB05",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "59416f11e729158c902e5cfa8b3a442a93d4c737a73e116726e8a16b15b843ed",
+      "current_case_hash": "1c8fe712adb19cc0c0f892619aae206c17a4a1c73b449df0cf906a2870493a79",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB06",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "4677ff50cc95e4837cb9939afc983b0f0ee07336831e3c8ccd995231d30da4cf",
+      "current_case_hash": "07d3b568a523bf20ebf0d236170314c53f8bce65ead297cfadd6c03fa32efacb",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB07",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "7625fc1a3632b893c09d7679572d4b7dcf7d227cea936338e78087a2cb5e81e2",
+      "current_case_hash": "286fcba47790b5da22e5dc8b0946996a7530c3f365cd9a76b01cedf5afdf7976",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB08",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "704b7bf83cc452bbf5916c96b3868ba0852843c3b564ad6d1feb29f568c99d3e",
+      "current_case_hash": "b3c851e63457215e7eccb931490eaa653b3d1656eb38507b4736ff9d1caf66a9",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB09",
+      "evaluation_group": "synthetic_special",
+      "previous_snapshot": "conditional",
+      "current_snapshot": "special_conditional",
+      "source_case_hash": "41d2b25e69c70f2fb9af7f691d5b2fe53e8dfd708138dde1156d366a879dad61",
+      "current_case_hash": "4c7c81064e4feafcee2c3f7054f4c0ba4484b137e543e9a1091d470698aceaa6",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB10",
+      "evaluation_group": "synthetic_special",
+      "previous_snapshot": "expired",
+      "current_snapshot": "special_expired",
+      "source_case_hash": "9da14c5da8a6944a34308ac22f418e0a1a8fe695a3af2f7d46dbdd6a4e633888",
+      "current_case_hash": "c684475e27220d43aaa368bf3c346ebbcc49f8e9cbb35edff4896344a2ad081f",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB11",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "conflict",
+      "current_snapshot": "handbook",
+      "source_case_hash": "ec714e9875b222b37fcff4a405ef61324e1d34bb92ce2ea15d3d9c6c41bebf00",
+      "current_case_hash": "c57064fcd205f31dc12685bb90f080b610e0110ce011ccb93b332b3a43609e77",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB12",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "9c7bf6a7204d4396f2384c6b8d149bdbb36478f93141231f7e280f8f5697d679",
+      "current_case_hash": "3862fe6f46d59379f51f20e0ed5dc95af5a4383000d6ed5d451f289f090b46e4",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB13",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "unrelated",
+      "current_snapshot": "handbook",
+      "source_case_hash": "38e5b203a3d2f621023f8fb6a2f991959e746db8faf5fbe23a1de83e1fae315d",
+      "current_case_hash": "a22836430b8efb2861a82742376a7d5d08f2129466e033860cd27783287ad060",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB14",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "hotel",
+      "current_snapshot": "handbook",
+      "source_case_hash": "426565f8e0e5f251c8e7c6501b412392a1f4313e8a6c1e031eb40f1ac92c4c68",
+      "current_case_hash": "fde4e1b08c5ca4d55e168e69e6144f607395233804b79974717509816934b679",
+      "changed_messages": [
+        "T1"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB15",
+      "evaluation_group": "synthetic_special",
+      "previous_snapshot": "conflict",
+      "current_snapshot": "special_conflict",
+      "source_case_hash": "2a13d7621d977c2b0d25e3695b54e0242403ab0cb4d1a39b79606a77816f072d",
+      "current_case_hash": "4bcdcf01bc7e899dde751d30ce9cc5b5de094624641c78cd98f0c2a14ad38793",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB16",
+      "evaluation_group": "synthetic_special",
+      "previous_snapshot": "expired",
+      "current_snapshot": "special_expired",
+      "source_case_hash": "83b28b7b826c8758d3f77601591420ab64a93a86ef10f5394b33342095655e0a",
+      "current_case_hash": "b63700f34da911797e23dfe561b5a9c1f02b8a81fe6739c312cc5a0873c7ca36",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB17",
+      "evaluation_group": "synthetic_special",
+      "previous_snapshot": "unverified",
+      "current_snapshot": "special_unverified",
+      "source_case_hash": "a52c3da3583edc538881166d1146917153cd88adfb32b1b8f87220f5bc3ff93c",
+      "current_case_hash": "6dcaa83288be657b4d67b59f123a5d1eb69e13fb5a33d1dd3c9637bf4d7fc6f2",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB18",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "hotel",
+      "current_snapshot": "handbook",
+      "source_case_hash": "cb1cd6339e75fe4aa3ac4b2b363fe7dc7b9d2180805d5ba20f3e4642279e9dbd",
+      "current_case_hash": "d752f7df49a3a78a035d715860937f84750f70bb75393d8e858722a976f9b9f2",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB19",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "conditional",
+      "current_snapshot": "handbook",
+      "source_case_hash": "9e204ceb030fd530e8e05bb5ef388af98e2cc2d9936a6810fe34ed8eae2a1f5f",
+      "current_case_hash": "89f821a5776611b84f3e58fed98448ed15d338b7e12c303f46c5f688b8a04407",
+      "changed_messages": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB20",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "6d8b5ad5828746ba5d6aae15de706e32b2d965fecab170e7cae47a4ab77e3700",
+      "current_case_hash": "8ea9355755f9a0bda18f17712449fbc4e03c22970f6c4a702350eb5d90964e79",
+      "changed_messages": [
+        "T1",
+        "T3"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB21",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "cb448162bf884a043157b1d7e2673ff1a1d9f4facd62adadf7a4122cf54e4e9a",
+      "current_case_hash": "883998c2b79de6551f2fb39951292a900c3caba8763307f598c5bfe14700ce73",
+      "changed_messages": [
+        "T3"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB22",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "7997b4e87c43c0bd3ff7d1c28732160da0fd146df6f6f58265ac30418ec33e1e",
+      "current_case_hash": "b174e4efde01154ae18c148c00400b2bb870b962325725098287d0af1ba870ca",
+      "changed_messages": [
+        "T1",
+        "T3"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB23",
+      "evaluation_group": "synthetic_special",
+      "previous_snapshot": "conditional",
+      "current_snapshot": "special_conditional",
+      "source_case_hash": "0b1956a46ed3fbd204e3d22f79f5b0f25e93bd8fa75488206b4fd793f2effd6d",
+      "current_case_hash": "8884615d7e3e0ffbe80af416fe1235eb25719d8585fe78dd0581091209f5889c",
+      "changed_messages": [],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    },
+    {
+      "case_id": "AB24",
+      "evaluation_group": "handbook",
+      "previous_snapshot": "core",
+      "current_snapshot": "handbook",
+      "source_case_hash": "ff3fd1db435f6df9971d034be3feaf044ee286c96d6d4fc8c4fcc489be48fe31",
+      "current_case_hash": "76108b033e27fa368160f9364f1ecd6d2e59938a22f9c7989abacb79f45f43e1",
+      "changed_messages": [
+        "T2",
+        "T3"
+      ],
+      "comparison_policy": "new_protocol_not_score_comparable"
+    }
+  ]
+}

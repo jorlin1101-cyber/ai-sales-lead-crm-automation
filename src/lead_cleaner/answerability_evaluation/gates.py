@@ -9,22 +9,30 @@ from typing import Any
 from uuid import uuid4
 
 from .provenance import require_verified_artifact
+from .registry import protocol_spec
 from .reports import (
-    FINGERPRINTS,
+    V2_BINDINGS,
+    fingerprint_fields,
     KEY_FIELDS,
     METRICS,
     ReportError,
+    canonical_json,
     content_hash,
     key,
     load_run,
     write_record,
 )
-from .trust import EMPTY_REVIEW_SET, effective_assertions
+from .trust import (
+    EMPTY_REVIEW_SET,
+    effective_assertions,
+    require_protocol_trust,
+    validate_review_dataset,
+)
 
 ISSUE_FIELDS = tuple(f for f in KEY_FIELDS if f != "trial_id") + ("failure_type", "severity")
 
 
-def _issues(issues: list[dict[str, Any]]) -> None:
+def _issues(issues: list[dict[str, Any]], protocol_id: str = "p0-02.v1") -> None:
     seen = set()
     for issue in issues:
         if (
@@ -35,7 +43,7 @@ def _issues(issues: list[dict[str, Any]]) -> None:
         ):
             raise ReportError("Known issues require unique identity and exact failure signature")
         if (
-            issue["protocol_id"] != "p0-02.v1"
+            issue["protocol_id"] != protocol_id
             or issue["severity"] not in {"critical", "major", "minor"}
             or issue["status"] == "resolved"
             and not issue.get("resolved_commit")
@@ -60,15 +68,32 @@ def _fresh(
 
 
 def _comparable(before: Mapping[str, Any], after: Mapping[str, Any]) -> None:
-    if any(before["metadata"].get(f) != after["metadata"].get(f) for f in FINGERPRINTS) or any(
+    if any(
+        before["metadata"].get(f) != after["metadata"].get(f)
+        for f in fingerprint_fields(after["metadata"])
+    ) or any(
         before["metadata"].get(f) != after["metadata"].get(f)
         for f in ("expected_keys", "expected_retrieval_keys", "rubric_hash")
     ):
         raise ReportError("Baseline and candidate have different frozen comparison inputs")
 
 
+def _validate_raw_metrics(run: Mapping[str, Any], dataset: dict[str, Any] | None) -> None:
+    if run["metadata"]["protocol_id"] != "p0-02.v2" or dataset is None:
+        return
+    from .metrics import aggregate_metrics
+
+    validate_review_dataset(run, dataset)
+    recomputed = aggregate_metrics(
+        dataset, run["observations"], run["assertions"], run["retrieval"], run["metadata"]["mode"]
+    )
+    if canonical_json(recomputed) != canonical_json(run["metrics"]):
+        raise ReportError("Sealed raw metrics differ from independently recomputed dataset metrics")
+
+
 def _baseline(record: Mapping[str, Any], trust: Mapping[str, Any]) -> dict[str, Any]:
     run = _fresh(record["run"])
+    require_protocol_trust(run["metadata"], trust, required=True)
     if trust.get("accepted_baselines", {}).get(record.get("acceptance_id")) != run["manifest_hash"]:
         raise ReportError("Baseline manifest is not independently accepted")
     return run
@@ -155,7 +180,10 @@ def evaluate_gate(
     if not candidate_sha:
         reason(3, "An independently supplied candidate SHA is required")
     try:
-        _issues(issues)
+        protocols = {r["metadata"]["protocol_id"] for r in runs}
+        if len(protocols) > 1:
+            raise ReportError("Gate cannot mix protocol versions")
+        _issues(issues, next(iter(protocols), trust.get("protocol_id", "p0-02.v1")))
         if gate_kind == "regression" and trust.get("known_issues_hash") != content_hash(issues):
             raise ReportError("Known-issue exemptions are not independently trusted")
     except ReportError as exc:
@@ -186,7 +214,9 @@ def evaluate_gate(
                 supplied, expected_keys_by_mode[mode], expected_retrieval_keys_by_mode[mode]
             )
             metadata = run["metadata"]
-            fingerprint = tuple(metadata[f] for f in FINGERPRINTS if f != "mode")
+            require_protocol_trust(metadata, trust, required=gate_kind != "inventory")
+            _validate_raw_metrics(run, dataset)
+            fingerprint = tuple(metadata[f] for f in fingerprint_fields(metadata) if f != "mode")
             if common_fingerprint is not None and fingerprint != common_fingerprint:
                 raise ReportError("Mode reports have different comparison fingerprints")
             common_fingerprint = fingerprint
@@ -223,6 +253,7 @@ def evaluate_gate(
                         "Regression must use the latest independently accepted baseline"
                     )
                 baseline = _baseline(record, trust)
+                _validate_raw_metrics(baseline, dataset)
                 _comparable(baseline, run)
                 previous, _, _ = effective_assertions(
                     baseline, record.get("review_set"), trust, dataset=dataset
@@ -324,6 +355,7 @@ def evaluate_gate(
             decision["comparison"][mode] = comparison
             initial_record = record.get("initial_baseline") or record
             initial = _baseline(initial_record, trust)
+            _validate_raw_metrics(initial, dataset)
             _comparable(initial, run)
             initial_rows, _, _ = effective_assertions(
                 initial, initial_record.get("review_set"), trust, dataset=dataset
@@ -390,7 +422,8 @@ def accept_baseline(
         or meta.get("business_labels_reviewed") is not True
     ):
         raise ReportError("Baseline acceptance requires clean, reviewed, nonprovisional evidence")
-    _issues(known_issues)
+    require_protocol_trust(meta, trust_context, required=True)
+    _issues(known_issues, meta["protocol_id"])
     if not isinstance(trust_context.get("latest_accepted_baselines"), dict) or trust_context[
         "latest_accepted_baselines"
     ].get(meta["mode"]) != (previous["acceptance_id"] if previous else None):
@@ -435,6 +468,8 @@ def accept_baseline(
         "known_issues_hash": content_hash(known_issues),
         "previous_acceptance_id": previous["acceptance_id"] if previous else None,
     }
+    if meta["protocol_id"] == "p0-02.v2":
+        binding.update({field: meta[field] for field in V2_BINDINGS})
     if trust_context.get("approval_bindings", {}).get(approval.get("approval_ref")) != binding:
         raise ReportError("No independently approved exact baseline binding")
     if previous is not None:
@@ -465,6 +500,8 @@ def accept_baseline(
         ):
             issue.update(status="resolved", resolved_commit=meta["tested_commit"])
     return {
+        "protocol_id": meta["protocol_id"],
+        "baseline_directory": protocol_spec(meta["protocol_id"])["baseline_directory"],
         "acceptance_id": acceptance_id,
         "approval_ref": approval["approval_ref"],
         "approval_binding": binding,
@@ -500,7 +537,15 @@ def accept_baselines(
         or len({r["metadata"]["tested_commit"] for r in runs}) != 1
     ):
         raise ReportError("Atomic acceptance requires both modes of one candidate")
-    if len({tuple(r["metadata"][f] for f in FINGERPRINTS if f != "mode") for r in runs}) != 1:
+    if (
+        len(
+            {
+                tuple(r["metadata"][f] for f in fingerprint_fields(r["metadata"]) if f != "mode")
+                for r in runs
+            }
+        )
+        != 1
+    ):
         raise ReportError("Atomic acceptance modes must share comparison fingerprints")
     units = {
         run["metadata"]["mode"]: accept_baseline(
@@ -525,7 +570,10 @@ def accept_baselines(
         unit["known_issues"] = copy.deepcopy(issues)
         unit["known_issues_hash"] = content_hash(issues)
     return {
-        "protocol_id": "p0-02.v1",
+        "protocol_id": runs[0]["metadata"]["protocol_id"],
+        "baseline_directory": protocol_spec(runs[0]["metadata"]["protocol_id"])[
+            "baseline_directory"
+        ],
         "expected_previous_latest": dict(trust_context["latest_accepted_baselines"]),
         "accepted": units,
         "initial": {mode: unit["initial_baseline"] or unit for mode, unit in units.items()},

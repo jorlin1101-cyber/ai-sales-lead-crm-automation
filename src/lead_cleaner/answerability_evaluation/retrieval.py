@@ -37,6 +37,7 @@ def run_retrieval(dataset: dict[str, Any]) -> list[dict[str, Any]]:
             turn = case["turns"][0]
             for path in PATHS:
                 row: dict[str, Any] = {
+                    "protocol_id": dataset.get("protocol_id", "p0-02.v1"),
                     "case_id": case["case_id"],
                     "turn_id": turn["turn_id"],
                     "path": path,

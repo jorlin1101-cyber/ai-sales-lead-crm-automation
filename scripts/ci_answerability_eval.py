@@ -6,10 +6,12 @@ import subprocess
 from pathlib import Path
 
 from lead_cleaner.answerability_evaluation.cli import main
-from lead_cleaner.answerability_evaluation.trust import git, trusted_json
+from lead_cleaner.answerability_evaluation.trust import git, safe_relative, trusted_json
+from lead_cleaner.answerability_evaluation.registry import ACTIVE_PROTOCOL, protocol_spec
 
-PROTOCOL = "config/quality_answerability.v1.json"
-INDEX = "config/quality_answerability_baseline_index.v1.json"
+PROTOCOL = protocol_spec(ACTIVE_PROTOCOL)["policy_path"]
+INDEX = protocol_spec(ACTIVE_PROTOCOL)["index_path"]
+TRUST = protocol_spec(ACTIVE_PROTOCOL)["trust_path"]
 
 
 def run_ci() -> int:
@@ -30,16 +32,48 @@ def run_ci() -> int:
     accepted = {}
     if exists:
         protocol = trusted_json(root, reference, PROTOCOL)
-        if protocol.get("protocol_id") != "p0-02.v1":
+        if protocol.get("protocol_id") != ACTIVE_PROTOCOL:
             raise ValueError("invalid accepted answerability protocol")
         index = trusted_json(root, reference, INDEX)
-        if index.get("protocol_id") != "p0-02.v1":
+        if index.get("protocol_id") != ACTIVE_PROTOCOL:
             raise ValueError("invalid accepted answerability index protocol")
         accepted = index["accepted"]
-        if not isinstance(accepted, dict) or any(
-            mode not in {"rule_only", "mocked_model"} for mode in accepted
+        trust = trusted_json(root, reference, TRUST)
+        latest = trust.get("latest_accepted_baselines")
+        registered = trust.get("accepted_baselines")
+        if (
+            trust.get("protocol_id") != ACTIVE_PROTOCOL
+            or not isinstance(accepted, dict)
+            or not isinstance(latest, dict)
+            or not isinstance(registered, dict)
+            or set(accepted) != set(latest)
+            or not set(accepted) <= {"rule_only", "mocked_model"}
+            or registered
+            and not latest
         ):
-            raise ValueError("invalid accepted answerability baseline index")
+            raise ValueError("trusted baseline index and acceptance registry disagree")
+        identities = set()
+        for mode, entry in accepted.items():
+            record = (
+                trusted_json(root, reference, safe_relative(entry))
+                if isinstance(entry, str)
+                else entry
+            )
+            if not isinstance(record, dict):
+                raise ValueError("invalid trusted baseline record")
+            identity, manifest = record.get("acceptance_id"), record.get("manifest_hash")
+            if (
+                record.get("protocol_id") != ACTIVE_PROTOCOL
+                or not isinstance(identity, str)
+                or not identity
+                or not isinstance(manifest, str)
+                or not manifest
+                or latest[mode] != identity
+                or registered.get(identity) != manifest
+                or identity in identities
+            ):
+                raise ValueError("trusted baseline record is not the registered latest acceptance")
+            identities.add(identity)
     exits = []
     prefix = ["--project-root", str(root)]
     for mode in ("rule_only", "mocked_model"):

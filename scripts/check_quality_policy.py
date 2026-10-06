@@ -60,12 +60,17 @@ def main() -> int:
     names = git("ls-tree", "-r", "--name-only", ref).decode().splitlines()
     # Read only the fixed path from the accepted main tree. Candidate files and
     # command-line arguments cannot opt out of an accepted supplementary policy.
-    supplementary = "config/quality_answerability.v1.json"
-    if supplementary in names:
+    for supplementary, protocol_id in (
+        ("config/quality_answerability.v1.json", "p0-02.v1"),
+        ("config/quality_answerability.v2.json", "p0-02.v2"),
+    ):
+        if supplementary not in names:
+            continue
         extra = json.loads(git("show", f"{ref}:{supplementary}"))
         additions = extra["protected_patterns"]
         if (
-            not isinstance(additions, list)
+            extra.get("protocol_id") != protocol_id
+            or not isinstance(additions, list)
             or not additions
             or any(not isinstance(pattern, str) or not pattern for pattern in additions)
         ):

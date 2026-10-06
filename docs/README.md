@@ -34,6 +34,9 @@
 | [P0-02 无答案与部分答案评测计划](p0-02-answerability-design.md) | 三态与答案要点、独立评测协议、24 场景、28 项验收及基线接纳设计 |
 | [P0-02 业务复核包](p0-02-business-review-pack.md) | 24 个新增场景的具体问题、答案范围和资料依据；确认状态单独记录 |
 | [P0-02 开发与验收记录](p0-02-implementation-acceptance.md) | 实际测试、28 项逐条核对、运行方法和待完成的正式接纳条件 |
+| [P0-02 产品手册对齐与重新验收计划](p0-02-handbook-alignment-plan.md) | 本轮 v2 实施依据：原手册案例、专项隔离、版本化重测与20项验收 |
+| [P0-02 v2 中文业务复核包](p0-02-business-review-pack-v2.md) | 24场景逐轮中文解释、原手册引用、应答范围和待确认标签 |
+| [P0-02 v2 开发与逐项验收](p0-02-handbook-alignment-acceptance.md) | 本轮实测证据、20项状态、原版本兼容与未完成的正式接纳条件 |
 | [P0-01 业务案例复核包](p0-01-business-review-pack.md) | 22 场景的业务要求、实测结果及已确认记录 |
 | [P0-01 二次审核](p0-01-second-review-2026-10-04.md) | 代码回放和资料研究形成的 8 项修订；已纳入最终方案 |
 | [P0-01 原详细设计](p0-01-baseline-and-failure-cases-design.md) | 历史设计，保留作审查依据；后续开发以最终方案为准 |
@@ -46,6 +49,6 @@
 2. `src/lead_cleaner/services/policy_v1.py`
 3. `src/lead_cleaner/config.py`
 4. `tests/`
-5. 质量评测的 `src/lead_cleaner/evaluation/`、`config/quality*.json` 以及经真实来源核验和接纳的 `reports/quality/` 记录；单份配置或 CI 成功不等于业务发布批准
+5. 质量评测的 `src/lead_cleaner/evaluation/`、`src/lead_cleaner/answerability_evaluation/`、`config/quality*.json` 以及经真实来源核验和接纳的 `reports/quality/` 记录；单份配置或 CI 成功不等于业务发布批准
 
 如果文档和代码不一致，应先修正文档和测试，再提交改动。

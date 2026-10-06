@@ -12,8 +12,9 @@ from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
-from .reports import ReportError, load_run, parse_json
-from .trust import TRUST_PATH, git, safe_relative, trusted_json
+from .registry import protocol_spec
+from .reports import V2_BINDINGS, ReportError, load_run, parse_json
+from .trust import git, require_protocol_trust, safe_relative, trusted_json
 
 PROVENANCE_FIELDS = (
     "repository",
@@ -33,9 +34,11 @@ def verify_github_artifacts(
     entries: list[dict[str, Any]],
     *,
     getter: Callable[[str], bytes] | None = None,
+    protocol_id: str = "p0-02.v1",
 ) -> list[dict[str, Any]]:
-    trust = trusted_json(root, trusted_ref, TRUST_PATH)
-    if trust.get("protocol_id") != "p0-02.v1":
+    spec = protocol_spec(protocol_id)
+    trust = trusted_json(root, trusted_ref, spec["trust_path"])
+    if trust.get("protocol_id") != protocol_id:
         raise ReportError("Artifact trust uses a different protocol")
     repository = trust.get("repository", "")
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
@@ -58,6 +61,13 @@ def verify_github_artifacts(
         ):
             raise ReportError("Incomplete or wrong-repository provenance")
         run = load_run(entry["directory"])
+        if run["metadata"]["protocol_id"] != protocol_id:
+            raise ReportError("Artifact report belongs to a different protocol")
+        if protocol_id == "p0-02.v2" and any(
+            field in provenance and provenance[field] != run["metadata"][field]
+            for field in ("protocol_id", *V2_BINDINGS)
+        ):
+            raise ReportError("Artifact source/group binding mismatch")
         if (
             provenance["manifest_hash"] in seen
             or run["manifest_hash"] != provenance["manifest_hash"]
@@ -130,13 +140,19 @@ def verify_github_artifacts(
                         raise ReportError("Artifact report bytes differ")
         except (zipfile.BadZipFile, KeyError) as exc:
             raise ReportError("Invalid artifact ZIP") from exc
-        verified.append({field: provenance[field] for field in PROVENANCE_FIELDS})
+        receipt = {field: provenance[field] for field in PROVENANCE_FIELDS}
+        if protocol_id == "p0-02.v2":
+            receipt.update(
+                {field: run["metadata"][field] for field in ("protocol_id", *V2_BINDINGS)}
+            )
+        verified.append(receipt)
     return verified
 
 
 def require_verified_artifact(
     run: Mapping[str, Any], trust_context: Mapping[str, Any]
 ) -> dict[str, Any]:
+    require_protocol_trust(run["metadata"], trust_context, required=True)
     matches = [
         p
         for p in trust_context.get("verified_artifacts", [])
@@ -146,6 +162,11 @@ def require_verified_artifact(
         len(matches) != 1
         or any(matches[0].get(field) in (None, "") for field in PROVENANCE_FIELDS)
         or matches[0]["tested_commit"] != run["metadata"]["tested_commit"]
+        or run["metadata"]["protocol_id"] == "p0-02.v2"
+        and any(
+            matches[0].get(field) != run["metadata"][field]
+            for field in ("protocol_id", *V2_BINDINGS)
+        )
     ):
         raise ReportError(
             "Formal acceptance requires independently provider-verified artifact bytes"

@@ -572,3 +572,55 @@ def test_same_output_claim_cannot_inflate_citation_counts(example):
     review["claims"].append(duplicate)
     with pytest.raises(ValueError, match="counted twice"):
         adjudicate_claims(obs, turn, snapshot, review)
+
+
+def test_v2_review_requires_its_own_rubric_and_identity(example):
+    turn, snapshot, obs, review = example
+    obs["protocol_id"] = "p0-02.v2"
+    review["observation_hash"] = content_hash(obs)
+    with pytest.raises(ValueError, match="rubric"):
+        adjudicate_claims(obs, turn, snapshot, review)
+    review["rubric_version"] = "answerability-rubric.v2"
+    assert all(
+        r["behavior_status"] == "pass" for r in score_observation(turn, snapshot, obs, review)
+    )
+    data = {
+        "protocol_id": "p0-02.v2",
+        "cases": [{"case_id": "AB01", "snapshot_id": "s", "turns": [turn]}],
+        "snapshots": {"s": snapshot},
+    }
+    assert all(r["protocol_id"] == "p0-02.v2" for r in evaluate_assertions(data, [obs]))
+    obs["protocol_id"] = "p0-02.v1"
+    with pytest.raises(ValueError, match="protocol"):
+        evaluate_assertions(data, [obs])
+
+
+def test_policy_conflict_is_scoped_to_exact_source_interval(example):
+    turn, snapshot, obs, review = example
+    original = obs["reply_text"]
+    appendix = " Balance due before arrival."
+    full = original + appendix
+    digest = hashlib.sha256(full.encode()).hexdigest()
+    snapshot["chunks"][0]["chunk"]["text"] = full
+    snapshot["chunks"][0]["sha256"] = digest
+    snapshot["policy_conflicts"] = [
+        {
+            "status": "unresolved",
+            "evidence": [{"chunk_id": "A", "start": len(original), "end": len(full)}],
+        }
+    ]
+    obs["provided_context"][0]["text"] = full
+    review["observation_hash"] = content_hash(obs)
+    review["claims"][0]["evidence_refs"][0]["sha256"] = digest
+    # Adjacent evidence in the same complete source chunk is still usable.
+    assert all(
+        r["behavior_status"] == "pass" for r in score_observation(turn, snapshot, obs, review)
+    )
+    ref = review["claims"][0]["evidence_refs"][0]
+    ref.update(start=0, end=len(full), quote=full)
+    with pytest.raises(ValueError, match="conflicting policy interval"):
+        adjudicate_claims(obs, turn, snapshot, review)
+    # Unsupported/contradicted output can be recorded, never silently approved.
+    review["claims"][0]["verdict"] = "contradicted"
+    review["answered_facets"] = []
+    assert score_observation(turn, snapshot, obs, review)[3]["behavior_status"] == "fail"

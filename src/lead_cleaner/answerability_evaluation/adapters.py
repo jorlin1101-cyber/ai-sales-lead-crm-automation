@@ -117,9 +117,34 @@ class ControlledClient:
         pass
 
 
+class DeclarativeControlledClient(ControlledClient):
+    """V2 skips headings/questions in output, while recording every actual input."""
+
+    @staticmethod
+    def respond(payload: dict[str, Any]) -> dict[str, Any]:
+        if "evidence" not in payload:
+            return {"updates": []}
+        candidates = [
+            unit
+            for unit in payload["evidence"]
+            if unit["quote"].strip()
+            and not unit["quote"].lstrip().startswith("#")
+            and "?" not in unit["quote"]
+            and "？" not in unit["quote"]
+        ]
+        # Empty paragraphs deliberately reach the real output validator/fallback.
+        return {
+            "paragraphs": [
+                {"evidence_id": unit["evidence_id"], "text": unit["quote"][:600]}
+                for unit in candidates[:3]
+            ]
+        }
+
+
 class ObservedLLM(QwenConversationLLM):
-    def __init__(self, recorder: dict[str, Any]):
-        super().__init__(ControlledClient(recorder), "controlled-evidence-extractor")  # type: ignore[arg-type]
+    def __init__(self, recorder: dict[str, Any], protocol_id: str = "p0-02.v1"):
+        client_type = DeclarativeControlledClient if protocol_id == "p0-02.v2" else ControlledClient
+        super().__init__(client_type(recorder), "controlled-evidence-extractor")  # type: ignore[arg-type]
         self.recorder = recorder
 
     def _observe(self, name: str, operation: Any) -> Any:
@@ -294,7 +319,7 @@ def run_observations(
                             app.state.rag_retriever, recorder
                         )
                         if mode == "mocked_model":
-                            llm = ObservedLLM(recorder)
+                            llm = ObservedLLM(recorder, dataset["protocol_id"])
                             app.state.conversation_llm = llm
                         for turn in case["turns"]:
                             current = by_key[(case["case_id"], turn["turn_id"])]

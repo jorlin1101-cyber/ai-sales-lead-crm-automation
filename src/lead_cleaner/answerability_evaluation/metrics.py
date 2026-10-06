@@ -6,6 +6,8 @@ import math
 from collections import defaultdict
 from typing import Any
 
+from lead_cleaner.answerability_evaluation.registry import protocol_spec
+
 
 def ratio(
     numerator: float,
@@ -186,7 +188,7 @@ def task_ratio(
     return result
 
 
-def summarize_replies(
+def _summarize_replies(
     dataset: dict[str, Any], observations: list[dict[str, Any]], assertions: list[dict[str, Any]]
 ) -> dict[str, Any]:
     """Keep turn, facet and claim coverage separate; never equate errors with refusal."""
@@ -308,3 +310,104 @@ def summarize_replies(
         unadjudicated_turns=planned - totals["reviewed_turns"],
     )
     return result
+
+
+GROUP_NAMES = ("handbook", "synthetic_special")
+RETRIEVAL_PATHS = ("raw_query", "runtime_rule_query", "runtime_fused_query")
+
+
+def grouped_cases(dataset: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+    groups: dict[str, list[dict[str, Any]]] = {name: [] for name in GROUP_NAMES}
+    for case in dataset["cases"]:
+        group = case.get("evaluation_group")
+        if group not in groups:
+            raise ValueError("Every v2 case needs an explicitly supported evaluation group")
+        groups[group].append(case)
+    return groups
+
+
+def summarize_replies(
+    dataset: dict[str, Any], observations: list[dict[str, Any]], assertions: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """V2 never turns synthetic robustness fixtures into a mixed product accuracy."""
+    protocol_spec(dataset.get("protocol_id", "p0-02.v1"))
+    if dataset.get("protocol_id", "p0-02.v1") == "p0-02.v1":
+        return _summarize_replies(dataset, observations, assertions)
+    groups = {}
+    for name, cases in grouped_cases(dataset).items():
+        identifiers = {case["case_id"] for case in cases}
+        values = _summarize_replies(
+            {**dataset, "cases": cases},
+            [o for o in observations if o["case_id"] in identifiers],
+            [a for a in assertions if a["case_id"] in identifiers],
+        )
+        for state in ("answerable", "partial", "unanswerable"):
+            values.setdefault("state:" + state, task_ratio(0, 0))
+        values.setdefault("all", task_ratio(0, 0))
+        groups[name] = values
+    return {"groups": groups, "cross_group_accuracy": "not_computed"}
+
+
+def aggregate_metrics(
+    dataset: dict[str, Any],
+    observations: list[dict[str, Any]],
+    assertions: list[dict[str, Any]],
+    retrieval: list[dict[str, Any]],
+    mode: str,
+) -> dict[str, Any]:
+    applicability = "applicable" if mode == "rule_only" else "not_applicable"
+    replies = summarize_replies(dataset, observations, assertions)
+    if dataset.get("protocol_id", "p0-02.v1") == "p0-02.v1":
+        return {
+            "replies": replies,
+            "retrieval": summarize_retrieval(retrieval),
+            "retrieval_applicability": applicability,
+        }
+    if mode not in {"rule_only", "mocked_model"} or mode == "mocked_model" and retrieval:
+        raise ValueError("Independent retrieval applies only to rule_only")
+    planned = (
+        {
+            (case["case_id"], path): case["turns"][0]
+            for case in dataset["cases"]
+            if len(case["turns"]) == 1
+            for path in RETRIEVAL_PATHS
+        }
+        if mode == "rule_only"
+        else {}
+    )
+    retrieved = {(row["case_id"], row["path"]): row for row in retrieval}
+    if len(retrieved) != len(retrieval) or not set(retrieved) <= set(planned):
+        raise ValueError("Unexpected or duplicate retrieval identities in group summary")
+    groups = {}
+    for name, cases in grouped_cases(dataset).items():
+        identifiers = {case["case_id"] for case in cases}
+        rows = []
+        for (case_id, path), turn in planned.items():
+            if case_id in identifiers:
+                rows.append(
+                    retrieved.get(
+                        (case_id, path),
+                        {
+                            "case_id": case_id,
+                            "path": path,
+                            "execution_status": "not_run",
+                            "metrics": score_retrieval(turn, [], execution_status="not_run"),
+                        },
+                    )
+                )
+        groups[name] = {
+            "counts": {
+                "case_count": len(cases),
+                "turn_count": sum(len(c["turns"]) for c in cases),
+                "retrieval_units": len(rows),
+                "observed_turn_count": sum(o["case_id"] in identifiers for o in observations),
+                "observed_retrieval_units": sum(r["case_id"] in identifiers for r in retrieval),
+            },
+            "replies": replies["groups"][name],
+            "retrieval": summarize_retrieval(rows),
+        }
+    return {
+        "groups": groups,
+        "cross_group_accuracy": "not_computed",
+        "retrieval_applicability": applicability,
+    }

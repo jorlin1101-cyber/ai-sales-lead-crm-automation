@@ -8,7 +8,8 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-from .reports import OBSERVATION_FIELDS, ReportError, content_hash, key, parse_json
+from .registry import protocol_spec
+from .reports import OBSERVATION_FIELDS, ReportError, content_hash, key, parse_json, group_binding
 
 TRUST_PATH = "config/quality_answerability_trust.v1.json"
 ISSUES_PATH = "config/quality_answerability_known_issues.v1.json"
@@ -66,16 +67,68 @@ def verify_protected_files(root: Path, trusted_ref: str) -> dict[str, Any]:
     return {"trusted_ref": trusted_ref, "guard_output": result.stdout.strip()}
 
 
-def load_trust_context(root: Path, trusted_ref: str) -> dict[str, Any]:
-    value = trusted_json(root, trusted_ref, TRUST_PATH)
-    if value.get("protocol_id") != "p0-02.v1":
+def load_trust_context(
+    root: Path, trusted_ref: str, protocol_id: str = "p0-02.v1"
+) -> dict[str, Any]:
+    spec = protocol_spec(protocol_id)
+    value = trusted_json(root, trusted_ref, spec["trust_path"])
+    if value.get("protocol_id") != protocol_id:
         raise ReportError("Trust configuration belongs to a different protocol")
-    issues = trusted_json(root, trusted_ref, ISSUES_PATH)["issues"]
+    issue_file = trusted_json(root, trusted_ref, spec["issues_path"])
+    if issue_file.get("protocol_id", "p0-02.v1") != protocol_id:
+        raise ReportError("Known issues belong to a different protocol")
+    issues = issue_file["issues"]
     return value | {
         "trusted_ref": trusted_ref,
         "known_issues_hash": content_hash(issues),
         "verified_artifacts": [],
     }
+
+
+def require_protocol_trust(
+    metadata: Mapping[str, Any], trust_context: Mapping[str, Any], *, required: bool = False
+) -> None:
+    protocol_id = metadata["protocol_id"]
+    trusted_protocol = trust_context.get("protocol_id")
+    if (
+        trusted_protocol is not None
+        and trusted_protocol != protocol_id
+        or (protocol_id == "p0-02.v2" and required and trusted_protocol != protocol_id)
+    ):
+        raise ReportError("Trusted authority belongs to a different or missing protocol")
+
+
+def validate_review_dataset(run: Mapping[str, Any], dataset: Mapping[str, Any]) -> None:
+    metadata = run["metadata"]
+    fields: tuple[str, ...] = ("dataset_hash", "knowledge_hash")
+    if metadata["protocol_id"] == "p0-02.v2":
+        fields += ("source_manifest_hash",)
+        if dataset.get("protocol_id") != metadata["protocol_id"]:
+            raise ReportError("Semantic review dataset protocol differs")
+        if (
+            dataset.get("source_manifest") != metadata["source_manifest"]
+            or content_hash(dataset.get("source_manifest")) != metadata["source_manifest_hash"]
+        ):
+            raise ReportError("Semantic review source manifest differs from the sealed evidence")
+        sources = {
+            c["case_id"]: {
+                field: c[field] for field in ("scenario_origin", "corpus_origin", "snapshot_id")
+            }
+            for c in dataset["cases"]
+        }
+        binding = {
+            "evaluation_groups": metadata["evaluation_groups"],
+            "case_groups": {c["case_id"]: c["evaluation_group"] for c in dataset["cases"]},
+            "case_sources": sources,
+            "source_manifest_hash": dataset.get("source_manifest_hash"),
+        }
+        if (
+            binding != group_binding(metadata)
+            or content_hash(binding) != metadata["group_source_hash"]
+        ):
+            raise ReportError("Semantic review source groups differ from the frozen dataset")
+    if any(dataset.get(field) != metadata.get(field) for field in fields):
+        raise ReportError("Semantic review requires the independently loaded matching dataset")
 
 
 def effective_assertions(
@@ -88,6 +141,7 @@ def effective_assertions(
     fixed = dict(review_set) if review_set is not None else EMPTY_REVIEW_SET
     reviews = fixed.get("reviews")
     digest = content_hash(fixed)
+    require_protocol_trust(run["metadata"], trust_context, required=bool(reviews))
     if not isinstance(reviews, list) or not fixed.get("review_set_id"):
         raise ReportError("Invalid fixed review set")
     if reviews and digest not in trust_context.get("accepted_review_set_hashes", []):
@@ -115,6 +169,13 @@ def effective_assertions(
         if identifier in records or review.get("verdict") not in {"pass", "fail", "needs_review"}:
             raise ReportError("Duplicate review or invalid verdict")
         identity = key(review.get("key", []))
+        if identity[0] != run["metadata"]["protocol_id"]:
+            raise ReportError("Review set cannot cross protocol versions")
+        if run["metadata"]["protocol_id"] == "p0-02.v2" and any(
+            review.get(field) != run["metadata"][field]
+            for field in ("source_manifest_hash", "group_source_hash")
+        ):
+            raise ReportError("Review source/group binding mismatch")
         records[identifier] = review
         if review["run_manifest_hash"] != run["manifest_hash"]:
             continue
@@ -179,13 +240,11 @@ def effective_assertions(
         }:
             from .checks import expected_keys, score_observation
 
-            if dataset is None or any(
-                dataset.get(field) != run["metadata"].get(field)
-                for field in ("dataset_hash", "knowledge_hash")
-            ):
+            if dataset is None:
                 raise ReportError(
                     "Semantic review requires the independently loaded matching dataset"
                 )
+            validate_review_dataset(run, dataset)
             if expected_keys(dataset, run["metadata"]["mode"]) != run["metadata"]["expected_keys"]:
                 raise ReportError("Semantic review dataset has different planned assertions")
             semantics = [r.get("semantic") for r in judgments]

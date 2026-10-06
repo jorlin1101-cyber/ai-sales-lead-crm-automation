@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 
 from lead_cleaner.answerability_evaluation.reports import load_run
+from lead_cleaner.answerability_evaluation.registry import ACTIVE_PROTOCOL
 
 
 def main() -> None:
@@ -28,6 +29,8 @@ def main() -> None:
         if args.out.resolve().is_relative_to(marker.parent.resolve()):
             raise ValueError("provenance index must remain outside sealed reports")
         run = load_run(marker.parent)
+        if run["metadata"].get("protocol_id") != ACTIVE_PROTOCOL:
+            raise ValueError("artifact index must contain only the active protocol")
         records.append(
             {
                 "directory": str(marker.parent),
@@ -49,7 +52,7 @@ def main() -> None:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open("x", encoding="utf-8") as stream:
         json.dump(
-            {"schema_version": "answerability-provenance.v1", "reports": records},
+            {"schema_version": "answerability-provenance.v2", "reports": records},
             stream,
             ensure_ascii=False,
             indent=2,

@@ -246,3 +246,104 @@ class CaseBundle(StrictRecord):
 class KnowledgeBundle(StrictRecord):
     schema_version: Literal["answerability-knowledge.v1"]
     snapshots: dict[str, Snapshot]
+
+
+# V2 is explicit: loading a V1 document never supplies these defaults retroactively.
+CorpusOrigin = Literal["original_handbook", "synthetic_fixture"]
+EvaluationGroup = Literal["handbook", "synthetic_special"]
+
+
+class FacetV2(Facet):
+    policy_conflict_ids: list[str] = Field(default_factory=list)
+
+
+class TurnV2(Turn):
+    message_zh: str = Field(min_length=1)
+    facets: list[FacetV2] = Field(min_length=1)  # type: ignore[assignment]
+
+
+class CaseV2(Case):
+    case_version: Literal[2]
+    scenario_origin: Literal["synthetic_question"]
+    corpus_origin: CorpusOrigin
+    evaluation_group: EvaluationGroup
+    turns: list[TurnV2] = Field(min_length=1)  # type: ignore[assignment]
+
+    @model_validator(mode="after")
+    def origin_agrees_with_group(self) -> Self:
+        expected = {"handbook": "original_handbook", "synthetic_special": "synthetic_fixture"}
+        if self.corpus_origin != expected[self.evaluation_group]:
+            raise ValueError("case knowledge origin disagrees with evaluation group")
+        return self
+
+
+class ConflictEvidence(EvidenceRef):
+    claim_value: str = Field(min_length=1)
+
+
+class PolicyConflict(StrictRecord):
+    conflict_id: str = Field(min_length=1)
+    facet_id: str = Field(min_length=1)
+    status: Literal["unresolved"]
+    rationale: str = Field(min_length=1)
+    evidence: list[ConflictEvidence] = Field(min_length=2)
+
+
+class SnapshotV2(Snapshot):
+    corpus_origin: CorpusOrigin
+    source_manifest_id: str | None
+    construction_purpose: str | None
+    policy_conflicts: list[PolicyConflict] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def explicit_source(self) -> Self:
+        if self.corpus_origin == "original_handbook":
+            if not self.source_manifest_id or self.construction_purpose is not None:
+                raise ValueError("handbook requires its manifest and no fabricated construction")
+        elif self.source_manifest_id is not None or not self.construction_purpose:
+            raise ValueError("special snapshot requires its explicit construction purpose")
+        return self
+
+
+class CaseBundleV2(StrictRecord):
+    schema_version: Literal["answerability-cases.v2"]
+    protocol_id: Literal["p0-02.v2"]
+    dataset_version: Literal["p0-02-cases.v2"]
+    cases: list[CaseV2] = Field(min_length=1)
+
+
+class KnowledgeBundleV2(StrictRecord):
+    schema_version: Literal["answerability-knowledge.v2"]
+    snapshots: dict[str, SnapshotV2]
+
+
+class SourceFile(StrictRecord):
+    lf_normalized_file_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    canonical_json_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class ChunkSource(StrictRecord):
+    chunk_id: str = Field(min_length=1)
+    notion_page_id: str = Field(min_length=1)
+    source_file: Literal["data/knowledge_snapshot/knowledge_chunks.json"]
+    source_index: int = Field(ge=0, strict=True)
+    exact_chunk_text_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    production_record_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    page_file: Literal["data/knowledge_snapshot/notion_pages.json"]
+    page_index: int = Field(ge=0, strict=True)
+    page_text_start: int = Field(ge=0, strict=True)
+    page_text_end: int = Field(gt=0, strict=True)
+    page_quote: str = Field(min_length=1)
+
+
+class SourceManifest(StrictRecord):
+    schema_version: Literal["answerability-source-manifest.v2"]
+    manifest_id: Literal["original-handbook.v2"]
+    legacy_fact_probe_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    case_migration_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    source_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    files: dict[str, SourceFile]
+    page_count: Literal[8]
+    chunk_count: Literal[47]
+    chunk_order: list[str] = Field(min_length=47, max_length=47)
+    chunks: list[ChunkSource] = Field(min_length=47, max_length=47)
