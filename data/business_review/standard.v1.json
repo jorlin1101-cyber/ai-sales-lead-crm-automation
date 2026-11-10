@@ -1,0 +1,50 @@
+{
+  "version": "sales-review.v1",
+  "protocol": "p0-02.v2",
+  "dimensions": {
+    "answer_content": "判断客户提出的每一个问题是否得到正确答复，已知与待核实事项分别检查。",
+    "grounding": "核对客户事实的来源轮次、手册原文、条款适用范围与时点，检查是否存在无依据的承诺。",
+    "clarification": "回答可答部分，指出待核实事项与责任方，仅追问当前任务缺少且尚未提供的信息。"
+  },
+  "grades": [
+    "pass",
+    "partial",
+    "fail"
+  ],
+  "revisions": [
+    {
+      "case_id": "AB10",
+      "turn_id": "T1",
+      "facet_id": "current_price",
+      "frozen_label": "partial",
+      "review_label": "answerable",
+      "direct": "点名的 9 月每人 99 元活动能否沿用，按当轮时点及专项条款可以直接判断。",
+      "verify": "当前报价及其他活动须另询销售。",
+      "reason": "原标签将明确的历史活动有效期和未知的当前价格合并。客户本轮只问旧活动是否仍适用。",
+      "review_state": "ai_reviewed"
+    },
+    {
+      "case_id": "AB16",
+      "turn_id": "T1",
+      "facet_id": "current_price",
+      "frozen_label": "unanswerable",
+      "review_label": "answerable",
+      "direct": "点名的 9 月每人 99 元活动能否沿用，按当轮时点及专项条款可以直接判断。",
+      "verify": "当前报价及其他活动须另询销售。",
+      "reason": "原标签将明确的历史活动有效期和未知的当前价格合并。客户本轮只问旧活动是否仍适用。",
+      "review_state": "ai_reviewed"
+    }
+  ],
+  "confirmed_scope": [
+    {
+      "case_id": "AB07",
+      "turn_id": "T1",
+      "facet_ids": [
+        "child_conditions",
+        "child_price"
+      ],
+      "scope": "未满 12 岁且与父母同住可按儿童优惠办理，具体金额由销售核实。",
+      "review_state": "user_confirmed"
+    }
+  ]
+}
