@@ -16,7 +16,7 @@ def test_specific_inquiries_select_claims_and_use_confirmed_dates(mode, tmp_path
     dataset["cases"] = [
         c
         for c in dataset["cases"]
-        if c["case_id"] in {"AB01", "AB03", "AB07", "AB09", "AB19", "AB23"}
+        if c["case_id"] in {"AB01", "AB03", "AB07", "AB09", "AB19", "AB20", "AB22", "AB23"}
     ]
     messages = {
         "AB03": ["订金要付几成，what payment methods do you accept?"],
@@ -60,6 +60,17 @@ def test_specific_inquiries_select_claims_and_use_confirmed_dates(mode, tmp_path
     assert len(price["source_ids"]) == 2 and not price["open_questions"]
     if mode == "mocked_model":
         assert pay["generation_method"] == price["generation_method"] == "llm_grounded"
+    exclusions = draft["AB20", "T3"]
+    assert all(
+        item in exclusions["body_text"].lower()
+        for item in ["flights", "visa fees", "tips", "personal expenses", "travel insurance"]
+    )
+    assert exclusions["source_ids"] == ["chunk_88e6a3c65309"] and not exclusions["open_questions"]
+    zh_exclusions = draft["AB22", "T3"]
+    assert all(
+        item in zh_exclusions["body_text"]
+        for item in ["机票", "签证费", "小费", "个人消费", "旅行保险"]
+    )
     conditional = draft["AB09", "T1"]
     assert (
         "Kunming Airport" in conditional["body_text"]

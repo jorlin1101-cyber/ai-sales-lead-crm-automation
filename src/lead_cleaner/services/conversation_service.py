@@ -26,7 +26,7 @@ from lead_cleaner.services.conversation_rag import (
     build_conversation_context_query,
     route_conversation_retrieval,
 )
-from lead_cleaner.services.inquiry_evidence import find_points, point_guidance
+from lead_cleaner.services.inquiry_evidence import GENERAL_TOPICS, find_points, point_guidance
 from lead_cleaner.services.conversation_reply_composer import (
     ConversationKnowledgePlan,
     build_knowledge_plan,
@@ -456,7 +456,9 @@ class ConversationService:
                     if len(retriever.queries) < 8 and not find_points(
                         (topic,), retriever.captured_chunks, destination
                     ):
-                        outcome = retriever.retrieve_topic(topic.query, destination)
+                        outcome = retriever.retrieve_topic(
+                            topic.query, None if topic.key in GENERAL_TOPICS else destination
+                        )
                 chunks = select_grounding_chunks(
                     retriever.captured_chunks, plan, language=language, destination=destination
                 )

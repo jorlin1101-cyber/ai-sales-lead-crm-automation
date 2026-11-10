@@ -26,6 +26,9 @@ class Topic:
     label_en: str
 
 
+GENERAL_TOPICS = frozenset({"deposit", "payment_methods", "pricing_basis", "quote_exclusions"})
+
+
 TOPICS = (
     Topic(
         "pricing_basis",
@@ -87,7 +90,7 @@ TOPICS = (
         "quote_exclusions",
         r"(?:不含|不包括|排除|另付).{0,12}(?:费用|机票|保险)|(?:机票|保险).{0,22}(?:包含|包括)|(?:哪些|什么).{0,9}(?:不含|排除)|exclud(?:ed|es|sions?)|(?:flight|insurance).{0,30}(?:included|cover)",
         r"excluded items|不含项|不含.{0,34}(?:保险|航班|机票)",
-        "quotation notes excluded items flights travel insurance visa tips personal expenses",
+        "quotation notes",
         "报价不含项",
         "Quotation exclusions",
     ),
@@ -131,14 +134,7 @@ def find_points(
         ranked = sorted(
             eligible,
             key=lambda c: (
-                bool(region)
-                and c.region
-                != (
-                    "general"
-                    if topic.key
-                    in {"deposit", "payment_methods", "pricing_basis", "quote_exclusions"}
-                    else region
-                ),
+                bool(region) and c.region != ("general" if topic.key in GENERAL_TOPICS else region),
                 c.rank,
                 -c.score,
                 c.chunk_id,
@@ -174,6 +170,10 @@ def point_chunks(points: list[SupportedPoint], limit: int = 3) -> list[Retrieved
 
 
 def _only_requested_clause(topic: Topic, text: str) -> str:
+    if topic.key == "quote_exclusions":
+        exclusions = re.search(r"excluded items\s*\(([^)]*)\)", text, re.I)
+        if exclusions:
+            return exclusions.group()
     if topic.key == "deposit":
         for clause in re.split(r"(?<=[.!?。！？])\s+|(?<=[。！？])|[；;，]", text):
             if re.search(topic.source, clause, re.I):
@@ -183,6 +183,20 @@ def _only_requested_clause(topic: Topic, text: str) -> str:
 
 def display_quote(point: SupportedPoint, language: str) -> str:
     quote = point.quote
+    if point.topic.key == "quote_exclusions":
+        match = re.fullmatch(r"excluded items\s*\(([^)]+)\)", quote, re.I)
+        if match:
+            if language == "en":
+                return "The quotation excludes " + match[1].strip() + "."
+            terms = {
+                "flights": "机票",
+                "visa fees": "签证费",
+                "tips": "小费",
+                "personal expenses": "个人消费",
+                "travel insurance": "旅行保险",
+            }
+            items = [word.strip() for word in match[1].split(",")]
+            return "报价不包含" + "、".join(terms.get(item.lower(), item) for item in items) + "。"
     if language == "zh":
         under = re.search(
             r"children under (\d+) at reduced rate when sharing room with parents", quote, re.I
