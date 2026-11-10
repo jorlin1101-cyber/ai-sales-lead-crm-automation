@@ -7,7 +7,13 @@ from lead_cleaner.services.rule_feature_extractor import extract_group_size
 _CLAUSES = re.compile(
     r"[，,。！？!?；;\n]+|(?<=\.)\s+|\s+(?:and|but)\s+(?=we\b|is\b|does\b|what\b|how\b)", re.I
 )
-_COUNT = r"(?:\d{1,4}\s*(?:个?\s*[人位]|people\b|persons?\b|pax\b|guests?\b|travel(?:l)?ers?\b)|group of \d{1,4}\b)"
+_COUNT = r"(?:\d{1,4}\s*(?:个?\s*[人位]|of us\b|people\b|persons?\b|pax\b|guests?\b|travel(?:l)?ers?\b)|group of \d{1,4}\b)"
+_REPLACEMENT = re.compile(
+    rf"(?:{_COUNT}|人数从\s*\d{{1,4}})\s*(?:改为|改成|调整为|增加到|减少到|变为)\s*(?P<zh>\d{{1,4}})(?!\d)(?:个?[人位])?"
+    rf"|\b(?:changed?|changing|increased?|reduced?|updated?)\s+(?:(?:our|the)\s+(?:group|party)(?:\s+size)?\s+)?"
+    rf"from\s+{_COUNT}\s+to\s+(?P<en>\d{{1,4}})\b",
+    re.I,
+)
 _REJECTED_COUNT = re.compile(rf"(?:不是|并非|不是说|\bnot\s+(?:a\s+)?)\s*{_COUNT}", re.I)
 _GROUP_POLICY = re.compile(
     r"起订|起价|起算|起享|折扣|优惠|最低人数|起成团|\b(?:minimum|maximum|discount|threshold|qualify|eligible)\b",
@@ -54,7 +60,7 @@ def rejected_group_sizes(message: str) -> set[int | None]:
 def customer_group_text(message: str) -> str:
     clauses = customer_clauses(_REJECTED_COUNT.sub("", message))
     return " ".join(
-        clause
+        _REPLACEMENT.sub(lambda m: f" {m['zh'] or m['en']} people ", clause)
         for clause in clauses
         if not _CONDITIONAL.search(clause)
         and (not _GROUP_POLICY.search(clause) or _GROUP_DECLARATION.search(clause))
@@ -63,7 +69,8 @@ def customer_group_text(message: str) -> str:
 
 def group_correction(message: str) -> bool:
     return bool(
-        _REJECTED_COUNT.search(message) and extract_group_size(customer_group_text(message))[0]
+        (_REJECTED_COUNT.search(message) or _REPLACEMENT.search(message))
+        and extract_group_size(customer_group_text(message))[0]
     )
 
 
@@ -92,6 +99,7 @@ def slot_has_excluded_evidence(key: str, message: str) -> bool:
     if key == "group_size":
         return bool(
             _REJECTED_COUNT.search(message)
+            or _REPLACEMENT.search(message)
             or _GROUP_POLICY.search(message)
             or _CONDITIONAL.search(message)
         )
