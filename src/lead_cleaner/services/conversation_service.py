@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 import hashlib
+from datetime import date
+from collections.abc import Callable
 from typing import Any, Literal
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
@@ -41,6 +43,12 @@ from lead_cleaner.services.rule_feature_extractor import RuleFeatureExtractor, e
 from lead_cleaner.services.customer_assertions import (
     customer_group_text,
     slot_has_excluded_evidence,
+)
+from lead_cleaner.services.sales_handoff import (
+    assess_sales_review,
+    handoff_query,
+    publish_review,
+    requested_checks,
 )
 from lead_cleaner.services.service_preferences import extract_preferences
 from lead_cleaner.services.recommendation_generator import RecommendationGenerator
@@ -248,8 +256,11 @@ def _render_reply(
 
 
 class ConversationService:
-    def __init__(self, store: ConversationStore) -> None:
+    def __init__(
+        self, store: ConversationStore, *, business_date: Callable[[], date] = date.today
+    ) -> None:
         self.store = store
+        self.business_date = business_date
 
     def process_message(
         self,
@@ -435,6 +446,10 @@ class ConversationService:
             )
         )
         product = None
+        checks = (
+            requested_checks(request.message) if not suppressed and not security_blocked else set()
+        )
+        captured: list[RetrievedChunk] = []
         chunks: list[RetrievedChunk] = []
         queries: list[str] = []
         method = "skipped"
@@ -459,6 +474,9 @@ class ConversationService:
                         outcome = retriever.retrieve_topic(
                             topic.query, None if topic.key in GENERAL_TOPICS else destination
                         )
+                search = handoff_query(checks)
+                if search and len(retriever.queries) < 8:
+                    retriever.retrieve_focus(search)
                 chunks = select_grounding_chunks(
                     retriever.captured_chunks, plan, language=language, destination=destination
                 )
@@ -496,6 +514,7 @@ class ConversationService:
                         chunks = product_chunks + ([extra] if extra else [])
             except Exception:
                 method, reason = "unavailable", "retrieval_unavailable"
+            captured = retriever.captured_chunks
             queries = retriever.queries
         if product_requested and not product:
             chunks = [
@@ -503,6 +522,15 @@ class ConversationService:
                 for chunk in chunks
                 if chunk.region == "general" and chunk.doc_type != "product"
             ]
+        review = assess_sales_review(
+            checks, request.message, captured, facts, destination, language, self.business_date()
+        )
+        if review.notes:
+            points = find_points(current_plan.topics, captured, destination)
+            by_id = {c.chunk_id: c for c in [*review.sources, *(p.chunk for p in points)]}
+            chunks = list(by_id.values())[:3]
+            product = None
+            product_requested = False
         sources = sanitize_retrieved_sources(chunks)
         if analysis:
             analysis = analysis.model_copy(
@@ -561,13 +589,18 @@ class ConversationService:
                 llm_trace["generation"] = "succeeded"
             except ConversationLLMError as error:
                 llm_trace["generation"] = "fallback:" + error.code
+        if review.notes:
+            draft = publish_review(
+                review, draft, current_plan.topics, chunks, facts, language, request.message
+            )
+            questions = draft.open_questions
         if any(value.startswith("fallback:") for value in llm_trace.values()):
             draft = draft.model_copy(
                 update={
                     "internal_note": "本轮模型处理未完成，已使用规则/模板保留草稿，请人工复核。 / Model fallback; review required."
                 }
             )
-        if decision == "required" and not chunks:
+        if decision == "required" and not chunks and not review.notes:
             draft = draft.model_copy(
                 update={
                     "internal_note": "本轮缺少可用知识依据，需人工核实产品和报价规则。 / No usable evidence; verify product and pricing rules manually."
