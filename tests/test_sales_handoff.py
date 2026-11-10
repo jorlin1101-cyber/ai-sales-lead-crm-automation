@@ -17,7 +17,7 @@ from lead_cleaner.services.conversation_slots import fact
 def turns(request, tmp_path_factory):
     root = Path(__file__).resolve().parents[1]
     data = load_dataset(root, "p0-02.v2")
-    ids = {"AB10", "AB11", "AB15", "AB16", "AB17", "AB18", "AB20", "AB21", "AB24"}
+    ids = {"AB03", "AB10", "AB11", "AB15", "AB16", "AB17", "AB18", "AB20", "AB21", "AB24"}
     data["cases"] = [case for case in data["cases"] if case["case_id"] in ids]
     rows = run_observations(root, data, request.param, tmp_path_factory.mktemp(request.param))
     assert all(row["api_status"] == 200 for row in rows)
@@ -32,6 +32,12 @@ def test_expired_and_undated_promotions_are_distinct(turns):
     assert "ended" in expired and "sales" in expired
     undated = turns["AB17", "T1"]["reply_draft"]["body_text"].lower()
     assert "no verifiable validity" in undated and "ended" not in undated and "sales" in undated
+
+
+def test_deposit_and_payment_methods_do_not_imply_a_customer_order(turns):
+    reply = turns["AB03", "T1"]["reply_draft"]["body_text"].lower()
+    assert "30%" in reply and "paypal" in reply
+    assert "order record" not in reply and "booking completion" not in reply
 
 
 def test_both_conflicting_deadlines_are_cited_and_deposit_is_answered(turns):
@@ -139,3 +145,29 @@ def test_date_already_supplied_in_history_and_new_topic_switch():
     assert review.questions == []
     assert "库存" in " ".join(review.notes) and "订单" in " ".join(review.notes)
     assert not requested_checks("Leave hotel availability for later. What is the itinerary?")
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "What deposit percentage confirms a private-tour booking, and which payment methods are accepted?",
+        "Which documents do we need to confirm a reservation?",
+        "How much do I pay to confirm my booking?",
+        "请问需要交多少定金才能确认预订？",
+    ],
+)
+def test_general_booking_requirements_do_not_open_an_order_check(message):
+    assert "booking" not in requested_checks(message)
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "I paid a deposit. Is my reservation confirmed now?",
+        "Which deposit confirms a booking, and has our hotel room already been booked?",
+        "确认预订要交多少定金？我的订单已经确认了吗？",
+        "No supplier has confirmed a booking. Is it really confirmed?",
+    ],
+)
+def test_explicit_order_status_request_still_requires_evidence(message):
+    assert "booking" in requested_checks(message)

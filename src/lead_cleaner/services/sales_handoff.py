@@ -35,6 +35,24 @@ class SalesReview:
             self.sources.append(chunk)
 
 
+def _asks_order_status(clause: str) -> bool:
+    # A question about the steps to confirm a reservation asks for handbook policy.
+    if _has(
+        r"(?:what|which|how much|what percentage).{0,50}(?:deposit|documents?|payment|pay)|"
+        r"(?:how (?:can|do|should)|what do (?:i|we) need).{0,40}(?:confirm|book)|"
+        r"(?:需要|要交|付|缴纳|交).{0,8}(?:多少|几成).{0,8}(?:定金|订金)|"
+        r"(?:需要什么|需要哪些|如何|怎样|怎么).{0,20}(?:确认预订|确认订单)",
+        clause,
+    ):
+        return False
+    return _has(
+        r"(?:已|是否|确认|订妥).{0,6}(?:预订|订上|订好)|(?:预订|订单).{0,10}(?:成功|完成|确认|状态)|"
+        r"\bbooked\b|(?:booking|reservation).{0,40}(?:complete|confirm|status)|"
+        r"(?:confirm|proof).{0,45}(?:booking|reservation)",
+        clause,
+    )
+
+
 def requested_checks(message: str) -> set[str]:
     # A customer may explicitly set a past issue aside and ask a new question.
     current = re.sub(
@@ -57,10 +75,11 @@ def requested_checks(message: str) -> set[str]:
         current,
     ):
         checks.add("inventory")
-    if _has(
-        r"(?:已|是否|确认|订妥).{0,6}(?:预订|订上|订好)|(?:预订|订单).{0,10}(?:成功|完成|确认)|"
-        r"\bbooked\b|(?:booking|reservation).{0,40}(?:complete|confirm)|(?:confirm|proof).{0,45}(?:booking|reservation)",
-        current,
+    if any(
+        _asks_order_status(clause)
+        for clause in re.split(
+            r"[,;.!?，；。！？]|\band\s+(?=has |is |was |can you)", current, flags=re.I
+        )
     ):
         checks.add("booking")
     return checks
