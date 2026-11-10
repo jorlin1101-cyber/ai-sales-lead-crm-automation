@@ -165,6 +165,7 @@ DESTINATION_ALIASES: dict[str, tuple[str, ...]] = {
 
 GROUP_SIZE_PATTERNS = (
     re.compile(r"\bgroup\s+of\s+(\d{1,4})\b", re.IGNORECASE),
+    re.compile(r"\b(\d{1,4})\s+of us\b", re.IGNORECASE),
     re.compile(
         r"\b(\d{1,4})\s*(?:people|persons|pax|travellers?|travelers?|guests?|clients?|students?)\b",
         re.IGNORECASE,

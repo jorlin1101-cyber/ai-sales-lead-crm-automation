@@ -172,8 +172,28 @@ class QwenConversationLLM:
         chunks: list[RetrievedChunk],
         language: str,
     ) -> ReplyDraft:
-        evidence_units: list[dict[str, str]] = []
-        for chunk_index, chunk in enumerate(chunks, start=1):
+        from lead_cleaner.services.inquiry_evidence import (
+            display_quote,
+            find_points,
+            inquiry_topics,
+            point_guidance,
+            transfer_background,
+        )
+
+        topics = inquiry_topics(request.message)
+        points = find_points(topics, chunks)
+        inputs = points or transfer_background(topics, chunks)
+        evidence_units: list[dict[str, str]] = [
+            {
+                "evidence_id": f"e{index}s1",
+                "chunk_id": p.chunk.chunk_id,
+                "quote": p.quote,
+                "title": p.chunk.source_title,
+                "section": p.chunk.section,
+            }
+            for index, p in enumerate(inputs, 1)
+        ]
+        for chunk_index, chunk in enumerate(chunks if not topics else [], start=1):
             sentences = [
                 sentence.strip()
                 for sentence in re.split(r"(?<=[。！？!?])\s*|(?<=\.)\s+|\n+", chunk.text.strip())
@@ -238,6 +258,19 @@ class QwenConversationLLM:
             request, facts=facts, open_questions=draft.open_questions, language=language
         )
         body = "\n".join(p.text for p in answer.paragraphs) + "\n\n" + context.body_text
+        if topics:
+            if set(by_evidence_id) != {p.evidence_id for p in answer.paragraphs}:
+                raise ConversationLLMError("incomplete_topic_coverage")
+            notes, questions = point_guidance(topics, points, facts, language, request.message)
+            by_id = {f"e{idx}s1": point for idx, point in enumerate(inputs, 1)}
+            lines = [
+                display_quote(by_id[p.evidence_id], language)
+                if p.text == by_id[p.evidence_id].quote
+                else p.text
+                for p in answer.paragraphs
+                if points
+            ]
+            body = "\n".join([*lines, *notes, *questions])
         if draft.recommended_products:
             from lead_cleaner.services.product_recommendation import product_reply_body
 
@@ -259,6 +292,8 @@ class QwenConversationLLM:
                 ]
             )
         )
+        if topics and not points:
+            ids = []  # Background cannot establish the requested service.
         import hashlib
 
         return draft.model_copy(

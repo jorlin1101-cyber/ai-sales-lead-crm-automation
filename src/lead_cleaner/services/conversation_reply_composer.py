@@ -6,6 +6,15 @@ from typing import Literal
 
 from lead_cleaner.rag.schemas import RetrievedChunk
 from lead_cleaner.schemas.conversation import ConversationFact, ConversationMessageRequest
+from lead_cleaner.services.inquiry_evidence import (
+    Topic,
+    display_quote,
+    find_points,
+    inquiry_topics,
+    point_chunks,
+    point_guidance,
+    transfer_background,
+)
 from lead_cleaner.services.knowledge_localization import source_bullets
 from lead_cleaner.services.conversation_slots import UNRESOLVED, REGIONS
 
@@ -23,6 +32,7 @@ BusinessIntent = Literal[
 class ConversationKnowledgePlan:
     intents: tuple[BusinessIntent, ...]
     focus_query: str
+    topics: tuple[Topic, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -107,7 +117,9 @@ def build_knowledge_plan(message: str) -> ConversationKnowledgePlan:
     if not intents:
         intents = ("information_collection",)
     focus_query = " | ".join(_FOCUS_QUERIES[intent] for intent in intents)
-    return ConversationKnowledgePlan(intents=intents, focus_query=focus_query)
+    return ConversationKnowledgePlan(
+        intents=intents, focus_query=focus_query, topics=inquiry_topics(message)
+    )
 
 
 def _section_index(intent: BusinessIntent, section: str) -> int | None:
@@ -131,6 +143,10 @@ def select_grounding_chunks(
     destination: str | None = None,
 ) -> list[RetrievedChunk]:
     """Select a small evidence set that covers each detected business intent."""
+
+    if plan.topics:
+        points = find_points(plan.topics, chunks, destination)
+        return point_chunks(points or transfer_background(plan.topics, chunks, destination), limit)
 
     # Apply business scope before ranking. Unknown destinations may only use general rules.
     region = REGIONS.get(destination or "")
@@ -234,6 +250,18 @@ def compose_grounded_reply(
     language: str | None = None,
 ) -> GroundedReplyContent:
     language = language or ("zh" if re.search(r"[\u4e00-\u9fff]", request.message) else "en")
+    if plan.topics:
+        points = find_points(plan.topics, chunks)
+        notes, followups = point_guidance(plan.topics, points, facts, language, request.message)
+        lines = [display_quote(point, language) for point in points]
+        return GroundedReplyContent(
+            subject=("旅行咨询回复" if language == "zh" else "Your travel inquiry")
+            if request.channel == "email"
+            else None,
+            body_text="\n".join([*lines, *notes, *followups]),
+            cited_chunk_ids=[c.chunk_id for c in point_chunks(points)],
+            generation_method="rag_grounded_template" if points else "context_template",
+        )
     evidence_lines: list[tuple[str, str]] = []
     for chunk in chunks:
         for bullet in _knowledge_bullets(chunk, language):

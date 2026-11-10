@@ -14,6 +14,9 @@ from tests.test_conversations import make_client
         ("更正一下，不是8个人，是9个人。Does this change the known pricing principles?", "9"),
         ("We are not 8 people, we are 11 people.", "11"),
         ("There are 12 people, not 8 people.", "12"),
+        ("这次人数从8人改为10人。请沿用原来的行程。", "10"),
+        ("We changed our group size from 8 people to 13 people.", "13"),
+        ("Actually, there are 14 of us, not 8.", "14"),
     ],
 )
 def test_group_correction_survives_restart_and_keeps_source(tmp_path, corrected, count):
