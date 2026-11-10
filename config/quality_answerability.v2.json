@@ -1,0 +1,66 @@
+{
+  "schema_version": "answerability-eval.v2",
+  "protocol_id": "p0-02.v2",
+  "rubric_version": "answerability-rubric.v2",
+  "s0_reference": "31b93e97d9f5455599ccb0e6334d89ddccbb8469",
+  "modes": {
+    "rule_only": {
+      "trials": 1,
+      "case_count": 24,
+      "turn_count": 36,
+      "retrieval_units": 54
+    },
+    "mocked_model": {
+      "trials": 1,
+      "case_count": 24,
+      "turn_count": 36,
+      "retrieval_units": 0
+    }
+  },
+  "required_modes": [
+    "rule_only",
+    "mocked_model"
+  ],
+  "assertion_ids": [
+    "execution",
+    "facts_state",
+    "answer_content",
+    "grounding",
+    "clarification"
+  ],
+  "top_k": 3,
+  "paths": [
+    "raw_query",
+    "runtime_rule_query",
+    "runtime_fused_query"
+  ],
+  "review_required_roles": [
+    "developer",
+    "sales"
+  ],
+  "protected_patterns": [
+    "src/lead_cleaner/answerability_evaluation/*.py",
+    "scripts/*answerability*.py",
+    "data/answerability_eval/*.json",
+    "config/quality_answerability*.json",
+    "tests/test_answerability*.py",
+    ".github/workflows/answerability-eval.yml",
+    "reports/quality/answerability-reviews/*.json",
+    "reports/quality/baselines/p0-02.v1/*",
+    "data/answerability_eval/v2/*",
+    "reports/quality/baselines/p0-02.v2/*"
+  ],
+  "label_status": "draft",
+  "evaluation_groups": {
+    "handbook": {
+      "case_count": 18,
+      "turn_count": 28,
+      "retrieval_units": 39
+    },
+    "synthetic_special": {
+      "case_count": 6,
+      "turn_count": 8,
+      "retrieval_units": 15
+    }
+  }
+}

@@ -1,0 +1,86 @@
+name: answerability-evaluation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  answerability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_MODE: rule_only
+      ALLOW_NETWORK: "false"
+      OPENAI_API_KEY: ""
+      OPENAI_MODEL: ""
+      DASHSCOPE_API_KEY: ""
+      DEEPSEEK_API_KEY: ""
+      NOTION_API_KEY: ""
+      PYTHONUTF8: "1"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    steps:
+      - name: Check out candidate
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify trusted main policy before importing candidate code
+        id: policy
+        shell: bash
+        run: |
+          base_ref="$(git rev-parse refs/remotes/origin/main)"
+          git show "$base_ref:scripts/check_quality_policy.py" > "$RUNNER_TEMP/accepted-answerability-policy.py"
+          python "$RUNNER_TEMP/accepted-answerability-policy.py" --root . --trusted-ref "$base_ref"
+
+      - name: Set up frozen Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.13"
+
+      - name: Install frozen uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.0"
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install locked dependencies
+        id: dependencies
+        run: uv sync --locked --extra dev
+
+      - name: Check exported dependency constraints
+        run: uv run --no-sync python scripts/check_quality_dependencies.py
+
+      - name: Execute both offline answerability modes
+        run: uv run --no-sync python scripts/ci_answerability_eval.py
+
+      - name: Preserve evaluation evidence even on failure
+        id: answerability-artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: p0-answerability-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/ci-answerability/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Write outer artifact provenance
+        id: provenance
+        if: always() && steps.policy.outcome == 'success' && steps.dependencies.outcome == 'success' && steps.answerability-artifact.outputs.artifact-id != ''
+        env:
+          ANSWERABILITY_ARTIFACT_ID: ${{ steps.answerability-artifact.outputs.artifact-id }}
+          ANSWERABILITY_ARTIFACT_DIGEST: ${{ steps.answerability-artifact.outputs.artifact-digest }}
+        run: uv run --no-sync python scripts/write_answerability_provenance.py --root data/runtime/ci-answerability --out data/runtime/answerability-provenance/index.json
+
+      - name: Archive provenance separately
+        if: always() && steps.provenance.outcome == 'success'
+        uses: actions/upload-artifact@v7
+        with:
+          name: p0-answerability-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/answerability-provenance/index.json
+          if-no-files-found: error
+          retention-days: 30

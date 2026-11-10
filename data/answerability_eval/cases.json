@@ -1,0 +1,2459 @@
+{
+  "schema_version": "answerability-cases.v1",
+  "protocol_id": "p0-02.v1",
+  "dataset_version": "p0-02-cases.v1",
+  "cases": [
+    {
+      "case_id": "AB01",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南亲子游包含昆明机场接送吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB02",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南亲子游包含国际机票和个人旅行保险吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "exclusions",
+              "description": "明确机票和保险不包含",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "exclusions"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "exclusions",
+                  "sha256": "5fef15865a301eb10c6b9772c4620ea03799c308c590a6b4628a867383c07e93",
+                  "start": 0,
+                  "end": 160,
+                  "quote": "云南亲子游不包含国际机票和个人旅行保险，旅客需自行安排。 International flights and personal travel insurance are not included in the Yunnan family tour. Travelers arrange these separately."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 3,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB03",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "When are the deposit and balance payable for the Yunnan family tour, and what must be confirmed first?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "payment",
+              "description": "保留书面行程报价确认前提和30%/14天条款",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "payment"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "payment",
+                  "sha256": "e0071fc32db88aea79038eb7f5b8b375217b2a3777df1fd8f15237012565d1ab",
+                  "start": 0,
+                  "end": 175,
+                  "quote": "书面行程和明细报价双方确认后，支付总价30%的定金；余款在抵达前14天支付。 A 30% deposit is due after both parties confirm the written itinerary and itemized quotation. The balance is due 14 days before arrival."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 3,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB04",
+      "case_version": 1,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "请用中文说明接送范围；does the same transfer rule apply in English?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB05",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南亲子游一般安排几天、经过哪些城市？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "说明云南路线与7天6晚",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "itinerary"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "itinerary",
+                  "sha256": "0ed2b72ac861700399af25fe09aa41a79171b7d784898129ad01934b719fbf2a",
+                  "start": 0,
+                  "end": 135,
+                  "quote": "云南亲子游标准行程为7天6晚，路线是昆明—大理—丽江—香格里拉。 The standard Yunnan family itinerary lasts 7 days and 6 nights: Kunming, Dali, Lijiang and Shangri-La."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 3,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB06",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Are confirmed Yunnan family groups eligible for the accompanying guide, and what are the daily service hours?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "guide_scope",
+              "description": "组合回答适用团队与导游工作时段",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "guide_eligibility",
+                  "guide_hours"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "guide_eligibility",
+                  "sha256": "11ee7f94b7a6fb7d9c7ff2a7166423b6372eedcc658ab8951c468617bdc3e220",
+                  "start": 0,
+                  "end": 179,
+                  "quote": "云南亲子游的已确认亲子团队可以使用本产品的随团导游服务。下一节规定该服务的工作时段。 Confirmed family groups on the Yunnan family product may use its accompanying guide service. The service hours are specified separately."
+                },
+                {
+                  "chunk_id": "guide_hours",
+                  "sha256": "75599287f2107a36b9dbe917f3daefbe059e48753463a6ee1cad2fe2d5bc49aa",
+                  "start": 0,
+                  "end": 152,
+                  "quote": "本产品随团导游的服务时间为每日09:00至17:00；此处不单独说明哪些客人适用。 This product offers accompanying guide service from 09:00 to 17:00 daily; eligibility is specified separately."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 2,
+            "guide_hours": 2,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB07",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南私人定制游按什么原则定价？请告诉我儿童的具体价格。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "pricing_basis",
+              "description": "说明影响报价因素",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "quote"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "quote",
+                  "sha256": "29fd4b721a2f441017cffee9f13559be525da8b384c2f414aef8b6cca234cc3d",
+                  "start": 0,
+                  "end": 217,
+                  "quote": "私人定制游价格取决于人数、旅行日期、酒店等级和车辆要求。此资料不提供具体金额，也不证明任何日期的余位。 Private tour pricing depends on group size, travel dates, hotel category and vehicle requirements. This guide provides no exact amount or date-specific availability."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "child_price",
+              "description": "儿童具体金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整冻结快照没有该具体答案，相关主题介绍不能补足答案。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 3,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB08",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "介绍一下云南行程，2026年10月10日还有酒店余位吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "说明云南路线与7天6晚",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "itinerary"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "itinerary",
+                  "sha256": "0ed2b72ac861700399af25fe09aa41a79171b7d784898129ad01934b719fbf2a",
+                  "start": 0,
+                  "end": 135,
+                  "quote": "云南亲子游标准行程为7天6晚，路线是昆明—大理—丽江—香格里拉。 The standard Yunnan family itinerary lasts 7 days and 6 nights: Kunming, Dali, Lijiang and Shangri-La."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 3,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB09",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "conditional",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "What airport transfers are included, and am I eligible for the October workshop? I have not chosen a departure date.",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户日期是否满足10月手工体验规则",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_customer_information"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "完整快照规则存在，但截至本轮客户未提供所列适用字段。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "date_policy": 2,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [
+            "departure_date"
+          ],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB10",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "expired",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南包含什么接送？这份9月促销价99元现在仍有效吗？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "current_price",
+              "description": "已过期促销不能作为现在价格",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "expired_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "expired_price",
+                  "sha256": "187be66c714cbb9672374a107189fb98a13f7f22ed090643adf5170576a867a9",
+                  "start": 0,
+                  "end": 169,
+                  "quote": "2026年9月限时手工体验促销价为每人99元，仅适用于该月，现有文本不能代表后续报价。 The workshop promotion was CNY 99 per person in September 2026 only. This historical text is not a quotation for later dates."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "所引用促销具有明确截止日期，评测时间已超过该日期。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "expired_price": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB11",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "conflict",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南包含接送吗？提前7天取消到底能不能退定金？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "cancellation",
+              "description": "同范围取消政策冲突",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "conflicting_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "cancel_a",
+                  "sha256": "bcab72c8a814da7bd136cf625327a105241f18a803c686c83b6aa518ee9445ef",
+                  "start": 0,
+                  "end": 175,
+                  "quote": "云南亲子游在出发前7天取消可全额退款；与另一份同范围有效政策尚未解决冲突。 Yunnan family trips cancelled 7 days before departure receive a full refund; an equally applicable conflicting policy remains unresolved."
+                },
+                {
+                  "chunk_id": "cancel_b",
+                  "sha256": "dc472a3fbbb3676cfba58204e558429e086bd97be5294be8c752118a7002989b",
+                  "start": 0,
+                  "end": 184,
+                  "quote": "云南亲子游在出发前7天取消定金不退；与另一份同范围有效政策尚未解决冲突。 Deposits for Yunnan family trips cancelled 7 days before departure are non-refundable; an equally applicable conflicting policy remains unresolved."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "两个同范围、同时有效的明确值冲突，未提供解决记录。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "cancel_a": 2,
+            "cancel_b": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB12",
+      "case_version": 1,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "云南路线包括哪些城市？What is the exact child room price?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "说明云南路线与7天6晚",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "itinerary"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "itinerary",
+                  "sha256": "0ed2b72ac861700399af25fe09aa41a79171b7d784898129ad01934b719fbf2a",
+                  "start": 0,
+                  "end": 135,
+                  "quote": "云南亲子游标准行程为7天6晚，路线是昆明—大理—丽江—香格里拉。 The standard Yunnan family itinerary lasts 7 days and 6 nights: Kunming, Dali, Lijiang and Shangri-La."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "child_price",
+              "description": "儿童房价具体数额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整冻结快照没有该具体答案，相关主题介绍不能补足答案。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 3,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB13",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "unrelated",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "请介绍你们的北极探险邮轮产品和售价。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "arctic_cruise",
+              "description": "北极邮轮产品和金额",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [],
+              "required_customer_fields": [],
+              "rationale": "完整冻结快照没有该具体答案，相关主题介绍不能补足答案。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "unrelated": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB14",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "hotel",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "What is the exact child room price for the hotel described in the Yunnan guide?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童房价缺失",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整冻结快照没有该具体答案，相关主题介绍不能补足答案。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB15",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "conflict",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Can I get the deposit refunded if I cancel the Yunnan family tour seven days before departure?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "cancellation",
+              "description": "未解决的同适用范围退款冲突",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "conflicting_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "cancel_a",
+                  "sha256": "bcab72c8a814da7bd136cf625327a105241f18a803c686c83b6aa518ee9445ef",
+                  "start": 0,
+                  "end": 175,
+                  "quote": "云南亲子游在出发前7天取消可全额退款；与另一份同范围有效政策尚未解决冲突。 Yunnan family trips cancelled 7 days before departure receive a full refund; an equally applicable conflicting policy remains unresolved."
+                },
+                {
+                  "chunk_id": "cancel_b",
+                  "sha256": "dc472a3fbbb3676cfba58204e558429e086bd97be5294be8c752118a7002989b",
+                  "start": 0,
+                  "end": 184,
+                  "quote": "云南亲子游在出发前7天取消定金不退；与另一份同范围有效政策尚未解决冲突。 Deposits for Yunnan family trips cancelled 7 days before departure are non-refundable; an equally applicable conflicting policy remains unresolved."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "两个同范围、同时有效的明确值冲突，未提供解决记录。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "cancel_a": 2,
+            "cancel_b": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB16",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "expired",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Is the September CNY 99 workshop promotion still the current price today?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "current_price",
+              "description": "9月促销已过期",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "expired_evidence"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "expired_price",
+                  "sha256": "187be66c714cbb9672374a107189fb98a13f7f22ed090643adf5170576a867a9",
+                  "start": 0,
+                  "end": 169,
+                  "quote": "2026年9月限时手工体验促销价为每人99元，仅适用于该月，现有文本不能代表后续报价。 The workshop promotion was CNY 99 per person in September 2026 only. This historical text is not a quotation for later dates."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "所引用促销具有明确截止日期，评测时间已超过该日期。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "expired_price": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB17",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "unverified",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Is the undated CNY 88 workshop promotion still valid today?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "validity",
+              "description": "没有促销有效期，不能确认现行",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "unverified_validity"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "unverified_price",
+                  "sha256": "44be668323283336cfbd757fe543816571dcb1f2908716516856d4dfc79ad886",
+                  "start": 0,
+                  "end": 164,
+                  "quote": "页面写有手工体验促销价每人88元，但没有生效日期、结束日期或仍在执行的证明。 The page lists a workshop promotion of CNY 88 per person, without effective dates or proof that the promotion is still valid."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "此时效敏感资料没有有效期，不能声称现行，也不能声称已确定过期。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "unverified_price": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB18",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "hotel",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Please confirm that my hotel room for 10 October 2026 has been booked and is available.",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB19",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "conditional",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "我符合云南10月免费手工体验规则吗？日期还没确定。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户日期是否满足10月手工体验规则",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_customer_information"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "完整快照规则存在，但截至本轮客户未提供所列适用字段。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 2,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [
+            "departure_date"
+          ],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T2",
+          "message": "我的出发日期是2026年10月10日，现在符合手工体验规则吗？",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户10月出发适用免费手工体验",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "date_policy"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 3,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "departure_date"
+          ]
+        },
+        {
+          "turn_id": "T3",
+          "message": "就是这个日期，酒店还有余位吗？",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "departure_date"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "AB20",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Are Kunming Airport transfers included?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T2",
+          "message": "Can you confirm hotel availability for 10 October 2026?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T3",
+          "message": "Leave availability for later. Please remind me of the airport transfer coverage.",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB21",
+      "case_version": 1,
+      "language": "en",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "Can you confirm that my Yunnan hotel booking is completed?",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T2",
+          "message": "Please do not treat any earlier wording as booking proof. No supplier has confirmed a booking. Is it really confirmed?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T3",
+          "message": "While that is checked, which airport transfers does the itinerary include?",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    },
+    {
+      "case_id": "AB22",
+      "case_version": 1,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "我们8个人想去云南。Please explain the airport transfers.",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "group_size",
+              "value": "8",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [
+            {
+              "key": "group_size",
+              "value": "8",
+              "source_turn_id": "T1",
+              "statuses": [
+                "customer_confirmed",
+                "human_confirmed"
+              ]
+            }
+          ],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T2",
+          "message": "更正一下，不是8个人，是9个人。Does this change the known pricing principles?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "pricing_basis",
+              "description": "说明人数是价格变量，不编具体金额",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "quote"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "quote",
+                  "sha256": "29fd4b721a2f441017cffee9f13559be525da8b384c2f414aef8b6cca234cc3d",
+                  "start": 0,
+                  "end": 217,
+                  "quote": "私人定制游价格取决于人数、旅行日期、酒店等级和车辆要求。此资料不提供具体金额，也不证明任何日期的余位。 Private tour pricing depends on group size, travel dates, hotel category and vehicle requirements. This guide provides no exact amount or date-specific availability."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 3,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2",
+              "statuses": [
+                "customer_confirmed",
+                "human_confirmed"
+              ]
+            }
+          ],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "group_size"
+          ]
+        },
+        {
+          "turn_id": "T3",
+          "message": "按照刚才更正的人数，which transfers are included?",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [
+            {
+              "key": "group_size",
+              "value": "9",
+              "source_turn_id": "T2",
+              "statuses": [
+                "customer_confirmed",
+                "human_confirmed"
+              ]
+            }
+          ],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "group_size"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "AB23",
+      "case_version": 1,
+      "language": "zh",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "conditional",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "我们在2026年10月10日出发，云南包括什么机场接送？",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "date_policy": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T2",
+          "message": "刚才这个出发日期能参加免费手工体验吗？",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户10月出发适用免费手工体验",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "date_policy"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 3,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "departure_date"
+          ]
+        },
+        {
+          "turn_id": "T3",
+          "message": "请确认这项免费活动的日期适用范围。",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": "2026-10-10",
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [
+            {
+              "key": "departure_date",
+              "value": "2026-10-10",
+              "source_turn_id": "T1"
+            }
+          ],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "workshop_eligibility",
+              "description": "客户10月出发适用免费手工体验",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "date_policy"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "date_policy",
+                  "sha256": "4c135a3b943d666369730f49091c6aac96b248acae025e73df0402695b990206",
+                  "start": 0,
+                  "end": 209,
+                  "quote": "出发日期在2026年10月1日至31日的云南亲子游可参加一次免费手工体验；是否适用取决于客户出发日期。 One complimentary craft workshop is included for Yunnan family trips departing from 1 to 31 October 2026. Eligibility depends on the customer departure date."
+                }
+              ],
+              "required_customer_fields": [
+                "departure_date"
+              ],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "date_policy": 3,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": [
+            "departure_date"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "AB24",
+      "case_version": 1,
+      "language": "mixed",
+      "source": "synthetic",
+      "suite_role": "regression",
+      "exposure_status": "visible",
+      "snapshot_id": "core",
+      "review_status": "draft",
+      "review_evidence": [],
+      "turns": [
+        {
+          "turn_id": "T1",
+          "message": "请介绍云南亲子游的路线和时长。",
+          "evaluation_time": "2026-10-05T10:00:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [],
+          "customer_facts": [],
+          "answerability": "answerable",
+          "facets": [
+            {
+              "facet_id": "itinerary",
+              "description": "说明云南路线与7天6晚",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "itinerary"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "itinerary",
+                  "sha256": "0ed2b72ac861700399af25fe09aa41a79171b7d784898129ad01934b719fbf2a",
+                  "start": 0,
+                  "end": 135,
+                  "quote": "云南亲子游标准行程为7天6晚，路线是昆明—大理—丽江—香格里拉。 The standard Yunnan family itinerary lasts 7 days and 6 nights: Kunming, Dali, Lijiang and Shangri-La."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 3,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 0
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "answer",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T2",
+          "message": "We also need the exact child hotel price. What transfer services are already included?",
+          "evaluation_time": "2026-10-05T10:01:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1"
+          ],
+          "customer_facts": [],
+          "answerability": "partial",
+          "facets": [
+            {
+              "facet_id": "transfer",
+              "description": "说明昆明机场与市区酒店接送范围",
+              "required": true,
+              "answerable": true,
+              "reasons": [],
+              "support_groups": [
+                [
+                  "transfer"
+                ]
+              ],
+              "evidence_refs": [
+                {
+                  "chunk_id": "transfer",
+                  "sha256": "348399f764a03f6d42234c07488a6eda07acbf0f3347a470ce536422341f726e",
+                  "start": 0,
+                  "end": 188,
+                  "quote": "云南亲子游包含昆明机场与市区酒店之间的抵达和离开接送。其他城市接送需另行确认。 Yunnan family tours include arrival and departure transfers between Kunming Airport and city hotels. Transfers in other cities require confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "指定适用证据明确支持此要点；须保留原文条件。 The declared applicable evidence supports this facet with its conditions.",
+              "allowed_expressions": [
+                "Kunming Airport",
+                "昆明机场"
+              ],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "child_price",
+              "description": "儿童房价未知",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整冻结快照没有该具体答案，相关主题介绍不能补足答案。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            }
+          ],
+          "judgments": {
+            "transfer": 3,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "partial",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        },
+        {
+          "turn_id": "T3",
+          "message": "接送范围清楚了。Please arrange verification of the child price and hotel availability; do not claim either is confirmed.",
+          "evaluation_time": "2026-10-05T10:02:00+00:00",
+          "business_date": null,
+          "visible_turn_ids": [
+            "T1",
+            "T2"
+          ],
+          "customer_facts": [],
+          "answerability": "unanswerable",
+          "facets": [
+            {
+              "facet_id": "child_price",
+              "description": "具体儿童房价未知",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "missing_static_knowledge"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "完整冻结快照没有该具体答案，相关主题介绍不能补足答案。",
+              "allowed_expressions": [],
+              "forbidden_claims": []
+            },
+            {
+              "facet_id": "availability",
+              "description": "指定日期余位或实际预订状态",
+              "required": true,
+              "answerable": false,
+              "reasons": [
+                "requires_live_supply"
+              ],
+              "support_groups": [],
+              "evidence_refs": [
+                {
+                  "chunk_id": "hotel_intro",
+                  "sha256": "c27da1b73c2504f53febfa9aa626645adffb63629b924c054af899a9691f25a5",
+                  "start": 0,
+                  "end": 220,
+                  "quote": "本产品可选择昆明市区亲子酒店。酒店介绍仅供行程规划；资料没有儿童房价、指定日期房态或预订凭证。 Family-friendly hotels in central Kunming are possible itinerary options. This description contains no child room price, date-specific availability or booking confirmation."
+                }
+              ],
+              "required_customer_fields": [],
+              "rationale": "现有资料和截至本轮客户消息没有权威供应状态或已执行预订结果。",
+              "allowed_expressions": [],
+              "forbidden_claims": [
+                "Booking confirmed",
+                "已确认有房"
+              ]
+            }
+          ],
+          "judgments": {
+            "transfer": 0,
+            "exclusions": 0,
+            "payment": 0,
+            "itinerary": 0,
+            "quote": 0,
+            "guide_eligibility": 0,
+            "guide_hours": 0,
+            "hotel_intro": 2
+          },
+          "expected_facts": [],
+          "expected_state": null,
+          "expected_action": "clarify",
+          "expected_followup_fields": [],
+          "forbidden_followup_fields": []
+        }
+      ]
+    }
+  ]
+}

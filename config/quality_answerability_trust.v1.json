@@ -1,0 +1,11 @@
+{
+  "protocol_id": "p0-02.v1",
+  "repository": "jorlin1101-cyber/ai-sales-lead-crm-automation",
+  "approved_workflow_paths": [
+    ".github/workflows/answerability-eval.yml"
+  ],
+  "accepted_baselines": {},
+  "latest_accepted_baselines": {},
+  "accepted_review_set_hashes": [],
+  "approval_bindings": {}
+}

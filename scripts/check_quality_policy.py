@@ -56,8 +56,26 @@ def main() -> int:
         raise
     if args.bootstrap:
         raise ValueError("bootstrap cannot replace an existing accepted protocol")
-    patterns = protocol["protected_patterns"]
+    patterns = list(protocol["protected_patterns"])
     names = git("ls-tree", "-r", "--name-only", ref).decode().splitlines()
+    # Read only the fixed path from the accepted main tree. Candidate files and
+    # command-line arguments cannot opt out of an accepted supplementary policy.
+    for supplementary, protocol_id in (
+        ("config/quality_answerability.v1.json", "p0-02.v1"),
+        ("config/quality_answerability.v2.json", "p0-02.v2"),
+    ):
+        if supplementary not in names:
+            continue
+        extra = json.loads(git("show", f"{ref}:{supplementary}"))
+        additions = extra["protected_patterns"]
+        if (
+            extra.get("protocol_id") != protocol_id
+            or not isinstance(additions, list)
+            or not additions
+            or any(not isinstance(pattern, str) or not pattern for pattern in additions)
+        ):
+            raise ValueError("invalid accepted answerability protection patterns")
+        patterns.extend(additions)
     expected = {name for name in names if any(fnmatch.fnmatchcase(name, p) for p in patterns)}
     actual = _protected_worktree_files(root, patterns)
     changed = sorted(expected ^ actual)

@@ -1,0 +1,49 @@
+{
+  "schema_version": "answerability-legacy-fact-probe.v2",
+  "source_protocol_id": "p0-02.v1",
+  "case_id": "AB22",
+  "source_case_hash": "7997b4e87c43c0bd3ff7d1c28732160da0fd146df6f6f58265ac30418ec33e1e",
+  "source_cases_file": "data/answerability_eval/cases.json",
+  "messages": [
+    "我们8个人想去云南。Please explain the airport transfers.",
+    "更正一下，不是8个人，是9个人。Does this change the known pricing principles?",
+    "按照刚才更正的人数，which transfers are included?"
+  ],
+  "expected_facts_by_turn": {
+    "T1": [
+      {
+        "key": "group_size",
+        "value": "8",
+        "source_turn_id": "T1",
+        "statuses": [
+          "customer_confirmed",
+          "human_confirmed"
+        ]
+      }
+    ],
+    "T2": [
+      {
+        "key": "group_size",
+        "value": "9",
+        "source_turn_id": "T2",
+        "statuses": [
+          "customer_confirmed",
+          "human_confirmed"
+        ]
+      }
+    ],
+    "T3": [
+      {
+        "key": "group_size",
+        "value": "9",
+        "source_turn_id": "T2",
+        "statuses": [
+          "customer_confirmed",
+          "human_confirmed"
+        ]
+      }
+    ]
+  },
+  "purpose": "仅用于原输入的人数更正稳定诊断，不参加v2分数，不是v1/v2质量改善比较。",
+  "status": "diagnostic_only"
+}
