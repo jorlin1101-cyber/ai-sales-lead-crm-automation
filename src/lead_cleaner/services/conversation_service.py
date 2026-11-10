@@ -36,7 +36,8 @@ from lead_cleaner.services.feature_extractor import FeatureExtractor
 from lead_cleaner.services.processor import process_lead
 from lead_cleaner.services.policy_v1 import evaluate_policy
 from lead_cleaner.services.conversation_memory import OPT_OUT, merge_facts, cumulative_features
-from lead_cleaner.services.rule_feature_extractor import RuleFeatureExtractor
+from lead_cleaner.services.rule_feature_extractor import RuleFeatureExtractor, extract_group_size
+from lead_cleaner.services.customer_assertions import customer_group_text, slot_has_excluded_evidence
 from lead_cleaner.services.service_preferences import extract_preferences
 from lead_cleaner.services.recommendation_generator import RecommendationGenerator
 from lead_cleaner.services.conversation_slots import (
@@ -100,14 +101,14 @@ def _extract_facts(
         return []
     message = request.message
     facts: list[ConversationFact] = []
-    if features.group_size is not None:
-        corrected = re.search(
-            r"(?:改成|改为|更正为|actually)\s*(\d+)\s*(?:个?人|people)", message, re.I
-        )
+    group_size = features.group_size
+    if slot_has_excluded_evidence("group_size", message):
+        group_size, _ = extract_group_size(customer_group_text(message))
+    if group_size is not None:
         facts.append(
             ConversationFact(
                 key="group_size",
-                value=corrected.group(1) if corrected else str(features.group_size),
+                value=str(group_size),
                 status="customer_confirmed",
                 confidence=0.95,
                 source_message_id=message_id,
@@ -375,7 +376,7 @@ class ConversationService:
                     request.message, previous_facts, previous_questions, recent_messages
                 )
                 previous_facts, incoming = apply_understanding(
-                    previous_facts, incoming, understanding, message_id
+                    previous_facts, incoming, understanding, message_id, message=request.message
                 )
                 llm_trace["understanding"] = "succeeded"
             except ConversationLLMError as error:

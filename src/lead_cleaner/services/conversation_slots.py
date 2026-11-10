@@ -5,6 +5,7 @@ from datetime import date
 from typing import Literal
 
 from lead_cleaner.schemas.conversation import ConversationFact
+from lead_cleaner.services.customer_assertions import travel_days
 from lead_cleaner.services.service_preferences import LABELS, UNKNOWN, normalize_preference
 
 FACT_LABELS = {
@@ -129,11 +130,9 @@ def enrich_facts(
     )
     if other_destination and not destinations:
         values["destination"] = fact("destination", other_destination[1], message_id)
-    duration = re.search(
-        r"(?:一共|行程|玩|去|共|总共)?\s*(\d+)\s*天|\b(\d+)[- ]days?\b", message, re.I
-    )
-    if duration and 1 <= int(duration[1] or duration[2]) <= 365:
-        values["duration_days"] = fact("duration_days", duration[1] or duration[2], message_id)
+    duration = travel_days(message)
+    if duration:
+        values["duration_days"] = fact("duration_days", duration, message_id)
     for clause in re.split(r"[，,。；;\n]+", message):
         for key, label in {
             **LABELS,

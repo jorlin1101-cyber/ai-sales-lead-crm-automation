@@ -4,6 +4,7 @@ import re
 
 from lead_cleaner.schemas.conversation import ConversationFact
 from lead_cleaner.schemas.policy import LeadFeatures
+from lead_cleaner.services.customer_assertions import group_correction
 from lead_cleaner.services.service_preferences import FLEXIBLE, normalize_preference
 
 OPT_OUT = re.compile(
@@ -38,6 +39,7 @@ def merge_facts(
             and not pending_update
             and not same_budget
             and not CORRECTION.search(message)
+            and not (fact.key == "group_size" and group_correction(message))
         ):
             equivalent = fact.key == "travel_date" and (
                 old.value in fact.value or fact.value in old.value
