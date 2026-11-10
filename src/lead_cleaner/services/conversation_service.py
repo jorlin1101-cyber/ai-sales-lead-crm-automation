@@ -37,7 +37,10 @@ from lead_cleaner.services.processor import process_lead
 from lead_cleaner.services.policy_v1 import evaluate_policy
 from lead_cleaner.services.conversation_memory import OPT_OUT, merge_facts, cumulative_features
 from lead_cleaner.services.rule_feature_extractor import RuleFeatureExtractor, extract_group_size
-from lead_cleaner.services.customer_assertions import customer_group_text, slot_has_excluded_evidence
+from lead_cleaner.services.customer_assertions import (
+    customer_group_text,
+    slot_has_excluded_evidence,
+)
 from lead_cleaner.services.service_preferences import extract_preferences
 from lead_cleaner.services.recommendation_generator import RecommendationGenerator
 from lead_cleaner.services.conversation_slots import (
@@ -358,6 +361,7 @@ class ConversationService:
             message_id,
             _extract_facts(request, result, message_id),
             previous_questions,
+            previous_facts,
         )
         llm_trace = {
             "provider": "dashscope" if conversation_llm else "none",

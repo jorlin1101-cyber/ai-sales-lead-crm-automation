@@ -306,7 +306,9 @@ def apply_understanding(
     updates = {f.key: f for f in incoming}
     prior = {f.key: f for f in previous}
     for update in result.updates:
-        if slot_has_excluded_evidence(update.key, message):
+        if slot_has_excluded_evidence(update.key, message) and (
+            update.key not in updates or updates[update.key].value != update.value
+        ):
             # Product conditions and rejected numbers are not customer assertions.
             # Keep the accepted part of a mixed turn extracted from its own clause.
             continue
