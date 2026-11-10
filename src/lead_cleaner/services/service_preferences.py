@@ -3,6 +3,7 @@
 import re
 
 from lead_cleaner.schemas.conversation import ConversationFact
+from lead_cleaner.services.customer_assertions import customer_clauses, guide_policy_inquiry
 
 FLEXIBLE = "不限（由顾问推荐）"
 LABELS = {
@@ -45,10 +46,12 @@ def normalize_preference(key: str, value: str) -> str:
 
 def extract_preferences(message: str, message_id: str) -> list[ConversationFact]:
     values: dict[str, str] = {}
-    for clause in re.split(r"[，,。；;\n]+", message):
+    for clause in customer_clauses(message):
         if UNKNOWN.search(clause):
             continue
         labelled = {key: re.search(label, clause, re.I) for key, label in LABELS.items()}
+        if guide_policy_inquiry(clause):
+            labelled["guide_language"] = None
         for key, label in labelled.items():
             if label and ANY.search(clause[label.end() :]):
                 values[key] = FLEXIBLE
@@ -92,6 +95,8 @@ def extract_preferences(message: str, message_id: str) -> list[ConversationFact]
                 re.I,
             ):
                 values["vehicle"] = "需要用车（车型由顾问安排）"
+        if guide_policy_inquiry(clause):
+            continue
         if re.search(r"(?:不再需要|不需要|不用|无需)(?:安排)?导游|no guide", clause, re.I):
             values["guide_language"] = "不需要导游"
         elif labelled["guide_language"]:

@@ -19,6 +19,7 @@ from lead_cleaner.schemas.conversation import (
 )
 from lead_cleaner.rag.schemas import RetrievedChunk
 from lead_cleaner.services.conversation_slots import fact, validate_slot
+from lead_cleaner.services.customer_assertions import slot_has_excluded_evidence
 from lead_cleaner.services.service_preferences import normalize_preference
 
 
@@ -298,11 +299,19 @@ def apply_understanding(
     incoming: list[ConversationFact],
     result: Understanding,
     message_id: str,
+    *,
+    message: str = "",
 ) -> tuple[list[ConversationFact], list[ConversationFact]]:
     """Model-proposed changes cannot silently overwrite human-confirmed values."""
     updates = {f.key: f for f in incoming}
     prior = {f.key: f for f in previous}
     for update in result.updates:
+        if slot_has_excluded_evidence(update.key, message) and (
+            update.key not in updates or updates[update.key].value != update.value
+        ):
+            # Product conditions and rejected numbers are not customer assertions.
+            # Keep the accepted part of a mixed turn extracted from its own clause.
+            continue
         old = prior.get(update.key)
         new = fact(update.key, update.value, message_id, pending=update.operation == "pending")
         # Deterministic rejected/pending interpretation wins over a conflicting model assertion.

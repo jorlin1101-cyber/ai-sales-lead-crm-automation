@@ -2,9 +2,16 @@
 
 import re
 from datetime import date
+from collections.abc import Sequence
 from typing import Literal
 
 from lead_cleaner.schemas.conversation import ConversationFact
+from lead_cleaner.services.customer_assertions import (
+    customer_clauses,
+    guide_policy_inquiry,
+    rejected_group_sizes,
+    travel_days,
+)
 from lead_cleaner.services.service_preferences import LABELS, UNKNOWN, normalize_preference
 
 FACT_LABELS = {
@@ -105,9 +112,19 @@ def validate_slot(key: str, value: str) -> bool:
 
 
 def enrich_facts(
-    message: str, message_id: str, incoming: list[ConversationFact], previous_questions: list[str]
+    message: str,
+    message_id: str,
+    incoming: list[ConversationFact],
+    previous_questions: list[str],
+    previous_facts: Sequence[ConversationFact] = (),
 ) -> list[ConversationFact]:
     values = {f.key: f for f in incoming}
+    withdrawn = rejected_group_sizes(message)
+    if "group_size" not in values and any(
+        f.key == "group_size" and f.value.isdigit() and int(f.value) in withdrawn
+        for f in previous_facts
+    ):
+        values["group_size"] = fact("group_size", "待定", message_id, pending=True)
     if "travel_date" in values and not valid_date(values["travel_date"].value):
         values["travel_date"] = fact(
             "travel_date", "日期无效，请重新确认", message_id, pending=True
@@ -129,18 +146,18 @@ def enrich_facts(
     )
     if other_destination and not destinations:
         values["destination"] = fact("destination", other_destination[1], message_id)
-    duration = re.search(
-        r"(?:一共|行程|玩|去|共|总共)?\s*(\d+)\s*天|\b(\d+)[- ]days?\b", message, re.I
-    )
-    if duration and 1 <= int(duration[1] or duration[2]) <= 365:
-        values["duration_days"] = fact("duration_days", duration[1] or duration[2], message_id)
-    for clause in re.split(r"[，,。；;\n]+", message):
+    duration = travel_days(message)
+    if duration:
+        values["duration_days"] = fact("duration_days", duration, message_id)
+    for clause in customer_clauses(message):
         for key, label in {
             **LABELS,
             "travel_date": r"日期|date",
             "budget": r"预算|budget",
             "destination": r"目的地|destination",
         }.items():
+            if key == "guide_language" and guide_policy_inquiry(clause):
+                continue
             if re.search(label, clause, re.I) and UNKNOWN.search(clause):
                 values[key] = fact(key, "待定", message_id, pending=True)
         if re.search(
