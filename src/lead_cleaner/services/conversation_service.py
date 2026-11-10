@@ -26,6 +26,7 @@ from lead_cleaner.services.conversation_rag import (
     build_conversation_context_query,
     route_conversation_retrieval,
 )
+from lead_cleaner.services.inquiry_evidence import find_points, point_guidance
 from lead_cleaner.services.conversation_reply_composer import (
     ConversationKnowledgePlan,
     build_knowledge_plan,
@@ -409,18 +410,27 @@ class ConversationService:
         plan = build_knowledge_plan(request.message)
         current_plan = plan
         route = route_conversation_retrieval(request.message)
-        if plan.intents == ("information_collection",) and previous and route.decision != "skipped":
+        if (
+            not plan.topics
+            and plan.intents == ("information_collection",)
+            and previous
+            and route.decision != "skipped"
+        ):
             plan = build_knowledge_plan(" ".join(previous.reply_draft.answer_intents))
         destination = next(
             (f.value for f in facts if f.key == "destination" and f.status not in UNRESOLVED), None
         )
-        product_requested = route.decision == "required" and (
-            bool({"product_overview", "itinerary"}.intersection(plan.intents))
-            or (
-                bool(destination)
-                and (
-                    "pricing" in plan.intents
-                    or (bool(incoming) and current_plan.intents == ("information_collection",))
+        product_requested = (
+            not plan.topics
+            and route.decision == "required"
+            and (
+                bool({"product_overview", "itinerary"}.intersection(plan.intents))
+                or (
+                    bool(destination)
+                    and (
+                        "pricing" in plan.intents
+                        or (bool(incoming) and current_plan.intents == ("information_collection",))
+                    )
                 )
             )
         )
@@ -442,6 +452,11 @@ class ConversationService:
             try:
                 retriever.retrieve_focus(request.message)
                 outcome = retriever.retrieve_focus(plan.focus_query)
+                for topic in plan.topics:
+                    if len(retriever.queries) < 8 and not find_points(
+                        (topic,), retriever.captured_chunks, destination
+                    ):
+                        outcome = retriever.retrieve_topic(topic.query, destination)
                 chunks = select_grounding_chunks(
                     retriever.captured_chunks, plan, language=language, destination=destination
                 )
@@ -495,6 +510,10 @@ class ConversationService:
             )
         result = result.model_copy(update={"sources": sources, "analysis_result": analysis})
         questions = [] if suppressed else _open_questions(facts, language=language, plan=plan)
+        if plan.topics and not suppressed and not security_blocked:
+            _, questions = point_guidance(
+                plan.topics, find_points(plan.topics, chunks), facts, language, request.message
+            )
         if product_requested and not suppressed and "pricing" not in plan.intents:
             questions = product_questions(facts, language)
         draft = _render_reply(
@@ -527,7 +546,11 @@ class ConversationService:
             and safe_for_model
             and not security_blocked
             and chunks
-            and (current_plan.intents != ("information_collection",) or product is not None)
+            and (
+                current_plan.topics
+                or current_plan.intents != ("information_collection",)
+                or product is not None
+            )
             and (not product_requested or product is not None)
             and llm_trace["understanding"] == "succeeded"
         ):

@@ -74,6 +74,12 @@ class ContextualRagRetriever:
         self.queries.append(rewritten_query)
         return self._remember(self.base.retrieve(rewritten_query))
 
+    def retrieve_topic(self, query: str, destination: str | None) -> RagRetrievalOutcome:
+        # Keep the evidence search independent of unrelated turns or other topics.
+        focused = f"{destination} | {query}" if destination else query
+        self.queries.append(focused)
+        return self._remember(self.base.retrieve(focused))
+
     @property
     def captured_chunks(self) -> list[RetrievedChunk]:
         return list(self.chunks_by_id.values())
