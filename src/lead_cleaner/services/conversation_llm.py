@@ -229,8 +229,6 @@ class QwenConversationLLM:
                 "current_facts": [f.model_dump() for f in facts],
                 "recommended_products": [p.model_dump() for p in draft.recommended_products],
                 "reply_intents": draft.answer_intents,
-                "question_topics": [t.label_en for t in topics],
-                "background_only": bool(topics and not points),
                 "evidence": evidence_units,
             },
         )
